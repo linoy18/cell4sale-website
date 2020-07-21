@@ -4,9 +4,10 @@
 }
 
 .bg-register-image {
-    background: url(https://img.techpowerup.org/200517/signup1857.png);
+    background: url('https://svgshare.com/i/N4U.svg');
     background-position: center;
-    background-size: cover;
+    background-size: 90%;
+    background-repeat: no-repeat;
 }
 .btn-primary {
     color: #fff ;

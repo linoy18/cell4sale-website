@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Cell4Sale - Cellphones</title>
+
+  <!-- Custom fonts for this template-->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+  <!-- Custom styles for this template-->
+  <link href="css/sb-admin-2.min.css" rel="stylesheet">
+  <link href="mobilephone.css" rel="stylesheet">
+
+</head>
+<body id="page-top">
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+      <!-- Sidebar - Brand -->
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+        <div class="sidebar-brand-icon">
+          <img src="https://i.ibb.co/gTnvrC6/Logopurpel2.png" style="width: 2.3rem; margin: 30%;" alt="Responsive image"> 
+        </div>
+        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="margin-top: 15% !important;" src="https://i.ibb.co/5Y6pqF0/Logopurpel1.png" alt="">        
+      </a>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider my-0">
+
+      <!-- Nav Item - Dashboard -->
+      <li class="nav-item active">
+        <a class="nav-link" href="index.html" >
+          <i class="fa fa-home" aria-hidden="true"></i>
+          <span>Homepage</span></a>
+      </li>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider">
+
+   <!-- Heading -->
+   <div class="sidebar-heading">
+    Things To Buy
+  </div>
+
+  <!-- Nav Item - Mobile Phones Menu -->
+  <li class="nav-item">
+    <a class="nav-link" href="phones.html">
+      <i class="fa fa-mobile" aria-hidden="true"></i>
+      <span>Mobile Phones</span></a>
+
+  </li>
+
+  <!-- Nav Item - Computers Collapse Menu -->
+  <li class="nav-item">
+    <a class="nav-link" href="404.html">
+      <i class="fa fa-laptop" aria-hidden="true"></i>
+      <span>  Computers</span>
+    </a>
+    
+  </li>
+
+  <!-- Divider -->
+  <hr class="sidebar-divider">
+
+  <!-- Heading -->
+  <div class="sidebar-heading">
+    History
+  </div>
+
+  <!-- Nav Item - My Purchases -->
+  <li class="nav-item">
+    <a class="nav-link" href="#">
+      <i class="fa fa-history" aria-hidden="true"></i>
+      <span>My Purchases</span>
+    </a>
+  </li>
+
+<!-- Divider -->
+<hr class="sidebar-divider">
+
+    <!-- Heading -->
+    <div class="sidebar-heading">
+      About Us
+    </div>
+
+
+  <!-- Nav Item - Contact -->
+  <li class="nav-item">
+    <a class="nav-link" href="#">
+      <i class="fa fa-envelope" aria-hidden="true"></i>
+      <span>Contact Us</span></a>
+  </li>
+
+  
+      <!-- Divider -->
+      <hr class="sidebar-divider d-none d-md-block">
+
+      <!-- Sidebar Toggler (Sidebar) -->
+      <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+      </div>
+
+    </ul>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+        <!-- Topbar -->
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+          <!-- Sidebar Toggle (Topbar) -->
+          <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+            <i class="fa fa-bars"></i>
+          </button>
+
+          <!-- Topbar Search -->
+          <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+            <div class="input-group">
+              <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+              <div class="input-group-append">
+                <button class="btn btn-primary" type="button">
+                  <i class="fas fa-search fa-sm"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+
+          <!-- Topbar Navbar -->
+          <ul class="navbar-nav ml-auto">
+
+            <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+            <li class="nav-item dropdown no-arrow d-sm-none">
+              <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-search fa-fw"></i>
+              </a>
+              <!-- Dropdown - Messages -->
+              <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
+                <form class="form-inline mr-auto w-100 navbar-search">
+                  <div class="input-group">
+                    <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                      <button class="btn btn-primary" type="button">
+                        <i class="fas fa-search fa-sm"></i>
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </li>
+
+           <!-- Nav Item - Alerts -->
+           <li class="nav-item dropdown no-arrow mx-1">
+            <a class="nav-link dropdown-toggle" href="cart.html" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+              <!-- Counter - Alerts -->
+              <span class="badge badge-info badge-counter">+1</span>
+            </a>
+          </li>
+
+            <div class="topbar-divider d-none d-sm-block"></div>
+
+           <!-- Nav Item - User Information -->
+           <li class="nav-item dropdown no-arrow">
+            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span class="mr-2 d-none d-lg-inline text-gray-600 small">User Name</span>
+              <i class="fa fa-user-circle" aria-hidden="true"></i>
+
+
+            </a>
+            <!-- Dropdown - User Information -->
+            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+              <a class="dropdown-item" href="#">
+                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                Profile
+              </a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                Logout
+              </a>
+            </div>
+          </li>
+
+          </ul>
+
+        </nav>
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+        <div class="container1-fluid" >
+
+          <!-- Page Heading -->
+          <h1 class="h1 mb-4 text-gray-800" style="margin-left: 0.8%;">Mobile Phones For Sale</h1>
+          <p class="h6 mb-4 text-gray-800" style="margin-left: 1%;">Mobile phones for sale, cheaper on Cell4Sale. </p>
+          <div class="wrapper1" style="display: flex;">
+<!-------------------------Samsung------------------------>
+          <div class="container1">
+            <div class="images ">
+              <img src="https://i.ibb.co/ZWPVwBS/galaxy10.jpg" class="img_product" />
+            </div>
+            <div class="slideshow-buttons">
+              <div class="one"></div>
+              <div class="two"></div>
+              <div class="three"></div>
+              <div class="four"></div>
+            </div>
+            <p class="pick">Choose Memory Size</p>
+            <div class="sizes">
+              <div class="size">512GB</div>
+              <div class="size">128GB</div>            </div>
+            <div class="product">
+              <p>Phone for sale</p>
+              <h1>Samsung Galaxy S10</h1>
+              <h2>$464.90</h2>
+              <p class="desc">The Nike Epic React Flyknit foam cushioning is responsive yet light-weight, durable yet soft. This creates a sensation that not only enhances the feeling of moving forward, but makes running feel fun, too.</p>
+              <div class="buttons">
+                <button class="add">Add to Cart</button>
+              </div>
+            </div>
+          </div>
+          
+<!-------------------------Huawei------------------------>
+          <div class="container1">
+            <div class="images ">
+              <img src="https://i.ibb.co/fXbn9bd/hwawi.jpg" class="img_product" />
+            </div>
+            <div class="slideshow-buttons">
+              <div class="one"></div>
+              <div class="two"></div>
+              <div class="three"></div>
+              <div class="four"></div>
+            </div>
+            <p class="pick">choose size</p>
+            <div class="sizes">
+              <div class="size">512GB</div>
+              <div class="size">256GB</div>
+              <div class="size">128GB</div>
+            </div>
+            <div class="product">
+              <p>Phone for sale</p>
+              <h1>Huawei P40</h1>
+              <h2>$150</h2>
+              <p class="desc">The Nike Epic React Flyknit foam cushioning is responsive yet light-weight, durable yet soft. This creates a sensation that not only enhances the feeling of moving forward, but makes running feel fun, too.</p>
+              <div class="buttons">
+                <button class="add">Add to Cart</button>
+              </div>
+            </div>
+          </div>
+
+<!-------------------------iPhone------------------------>
+          <div class="container1">
+            <div class="images ">
+              <img src="https://i.ibb.co/1Ghn9GC/iphone11.jpg" class="img_product" />
+            </div>
+            <div class="slideshow-buttons">
+              <div class="one"></div>
+              <div class="two"></div>
+              <div class="three"></div>
+              <div class="four"></div>
+            </div>
+            <p class="pick">choose size</p>
+            <div class="sizes">
+              <div class="size">512GB</div>
+              <div class="size">256GB</div>
+              <div class="size">64GB</div>
+            </div>
+            <div class="product">
+              <p>Phone for sale</p>
+              <h1>iPhone 11 Pro Max</h1>
+              <h2>$150</h2>
+              <p class="desc">The Nike Epic React Flyknit foam cushioning is responsive yet light-weight, durable yet soft. This creates a sensation that not only enhances the feeling of moving forward, but makes running feel fun, too.</p>
+              <div class="buttons">
+                <button class="add">Add to Cart</button>
+              </div>
+            </div>
+          </div>
+
+<!-------------------------OnePlus------------------------>
+          <div class="container1">
+            <div class="images ">
+              <img src="https://i.ibb.co/d4w25nT/1.jpg" class="img_product" />
+            </div>
+            <div class="slideshow-buttons">
+              <div class="one"></div>
+              <div class="two"></div>
+              <div class="three"></div>
+              <div class="four"></div>
+            </div>
+            <p class="pick">choose size</p>
+            <div class="sizes">
+              <div class="size">256GB</div>
+              <div class="size">128GB</div>
+            </div>
+            <div class="product">
+              <p>Phone for sale</p>
+              <h1>OnePlus 8</h1>
+              <h2>$150</h2>
+              <p class="desc">The Nike Epic React Flyknit foam cushioning is responsive yet light-weight, durable yet soft. This creates a sensation that not only enhances the feeling of moving forward, but makes running feel fun, too.</p>
+              <div class="buttons">
+                <button class="add">Add to Cart</button>
+              </div>
+            </div>
+          </div>
+
+<!-------------------------Xiaomi------------------------>
+          <div class="container1">
+            <div class="images ">
+              <img src="https://i.ibb.co/jR4N7zs/Xiamo.jpg" class="img_product" />
+            </div>
+            <div class="slideshow-buttons">
+              <div class="one"></div>
+              <div class="two"></div>
+              <div class="three"></div>
+              <div class="four"></div>
+            </div>
+            <p class="pick">choose size</p>
+            <div class="sizes">
+              <div class="size">128GB</div>
+              <div class="size">64GB</div>
+            </div>
+            <div class="product">
+              <p>Phone for sale</p>
+              <h1>Xiaomi Redmi Note 8</h1>
+              <h2>$150</h2>
+              <p class="desc">The Nike Epic React Flyknit foam cushioning is responsive yet light-weight, durable yet soft. This creates a sensation that not only enhances the feeling of moving forward, but makes running feel fun, too.</p>
+              <div class="buttons">
+                <button class="add">Add to Cart</button>
+              </div>
+            </div>
+          </div>
+
+
+<!-------------------------GooglePixel------------------------>
+<div class="container1">
+  <div class="images ">
+    <img src="https://i.ibb.co/mS4PxHN/googlepixel.jpg" class="img_product" />
+  </div>
+  <div class="slideshow-buttons">
+    <div class="one"></div>
+    <div class="two"></div>
+    <div class="three"></div>
+    <div class="four"></div>
+  </div>
+  <p class="pick">choose size</p>
+  <div class="sizes">
+    <div class="size">128GB</div>
+    <div class="size">64GB</div>
+  </div>
+  <div class="product">
+    <p>Phone for sale</p>
+    <h1>Google pixel 4</h1>
+    <h2>$150</h2>
+    <p class="desc">The Nike Epic React Flyknit foam cushioning is responsive yet light-weight, durable yet soft. This creates a sensation that not only enhances the feeling of moving forward, but makes running feel fun, too.</p>
+    <div class="buttons">
+      <button class="add">Add to Cart</button>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+        </div>
+
+        </div>
+        <!-- /.container-fluid -->
+
+
+
+
+
+
+
+
+
+      </div>
+      <!-- End of Main Content -->
+
+    
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <!-- Logout Modal-->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+          <a class="btn btn-primary" href="login.html">Logout</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="js/sb-admin-2.min.js"></script>
+
+</body>
+
+</html>
