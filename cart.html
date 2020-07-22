@@ -9,7 +9,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Cell4Sale - Cellphones</title>
+  <title>Cell4Sale - Cart</title>
 
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -17,7 +17,7 @@
 
   <!-- Custom styles for this template-->
   <link href="css/sb-admin-2.min.css" rel="stylesheet">
-  <link href="mobilephone.css" rel="stylesheet">
+  <link href="css/cart.css" rel="stylesheet">
 
 </head>
 <body id="page-top">
@@ -81,7 +81,7 @@
 
   <!-- Nav Item - My Purchases -->
   <li class="nav-item">
-    <a class="nav-link" href="#">
+    <a class="nav-link" href="mypurchases.html">
       <i class="fa fa-history" aria-hidden="true"></i>
       <span>My Purchases</span>
     </a>
@@ -98,7 +98,7 @@
 
   <!-- Nav Item - Contact -->
   <li class="nav-item">
-    <a class="nav-link" href="#">
+    <a class="nav-link" href="contactus.html>
       <i class="fa fa-envelope" aria-hidden="true"></i>
       <span>Contact Us</span></a>
   </li>
@@ -205,37 +205,59 @@
         <!-- Begin Page Content -->
         <div class="container1-fluid" >
 
-          <!-- Page Heading -->
-          <h1 class="h1 mb-4 text-gray-800" style="margin-left: 0.8%;">Mobile Phones For Sale</h1>
-          <p class="h6 mb-4 text-gray-800" style="margin-left: 1%;">Mobile phones for sale, cheaper on Cell4Sale. </p>
-          <div class="wrapper1" style="display: flex;">
-            <div class="container1">
-                <div class="images ">
-                  <img src="https://i.ibb.co/mS4PxHN/googlepixel.jpg" class="img_product" />
-                </div>
-                <div class="slideshow-buttons">
-                  <div class="one"></div>
-                  <div class="two"></div>
-                  <div class="three"></div>
-                  <div class="four"></div>
-                </div>
-                <p class="pick">choose size</p>
-                <div class="sizes">
-                  <div class="size">128GB</div>
-                  <div class="size">64GB</div>
-                </div>
-                <div class="product">
-                  <p>Phone for sale</p>
-                  <h1>Google pixel 4</h1>
-                  <h2>$150</h2>
-                  <p class="desc">The Nikeight, durable yet soft. This cremoving forward, but makes running feel fun, too.</p>
-                  <div class="buttons">
-                    <button class="add">Add to Cart</button>
-                  </div>
-                </div>
+         <div class= "wrapper">
+            <div class="shopping-cart">
+              <!-- Title -->
+              <div class="title">
+                Shopping Bag
               </div>
+             
+              <!-- Product #1 -->
+              <div class="item">
+                <div class="buttons">
+                  <span class="delete-btn"></span>
+                </div>
+             
+                <div class="image">
+                  <img src="https://i.ibb.co/pr3j1f3/galaxy10.png" alt="" />
+                </div>
+             
+                <div class="description">
+                  <span>Galaxy S10+</span>
+                  <span>256GB</span>
+                  <span></span>
+                </div>
+             
+                <div class="quantity">
+                  <button class="plus-btn" type="button" name="button">
+                    <!-- <img src="plus.svg" alt="" /> -->
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                  </button>
+                  <input type="text" name="name" value="1">
+                  <button class="minus-btn" type="button" name="button">
+                    <!-- <img src="minus.svg" alt="" /> -->
+                    <i class="fa fa-minus" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div class="total-price">$549</div>
+
+
+              </div>
+      
+            
+            </div>
+            <div class="total_price" style="margin-top: 3%; align-items: flex-end; margin-left: 80%;" >    
+            <div class="title" style="display: inline; "> Total:  </div>
+            <div class="total-price" style="display: inline; ">$549</div>
+          </div>
+          
+          <img class="Responsive"style="width:35%; height:35%; margin-left: 28%;" src="https://svgshare.com/i/N58.svg"/>
+
+            <div>
               
 
+            </div>
+          </div>
 
 
 
@@ -297,6 +319,42 @@
 
   <!-- Custom scripts for all pages-->
   <script src="js/sb-admin-2.min.js"></script>
+
+  <script type="text/javascript">
+    $('.minus-btn').on('click', function(e) {
+      e.preventDefault();
+      var $this = $(this);
+      var $input = $this.closest('div').find('input');
+      var value = parseInt($input.val());
+
+      if (value > 1) {
+        value = value - 1;
+      } else {
+        value = 0;
+      }
+
+      $input.val(value);
+
+    });
+
+    $('.plus-btn').on('click', function(e) {
+      e.preventDefault();
+      var $this = $(this);
+      var $input = $this.closest('div').find('input');
+      var value = parseInt($input.val());
+
+      if (value < 100) {
+        value = value + 1;
+      } else {
+        value =100;
+      }
+
+      $input.val(value);
+    });
+
+
+  </script>
+
 
 </body>
 
