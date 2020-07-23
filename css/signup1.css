@@ -1,0 +1,28 @@
+
+.bg-gradient-primary {
+    background-image: linear-gradient(180deg,#71aebd 10%,#9eada4  100%) ;
+}
+
+.bg-register-image {
+    background: url('https://svgshare.com/i/N4U.svg');
+    background-position: center;
+    background-size: 90%;
+    background-repeat: no-repeat;
+}
+.btn-primary {
+    color: #fff ;
+    background-color: #71aebd ;
+    border-color: #71aebd;
+}
+
+a {
+    color: #71aebd;
+    text-decoration: none;
+    background-color: transparent;
+}
+
+.btn-google {
+    color: #fff;
+    background-color: #4285F4;
+    border-color: #fff;
+}
