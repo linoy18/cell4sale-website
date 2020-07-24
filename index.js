@@ -79,7 +79,6 @@ app.post('/loginf', async function (req, res) {
     name: req.body.firstname,
     familyname: req.body.lastname
   }
-
   try {
     await db.none('INSERT INTO users(${this:name}) VALUES(${this:csv})',obj);
     var query = "SELECT * FROM users WHERE email='" + obj.email + "'";

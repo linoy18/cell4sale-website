@@ -39,8 +39,10 @@ function loginCaptcha(){
 
 
 function loginWithFacebook(){
+    var error_message = document.getElementById("errorMessage");
 	FB.api('/me','GET',{"fields":"id,name,email,first_name,middle_name,last_name"},
     function(response) {
+    console.log(response);
 	 const data = {email: response.email , firstname : response.first_name , lastname : response.last_name};
     $.ajax({
         type: 'POST',
