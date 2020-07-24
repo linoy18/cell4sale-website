@@ -28,44 +28,10 @@ app.get('/', function (req, res) {
 
 app.use(express.static(__dirname));
 
-// app.get('/login', function (req, res) {
-//   res.sendFile(path.join(__dirname + '/login.html'));
-//   console.log("Requested login via get");
-// });
 
-// app.post('/login', function (req, res) {
-//   console.log(req.body);
-//   var userName = req.body.userName.toLowerCase();
-//   console.log(userName);
-//   var password = req.body.password;
-//   var query = "SELECT * FROM users WHERE email='" + userName + "'";
-//   console.log(query);
-//   db.query(query).then(results => {
-//     var resultsFound = results.rowCount;
-//     if (resultsFound == 1) {
-//       var data = results.rows[0];
-//       psw = data.password;
-//       var password_dec = decryptPassword(psw);
-//       if (password_dec == password) {
-//         res.writeHead(200, { 'Content-Type': 'application/json' });
-//         res.end(JSON.stringify(data));
-//       }
-//       else {
-//         console.log("wrong password")
-//         res.writeHead(400);
-//         res.end();
-//       }
 
-//     }
-//     else {
-//       console.log("login failed")
-//       res.writeHead(400);
-//       res.end();
-//     }
-//   }).catch(() => {
-//     console.error("DB failed in Login attempt");
-//   });
-// });
+
+
 
 
 //////////////////////////////////////////////---***Login Handling Function***---/////////////////////////////////////////////
@@ -105,6 +71,28 @@ app.post('/login', async function (req, res) {
 
 
 
+//////////////////////////////////////////////---***Login Facebook Handling Function***---///////////////////////////////////
+
+app.post('/loginf', async function (req, res) {
+  var obj = {
+    email: req.body.email.toLowerCase(),
+    name: req.body.firstname,
+    familyname: req.body.lastname
+  }
+
+  try {
+    await db.none('INSERT INTO users(${this:name}) VALUES(${this:csv})',obj);
+    var query = "SELECT * FROM users WHERE email='" + obj.email + "'";
+    let result = await db.one(query);
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(result));
+  } catch (err) {
+    console.log(err);
+    res.writeHead(500, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(err));
+  }
+});
+
 //////////////////////////////////////////////---***Register Handling Function***---/////////////////////////////////////////////
 app.get('/register', function (req, res) {
   res.sendFile(path.join(__dirname + '/register.html'));
@@ -122,16 +110,12 @@ app.post('/register', async function (req, res) {
   }
 
   try {
-
-
     var query = "SELECT * FROM users WHERE email='" + obj.email + "'";
     let results = await db.any(query);
     if (results.length > 0 ) {
       throw new Error("User already exits");
     }
-
     await db.none('INSERT INTO users(${this:name}) VALUES(${this:csv})',obj)
-    
     //new user add successfuly
     console.log("new user added successfuly");
     var transporter = await nodemailer.createTransport({

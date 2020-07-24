@@ -37,6 +37,30 @@ function loginCaptcha(){
     else Login();
   }
 
+
+function loginWithFacebook(){
+	FB.api('/me','GET',{"fields":"id,name,email,first_name,middle_name,last_name"},
+    function(response) {
+	 const data = {email: response.email , firstname : response.first_name , lastname : response.last_name};
+    $.ajax({
+        type: 'POST',
+        url: '/loginf',
+        data: data,
+        // Login Successful
+        success: function(userData){
+            console.log(userData);
+            sessionStorage.setItem('user', JSON.stringify(userData))
+            location.replace('/index');
+        },
+        error: function(res){
+            error_message.innerHTML="Oops... can't login with facebook";
+        }
+    });
+ }
+);
+}
+
+
 function Login()
 {   
     email_text_box = document.getElementById("emailLogin");
@@ -69,8 +93,6 @@ function Login()
         error_message.innerHTML ="Password must contain at least 6 characters, uppercase, lowercase, number, special character.";
         return;
     }
-
-    
 
     $.ajax({
         type: 'POST',
@@ -231,7 +253,7 @@ function forget(){
         type: 'POST',
         url: '/forget-password',
         data: forget_details,
-        // Login Successful
+ 
         success: function(userData){
             error_message.innerHTML="Email with a verification link is sent to your email!";
         },
