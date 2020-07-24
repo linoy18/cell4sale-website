@@ -82,8 +82,10 @@ app.post('/loginf', async function (req, res) {
 
   try {
     await db.none('INSERT INTO users(${this:name}) VALUES(${this:csv})',obj);
+    var query = "SELECT * FROM users WHERE email='" + obj.email + "'";
+    let result = await db.one(query);
     res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify('ok'));
+    res.end(JSON.stringify(result));
   } catch (err) {
     console.log(err);
     res.writeHead(500, { 'Content-Type': 'application/json' });
