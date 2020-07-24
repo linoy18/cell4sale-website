@@ -28,6 +28,15 @@ function clearfiledforgetpass()
 }
 
 
+function loginCaptcha(){
+    var error_message = document.getElementById("errorMessage");
+    var response = grecaptcha.getResponse();
+    if(response.length==0){
+      error_message.innerHTML="You must confirm that you are not a robot!";
+    }
+    else Login();
+  }
+
 function Login()
 {   
     email_text_box = document.getElementById("emailLogin");

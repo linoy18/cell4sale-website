@@ -59,7 +59,7 @@
                     </div>
                     <div class="col g-recaptcha"  style="margin-left: 1.9%; margin-bottom: 3%;" data-sitekey="6LdYkbUZAAAAAOMot2c1wF6OExBEAJr91zRhEfYR" data-callback='onSubmit'  data-action='submit'>Submit</div>
  
-                    <button class="btn btn-primary btn-user btn-block" type="button" onclick="Login()">
+                    <button class="btn btn-primary btn-user btn-block" type="button" onclick="loginCaptcha()">
                       Login
                     </button> 
 
@@ -99,9 +99,12 @@
   <script src="/js/sb-admin-2.min.js"></script>
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   <script>
+
     function onSubmit(token) {
       document.getElementById("demo-form").submit();
     }
+
+    
   </script>
 
 </body>
