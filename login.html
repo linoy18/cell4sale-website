@@ -23,6 +23,7 @@
 </head>
 
 <body class="bg-gradient-primary">
+  
 
   <div class="container">
 
@@ -41,6 +42,7 @@
                   <div class="text-center">
                     <h1 class="h4 text-gray-900 mb-4">Welcome to Cell4Sale!</h1>
                   </div>
+                  <center>
                   <form class="user">
                     <div class="form-group">
                       <input type="email" class="form-control form-control-user" id="emailLogin" aria-describedby="emailHelp" placeholder="Enter Email Address...">
@@ -64,12 +66,15 @@
                     </button> 
 
                     <hr>
-                    <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
-</fb:login-button></br></br>
+
+                    <fb:login-button class="fb-login-button " data-layout="rounded" data-auto-logout-link="false" data-use-continue-as="true" data-width="345px" data-size="large" data-button-type="login_with" scope="public_profile,email" onlogin="checkLoginState();">
+<Label>Login With Facebook</Label></fb:login-button>
+
                     <!-- <a href="/index.html" class="btn btn-facebook btn-user btn-block">
                       <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
                     </a> -->
-                  </form>
+                  </form> 
+                </center>
                   <hr>
                   <div class="text-center">
                     <a class="small" href="/login/">Forgot Password?</a>
