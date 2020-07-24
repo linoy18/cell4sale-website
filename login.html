@@ -64,9 +64,11 @@
                     </button> 
 
                     <hr>
-                    <a href="/index.html" class="btn btn-facebook btn-user btn-block">
+                    <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+</fb:login-button></br></br>
+                    <!-- <a href="/index.html" class="btn btn-facebook btn-user btn-block">
                       <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
-                    </a>
+                    </a> -->
                   </form>
                   <hr>
                   <div class="text-center">
@@ -99,13 +101,57 @@
   <script src="/js/sb-admin-2.min.js"></script>
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   <script>
-
     function onSubmit(token) {
       document.getElementById("demo-form").submit();
     }
 
-    
+////////////////////////////////////////Facebook functions///////////////////////////////////////////////////
+    function statusChangeCallback(response) {  // Called with the results from FB.getLoginStatus().
+    console.log('statusChangeCallback');
+    console.log(response);                   // The current login status of the person.
+    if (response.status === 'connected') {   // Logged into your webpage and Facebook.
+      testAPI();  
+    } else {                                 // Not logged into your webpage or we are unable to tell.
+      document.getElementById('status').innerHTML = 'Please log ' +
+        'into this webpage.';
+    }
+  }
+
+
+  function checkLoginState() {               // Called when a person is finished with the Login Button.
+    FB.getLoginStatus(function(response) {   // See the onlogin handler
+      statusChangeCallback(response);
+    });
+  }
+
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '1009707419459074',
+      cookie     : true,
+      xfbml      : true,
+      version    : 'v7.0'
+    });
+      
+    FB.AppEvents.logPageView();   
+    FB.getLoginStatus(function(response) {   // Called after the JS SDK has been initialized.
+	if (response.status === 'connected') {
+    var accessToken = response.authResponse.accessToken;
+  }
+      statusChangeCallback(response);        // Returns the login status.
+    });  
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "https://connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+
+
   </script>
+
 
 </body>
 
