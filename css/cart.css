@@ -152,8 +152,8 @@ input:focus {
 
 /* Total Price */
 .total-price {
-  width: 83px;
-  padding-top: 27px;
+  width: 300px;
+  padding-top: 25px;
   text-align: center;
   font-size: 16px;
   color: #43484D;

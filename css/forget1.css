@@ -1,11 +1,12 @@
 .bg-password-image {
-    background: url(https://img.techpowerup.org/200517/3293466.png);
+    background: url(https://svgshare.com/i/NA7.svg);
     background-position: center;
-    background-size: cover;
+    background-size: 90%;
+    background-repeat: no-repeat;
 }
 
 .bg-gradient-primary {
-    background-image: linear-gradient(180deg,#71aebd 10%,#9eada4  100%) ;    background-size: cover;
+    background-image:  linear-gradient(rgb(226 233 234) 40%, rgb(63 61 86) 10%) ;
 }
 
 

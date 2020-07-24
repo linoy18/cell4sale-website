@@ -1,11 +1,13 @@
 .bg-gradient-primary {
-     background-image: linear-gradient(180deg,#71aebd 10%,#9eada4  100%) ;
+    
+     background-image:  linear-gradient(rgb(226 233 234) 40%, rgb(113 174 189) 10%) ;
 }
 
 .bg-login-image{
-     background: url(https://img.techpowerup.org/200517/loginfinal.png);
-     background-position: center ;
-     background-size: cover ;
+     background: url(https://svgshare.com/i/N9d.svg);
+     background-position: center;
+     background-size: 90%;
+     background-repeat: no-repeat;
 }
 
 .btn-primary {

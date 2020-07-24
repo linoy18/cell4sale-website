@@ -33,7 +33,6 @@ function Login()
     email_text_box = document.getElementById("emailLogin");
     password_text_box = document.getElementById("passwordLogin");
     error_message = document.getElementById("errorMessage");
-    console.log(valid_email)
 
     var credentials={
         userName: email_text_box.value,
@@ -44,23 +43,25 @@ function Login()
         
         if(credentials.userName==="")
         {
-            document.error_message.innerHTML= "Please insert your E-mail address";
+            error_message.innerHTML= "Please insert your E-mail address";
         }
        
         if(credentials.password==="")
         {
-            document.error_message.innerHTML ="Password must contain at least 6 characters, uppercase, lowercase, number, special character.";
+            error_message.innerHTML ="Password must contain at least 6 characters, uppercase, lowercase, number, special character.";
         }
         return;
     }
     if (!validateEmail(email_text_box.value)){
-        document.error_message.innerHTML= "Invalid Email";
+        error_message.innerHTML= "Invalid Email";
         return;
     }
     if(!validatePassword(password_text_box.value)){
-        document.error_message.innerHTML ="Password must contain at least 6 characters, uppercase, lowercase, number, special character.";
+        error_message.innerHTML ="Password must contain at least 6 characters, uppercase, lowercase, number, special character.";
         return;
     }
+
+    
 
     $.ajax({
         type: 'POST',
@@ -73,7 +74,7 @@ function Login()
             location.replace('/index');
         },
         error: function(res){
-            error_message.innerHTML="Oops... wrong details";
+            error_message.innerHTML="Oops... wrong email or password";
         }
     });
 }
@@ -150,7 +151,7 @@ function SignUp()
         },
         error: function(err){
             console.log(err);
-            error_message.innerHTML="Oops... User already exists";
+            error_message.innerHTML="Oops... User already exists, please choose different email address";
         }
     });
 

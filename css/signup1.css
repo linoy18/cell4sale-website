@@ -1,6 +1,6 @@
 
 .bg-gradient-primary {
-    background-image: linear-gradient(180deg,#71aebd 10%,#9eada4  100%) ;
+    background-image:  linear-gradient(rgb(226 233 234) 40%, rgb(87 90 137) 10%) ;
 }
 
 .bg-register-image {
