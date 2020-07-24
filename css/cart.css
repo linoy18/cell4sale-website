@@ -131,6 +131,17 @@
   font-weight: 300;
 }
 
+.checkoutBtn{
+  padding-top: 1% !important; 
+  width: 100px !important; 
+  background-color: #5a5773 !important;
+}
+
+.checkoutBtn:hover{
+  background-color: #43484D !important;
+
+}
+
 button[class*=btn] {
   width: 30px;
   height: 30px;
@@ -152,12 +163,16 @@ input:focus {
 
 /* Total Price */
 .total-price {
+  margin-right: 4%;
+  align-items: flex-end; 
   width: 300px;
   padding-top: 25px;
   text-align: center;
   font-size: 16px;
   color: #43484D;
   font-weight: 300;
+  display: inline;
+
 }
 
 /* Responsive */
