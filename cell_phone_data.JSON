@@ -1,0 +1,135 @@
+[
+	{
+      "id": "Samsung Galaxy S10",
+      "type": "Cell Phone",
+	  "in stock": "true",
+      "description": "Best smartphone ever",
+      "models": [
+        {
+          "id": "1",
+          "type": "128 GB",
+          "text": "2 month of warranty",
+          "price": "200$"
+        },
+        {
+          "id": "2",
+          "type": "512 GB",
+          "text": "4 month warranty",
+		  "price": "500$"
+        }
+      ]
+    },
+    {
+      "id": "Huawei P40",
+      "type": "Cell Phone",
+	  "in stock": "true",
+      "description": "Just the right phone for you",
+      "models": [
+        {
+          "id": "1",
+          "type": "128 GB",
+          "text": "1 month of warranty",
+          "price": "150$"
+        },
+        {
+          "id": "2",
+          "type": "256 GB",
+          "text": "3 month warranty",
+		  "price": "200$"
+        },
+        {
+          "id": "3",
+          "type": "512 GB",
+          "text": "4 month warranty",
+          "price": "400$"
+        }
+      ]
+    },
+	{
+      "id": "iPhone 11 Pro Max",
+      "type": "Cell Phone",
+	  "in stock": "true",
+      "description": "The first in it's class",
+      "models": [
+        {
+          "id": "1",
+          "type": "64 GB",
+          "text": "life time warranty",
+          "price": "600$"
+        },
+        {
+          "id": "2",
+          "type": "256 GB",
+          "text": "life time warranty",
+		  "price": "850$"
+        },
+        {
+            "id": "3",
+            "type": "512 GB",
+            "text": "life time warranty",
+            "price": "1000$"
+        }
+      ]
+    },
+	{
+      "id": "OnePlus 8",
+      "type": "Cell Phone",
+	  "in stock": "false",
+      "description": "The most advanced phone",
+      "models": [
+        {
+            "id": "1",
+            "type": "128 GB",
+            "text": "life time warranty",
+            "price": "600$"
+          },
+          {
+            "id": "2",
+            "type": "256 GB",
+            "text": "life time warranty",
+            "price": "850$"
+          }
+      ]
+    },
+	{
+      "id": "Xiaomi Redmi Note 8",
+      "type": "Cell Phone",
+	  "in stock": "false",
+      "description": "Chaina best advanced phone",
+      "models": [
+        {
+            "id": "1",
+            "type": "64 GB",
+            "text": "life time warranty",
+            "price": "600$"
+          },
+          {
+            "id": "2",
+            "type": "128 GB",
+            "text": "life time warranty",
+            "price": "850$"
+          }
+      ]
+    },
+	{
+      "id": "Google pixel 4",
+      "type": "Cell Phone",
+	  "in stock": "false",
+      "description": "Google best advanced phone",
+      "models": [
+        {
+            "id": "1",
+            "type": "64 GB",
+            "text": "life time warranty",
+            "price": "600$"
+          },
+          {
+            "id": "2",
+            "type": "128 GB",
+            "text": "life time warranty",
+            "price": "850$"
+          }
+      ]
+    }
+    
+]
