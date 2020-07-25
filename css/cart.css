@@ -26,6 +26,7 @@
   padding: 20px 30px;
   height: 120px;
   display: flex;
+ 
 }
 
 .item:nth-child(3) {
@@ -37,7 +38,7 @@
 .buttons {
   position: relative;
   padding-top: 30px;
-  margin-right: 60px;
+
 }
 
 .delete-btn {
@@ -96,7 +97,7 @@
 /* Product Description */
 .description {
   padding-top: 10px;
-  margin-right: 60px;
+  margin-right: 3%;
   width: 115px;
 }
 
@@ -118,8 +119,8 @@
 
 /* Product Quantity */
 .quantity {
-  padding-top: 20px;
-  margin-right: 60px;
+  padding-top: 1%;
+  margin-right: 5%;
 }
 .quantity input {
   -webkit-appearance: none;
@@ -163,9 +164,8 @@ input:focus {
 
 /* Total Price */
 .total-price {
-  margin-right: 4%;
   align-items: flex-end; 
-  width: 300px;
+  width: 20%;
   padding-top: 25px;
   text-align: center;
   font-size: 16px;
@@ -200,4 +200,12 @@ input:focus {
   .buttons {
     margin-right: 20px;
   }
+}
+
+.price-pur{
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  width: fit-content;
+  margin-right: 5%;
 }

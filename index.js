@@ -207,6 +207,20 @@ app.post('/forget-password', function (req, res) {
 
 });
 
+//Gקא the cell-phones data from json file
+app.get('/get-phones', async function (req, res) {
+  try{
+    let jsonFile = fs.readFileSync('cell_phone_data.json');
+    let cellData = JSON.parse (jsonFile);
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(cellData));
+} catch (err) {
+    console.log(err);
+    res.writeHead(500, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(err));
+}
+});
+
 
 //Password encryption function 
 function encryptPassword(password) {
@@ -222,6 +236,8 @@ function decryptPassword(ciphertext) {
   var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
   return decryptedData;
 }
+
+
 
 
 

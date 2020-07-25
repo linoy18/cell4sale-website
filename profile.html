@@ -83,18 +83,7 @@
             <!-- Divider -->
             <hr class="sidebar-divider">
 
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                History
-            </div>
-
-            <!-- Nav Item - My Purchases -->
-            <li class="nav-item">
-                <a class="nav-link" href="mypurchases.html">
-                    <i class="fa fa-history" aria-hidden="true"></i>
-                    <span>My Purchases</span>
-                </a>
-            </li>
+  
 
             <!-- Divider -->
             <hr class="sidebar-divider">
@@ -139,29 +128,14 @@
                         <i class="fa fa-bars"></i>
                     </button>
 
-                    <!-- Topbar Search -->
-                    <form
-                        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                        <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                                aria-label="Search" aria-describedby="basic-addon2">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="button">
-                                    <i class="fas fa-search fa-sm"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
 
                         <!-- Nav Item - Search Dropdown (Visible Only XS) -->
                         <li class="nav-item dropdown no-arrow d-sm-none">
-                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-search fa-fw"></i>
-                            </a>
+
                             <!-- Dropdown - Messages -->
                             <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
                                 aria-labelledby="searchDropdown">
@@ -206,7 +180,7 @@
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="profile.html">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
                                 </a>
@@ -252,7 +226,6 @@
                                             <h4>
                                                 Linoy Bar-Gal
                                             </h4>
-
                                             <ul class="nav nav-tabs" id="myTab" role="tablist">
                                                 <li class="nav-item">
                                                     <a class="nav-link active" id="home-tab" data-toggle="tab"
@@ -267,10 +240,7 @@
                                             </ul>
                                         </div>
                                     </div>
-                                    <div class="col-md-2">
-                                        <input type="submit" class="profile-edit-btn" name="btnAddMore"
-                                            value="Update Details" />
-                                    </div>
+
                                 </div>
                                 <div class="row">
 
@@ -278,102 +248,105 @@
                                         <div class="tab-content profile-tab" id="myTabContent">
                                             <div class="tab-pane fade show active" id="home" role="tabpanel"
                                                 aria-labelledby="home-tab">
+                                                <div class="row">
+                                                    <div class="col-md-6"></div>
+                                                    <div class="col-md-6" style="align-items:flex-end; display: flex;">
+                                                        <input type="submit" class="profile-edit-btn" name="btnAddMore"
+                                                            value="Update Details" />
+                                                    </div>
+                                                </div>
+
                                                 <p style="font-size: 1rem; color:rgb(158, 158, 158);">Personal
                                                     Information</p>
                                                 <hr>
-
-                                                <div class="row">
-                                                    <div class="col-md-6">
+                                                <div class="row ">
+                                                    <div class="col-md-2">
                                                         <label>Email</label>
                                                     </div>
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-2">
                                                         <p>
                                                             <input type="email" class="form-control"></input>
                                                         </p>
                                                     </div>
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-2">
                                                         <label>Password</label>
                                                     </div>
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-2">
                                                         <p>
                                                             <input type="password" class="form-control"></input>
                                                         </p>
                                                     </div>
                                                 </div>
-
                                                 <div class="row" style="display:none;">
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-2">
                                                         <label>Confirm New Password</label>
                                                     </div>
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-2">
                                                         <p>
                                                             <input type="password" class="form-control"></input>
                                                         </p>
                                                     </div>
                                                 </div>
+                                                </br>
                                                 <p style="font-size: 1rem; color:rgb(158, 158, 158);">Contact
                                                     Information</p>
                                                 <hr>
-                                                <div class="row">
-                                                    <div class="col-md-6">
+                                                <div class="row ">
+
+                                                    <div class="col-md-2">
                                                         <label>First Name</label>
                                                     </div>
-                                                    <div class="col-md-6 ">
+                                                    <div class="col-md-2 ">
                                                         <p>
                                                             <input type="text" class="form-control"></input>
                                                         </p>
                                                     </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-6">
+
+
+                                                    <div class="col-md-2">
                                                         <label>Last Name</label>
                                                     </div>
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-2">
                                                         <p>
                                                             <input type="text" class="form-control"></input>
                                                         </p>
                                                     </div>
+
                                                 </div>
 
-
                                                 <div class="row">
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-2">
                                                         <label>Street</label>
                                                     </div>
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-2">
                                                         <p>
                                                             <input type="text" class="form-control"></input>
                                                         </p>
                                                     </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-6">
+
+                                                    <div class="col-md-2">
                                                         <label>City</label>
                                                     </div>
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-2">
                                                         <p>
                                                             <input type="text" class="form-control"></input>
                                                         </p>
                                                     </div>
                                                 </div>
                                                 <div class="row">
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-2">
                                                         <label>Country</label>
                                                     </div>
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-2">
                                                         <p>
                                                             <input type="text" class="form-control"></input>
                                                         </p>
                                                     </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-6">
+
+                                                    <div class="col-md-2">
                                                         <label>Phone Number</label>
                                                     </div>
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-2">
                                                         <p>
                                                             <input type="text" class="form-control"></input>
                                                         </p>
@@ -381,84 +354,81 @@
                                                 </div>
 
                                                 <div class="row">
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-2">
                                                         <label>Zip Code</label>
                                                     </div>
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-2">
                                                         <p>
                                                             <input type="text" class="form-control"></input>
                                                         </p>
                                                     </div>
+
                                                 </div>
-
-
                                             </div>
                                             <div class="tab-pane fade" id="profile" role="tabpanel"
                                                 aria-labelledby="profile-tab">
 
                                                 <!-- Product #1 -->
 
-
-                                                <div class= "wrapper">
+                                                <div class="wrapper">
                                                     <div class="shopping-cart">
-                                                      <!-- Title -->
-                                                  
-                                                      <!-- Product #1 -->
-                                                      <div class="item">
-                                                        <div class="buttons">
-                                                          <span class="trash-btn">
-                                                          <i class="fa fa-trash" aria-hidden="true"></i> </span>
-                                                        </div>
-                                                     
-                                                        <div class="image">
-                                                          <img src="https://i.ibb.co/pr3j1f3/galaxy10.png" alt="" />
-                                                        </div>
-                                                        <div class="description">
-                                                          <span>Galaxy S10+</span>
-                                                          <span>256GB</span>
-                                                          <span></span>
-                                                        </div>
-                                                        <div style="margin-right: 3.5%;">
-                                                            <div style="display: inline-flex;">Date of purchase: </div>
-                                                            <div class="total-price" style="display: inline-flex;">17/07/2020</div>
+                                                        <!-- Title -->
+
+                                                        <!-- Product #1 -->
+                                                        <div class="item">
+                                                            <div class="price"></div>
+                                                            <div class="buttons">
+                                                                <span class="trash-btn">
+                                                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                                                </span>
                                                             </div>
-                                                        <div>
-                                                        <div style="display: inline-flex;">Total Amount: </div>
-                                                        <div class="total-price" style="display: inline-flex;">$549</div>
-                                                        </div>
-                                                        <div>
-                                                            <div style="display: inline-flex;">Quantity: </div>
-                                                            <div class="total-price" style="display: inline-flex;">1</div>
-                                                        </div>
+
+                                                            <div class="image">
+                                                                <img src="https://i.ibb.co/pr3j1f3/galaxy10.png"
+                                                                    alt="" />
+                                                            </div>
+                                                            <div class="price-pur">
+                                                                <div class="description">
+                                                                    <span>Galaxy S10+</span>
+                                                                    <span>256GB</span>
+                                                                    <span></span>
+                                                                </div>
+                                                                <div>
+                                                                    <div style="display: inline-flex;">Date of purchase:
+                                                                    </div>
+                                                                    <div style="display: inline-flex;">17/07/2020</div>
+                                                                </div>
+                                                                <div>
+                                                                    <div style="display: inline-flex;">Total Amount:
+                                                                    </div>
+                                                                    <div style="display: inline-flex;">$549</div>
+                                                                </div>
+                                                                <div>
+                                                                    <div>Quantity:</div>
+                                                                    <div>1</div>
+                                                                </div>
+                                                            </div>
                                                             <div class="quantity">
                                                                 <button class="plus-btn" type="button" name="button">
-                                                                  <!-- <img src="plus.svg" alt="" /> -->
-                                                                  <i class="fa fa-plus" aria-hidden="true"></i>
+                                                                    <!-- <img src="plus.svg" alt="" /> -->
+                                                                    <i class="fa fa-plus" aria-hidden="true"></i>
                                                                 </button>
                                                                 <input type="text" name="name" value="1">
                                                                 <button class="minus-btn" type="button" name="button">
-                                                                  <!-- <img src="minus.svg" alt="" /> -->
-                                                                  <i class="fa fa-minus" aria-hidden="true"></i>
-                                                                </button> 
+                                                                    <!-- <img src="minus.svg" alt="" /> -->
+                                                                    <i class="fa fa-minus" aria-hidden="true"></i>
+                                                                </button>
                                                             </div>
-                                        
-                                                              <div style="margin-top: 1%;">
+
+                                                            <div style="margin-top: 1%;">
                                                                 <button class="add">Add to Cart</button>
-                                                              </div>
-                                                      </div>
-                                                  </div>
-                                                  <img class="Responsive"style="width:35%; height:35%; margin-left: 28%;" src="https://svgshare.com/i/N6D.svg"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <img class="Responsive"
+                                                        style="width:35%; height:35%; margin-left: 28%; margin-top:2%"
+                                                        src="https://svgshare.com/i/N6D.svg" />
                                                 </div>
-
-
-
-
-
-
-
-
-
-
                                             </div>
                                         </div>
                                     </div>
@@ -513,7 +483,41 @@
 
             <!-- Custom scripts for all pages-->
             <script src="js/sb-admin-2.min.js"></script>
-
+            <script type="text/javascript">
+                $('.minus-btn').on('click', function(e) {
+                  e.preventDefault();
+                  var $this = $(this);
+                  var $input = $this.closest('div').find('input');
+                  var value = parseInt($input.val());
+            
+                  if (value > 1) {
+                    value = value - 1;
+                  } else {
+                    value = 0;
+                  }
+            
+                  $input.val(value);
+            
+                });
+            
+                $('.plus-btn').on('click', function(e) {
+                  e.preventDefault();
+                  var $this = $(this);
+                  var $input = $this.closest('div').find('input');
+                  var value = parseInt($input.val());
+            
+                  if (value < 100) {
+                    value = value + 1;
+                  } else {
+                    value =100;
+                  }
+            
+                  $input.val(value);
+                });
+            
+            
+              </script>
+            
 
 
 </body>

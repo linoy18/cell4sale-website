@@ -4,8 +4,7 @@ var password_confirmation;
 var name;
 var subject;
 var themessage;
-var status;
-
+var data;
 
 function clearfiledLogin()
 {
@@ -265,29 +264,42 @@ function forget(){
     });
 }
 
-// function update_table(){
-//     var userDetails = JSON.parse(sessionStorage.getItem('user'));
-//     console.log(userDetails);
-
-//     console.log("update");
-//     $.ajax({
-//         type: 'POST',
-//         url: '/getUserData',
-//         data: userDetails,
-//         success: function(table_data){
-//             console.log("yayyy!!!");
-//             insert_to_table(table_data);
-//         },
-//         error: function(res){
-//             console.log("shiiitt!!")
-//         }
-//     });
-// }
-
 
 function logOut()
 {
     sessionStorage.removeItem("user");
     location.replace('/login');
+}
+
+
+function getPhones()
+{
+    //Get request from server - get all phones data from json file
+    $.ajax({
+        type: 'GET',
+        url: '/get-phones',
+        dataType: 'json',
+        success: function(phonesData){
+            console.log(phonesData);
+            showPhones(phonesData);
+            //sessionStorage.setItem('phones', JSON.stringify(phonesData))
+            //location.replace('/phones.html');
+        },
+        error: function(err){
+            console.log(err);
+        }
+    });
+}
+
+function showPhones(data)
+{
+    data = JSON.stringify(data);
+    wrapper = document.getElementById("wrapper1").value;
+    $.each(data, function(i, f) {
+        var dataRow = "<tr>" + "<td>" + f.firstName + "</td>" +
+        "<td>" + f.lastName + "</td>" + "<td>" + f.job + "</td>" + "<td>" + f.roll + "</td>" + "</tr>"
+       //insert the json objects to the correct place 
+        $(tblRow).appendTo(wrapper);
+        });
 }
 
