@@ -151,10 +151,26 @@ function SignUp() {
         success: function (userData) {
             error_message.innerHTML = "Congratulations! You registered successfully! ";
             sessionStorage.setItem('user', JSON.stringify(userData))
-            location.replace('/login');
+            location.replace('/email_varifi');
         },
         error: function (err) {
             // console.log(err);
+            error_message.innerHTML = err.message;
+        }
+    });
+
+}
+
+function open_login() {
+
+    $.ajax({
+        type: 'GET',
+        url: '/login',
+        success: function () {
+           // sessionStorage.setItem('user', JSON.stringify())
+            location.replace('/login');
+        },
+        error: function (err) {
             error_message.innerHTML = err.message;
         }
     });
