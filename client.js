@@ -6,23 +6,6 @@ var subject;
 var themessage;
 var data;
 
-function clearfiledLogin() {
-    document.getElementById("validemail").innerHTML = "";
-    document.getElementById("validpassword").innerHTML = "";
-    document.getElementById("errorMessage").innerHTML = "";
-}
-
-function clearfiledSignup() {
-    document.getElementById("validemail").innerHTML = "";
-    document.getElementById("validpassword1").innerHTML = "";
-    document.getElementById("validpassword2").innerHTML = "";
-    document.getElementById("errorMessage").innerHTML = "";
-}
-
-function clearfiledforgetpass() {
-    document.getElementById("errorMessage2").innerHTML = "";
-}
-
 
 function loginCaptcha() {
     var error_message = document.getElementById("errorMessage");
@@ -286,9 +269,34 @@ function getPhones()
         dataType: 'json',
         success: function(phonesData){
             console.log(phonesData);
-            showPhones(phonesData);
-            //sessionStorage.setItem('phones', JSON.stringify(phonesData))
-            //location.replace('/phones.html');
+            data = JSON.parse(JSON.stringify(phonesData));
+
+            for (var i = 0; i < data.length; i++) {
+                var obj = data[i]; 
+                console.log(obj.id);
+                var innerTypes =``;
+                
+                for(var j=0; j < obj.models.length; j++){
+                    var objModel = obj.models[j];
+                    innerTypes += `<div class="size" onclick="showPrice('${objModel.price}','${i}')">`+ objModel.type+`</div>`;
+                }
+                var dataRow =  `<div class="container1">
+                <div class="images ">
+                  <img src="https://i.ibb.co/ZWPVwBS/galaxy10.jpg" class="img_product"/>
+                </div> 
+                <p class="pick">Choose Memory Size</p>
+                <div class="sizes">
+                 `+innerTypes +`</div>
+                <div class="product"> 
+                  <p>Phone for sale</p>
+                  <h1>`+obj.id+`</h1>
+                  <div id="price-${i}"class="price1"></div>
+                  <p class="desc">`+obj.description+`</p>
+                  <div class="buttons">
+                    <button class="add">Add to Cart</button>
+                  </div></div></div>`;
+                $(dataRow).appendTo('#wrapper1');
+            }
         },
         error: function(err){
             console.log(err);
@@ -296,15 +304,17 @@ function getPhones()
     });
 }
 
-function showPhones(data)
+function showPrice(price,index)
 {
-    data = JSON.stringify(data);
-    wrapper = document.getElementById("wrapper1").value;
-    $.each(data, function(i, f) {
-        var dataRow = "<tr>" + "<td>" + f.firstName + "</td>" +
-        "<td>" + f.lastName + "</td>" + "<td>" + f.job + "</td>" + "<td>" + f.roll + "</td>" + "</tr>"
-       //insert the json objects to the correct place 
-        $(tblRow).appendTo(wrapper);
-        });
+    console.log(price);
+    var datarow= "<h2>"+price+"</h2>";
+    $(`#price-${index}`).html(datarow);
 }
+
+function updateDetails()
+{
+    console.log("im here in updateDetails function:)!");
+}
+
+
 
