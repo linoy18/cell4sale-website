@@ -120,8 +120,7 @@
       document.getElementById('errorMessage').innerHTML = "Can't login with Facebook"
     }
   }
-
-
+  
   function checkLoginState() {               // Called when a person is finished with the Login Button.
     FB.getLoginStatus(function(response) {   // See the onlogin handler
       statusChangeCallback(response);
