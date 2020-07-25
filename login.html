@@ -61,7 +61,7 @@
                     </div>
                     <div class="col g-recaptcha"  style="margin-left: 1.9%; margin-bottom: 3%;" data-sitekey="6LdYkbUZAAAAAOMot2c1wF6OExBEAJr91zRhEfYR" data-callback='onSubmit'  data-action='submit'>Submit</div>
  
-                    <button class="btn btn-primary btn-user btn-block" type="button" onclick="loginCaptcha()">
+                    <button class="btn btn-primary btn-user btn-block" type="button" onclick="Login()">
                       Login
                     </button> 
 
@@ -120,7 +120,6 @@
       document.getElementById('errorMessage').innerHTML = "Can't login with Facebook"
     }
   }
-  
   function checkLoginState() {               // Called when a person is finished with the Login Button.
     FB.getLoginStatus(function(response) {   // See the onlogin handler
       statusChangeCallback(response);
@@ -144,13 +143,13 @@
     });  
   };
 
-  (function(d, s, id){
-     var js, fjs = d.getElementsByTagName(s)[0];
-     if (d.getElementById(id)) {return;}
-     js = d.createElement(s); js.id = id;
-     js.src = "https://connect.facebook.net/en_US/sdk.js";
-     fjs.parentNode.insertBefore(js, fjs);
-   }(document, 'script', 'facebook-jssdk'));
+  // (function(d, s, id){
+  //    var js, fjs = d.getElementsByTagName(s)[0];
+  //    if (d.getElementById(id)) {return;}
+  //    js = d.createElement(s); js.id = id;
+  //    js.src = "https://connect.facebook.net/en_US/sdk.js";
+  //    fjs.parentNode.insertBefore(js, fjs);
+  //  }(document, 'script', 'facebook-jssdk'));
 
 
   </script>
