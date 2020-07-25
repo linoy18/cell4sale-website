@@ -226,7 +226,7 @@ app.post('/register', async function (req, res) {
 
 
 
-    const url = `${API_URL}/register/confirmation/?email=${obj.email}&verificationHash=${hash}`;
+    const url = `${API_URL}register/confirmation/?email=${obj.email}&verificationHash=${hash}`;
     var mailOptions = {
       from: 'testForBraude@gmail.com',
       to: obj.email,
