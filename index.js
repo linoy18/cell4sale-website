@@ -9,8 +9,15 @@ var app = express();
 var port = process.env.PORT || 3000;
 var fs = require('fs');
 const path = require('path');
+const { verifyHash, generateVerificationHash } = require('dbless-email-verification');
 var pgp = require('pg-promise')();
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
+const MY_SECRET = 'linoyshirannofaruri';
+
+//////////////////////////////////////////////---***our URL String***---/////////////////////////////////////////////
+
+const API_URL = 'http://localhost:3000/';
 
 //////////////////////////////////////////////---***Database Connection String***---/////////////////////////////////////////////
 var conn = process.env.DATABASE_URL || "postgres://emvsgzoirewkxt:4553cd6f71d9235f18aca6f487215f0ecf3de517cb7e038c710e79678a2b16b7@ec2-54-217-236-206.eu-west-1.compute.amazonaws.com:5432/dddicparrqfs3s?ssl=true"
@@ -38,7 +45,7 @@ app.use(express.static(__dirname));
 
 
 app.get('/login', function (req, res) {
-  res.sendFile(process.cwd()+'/login.html');
+  res.sendFile(process.cwd() + '/login.html');
   console.log("Redirected to login page");
 });
 
@@ -50,10 +57,14 @@ app.post('/login', async function (req, res) {
 
   try {
     var query = "SELECT * FROM users WHERE email='" + obj.email + "'";
-    let result = await db.one(query);
+    let result = await db.oneOrNone(query);
     if (!result) {
-      throw new Error("Login Failed");
+      throw new Error("User does not exists");
     }
+    if (!result.confirmed) {
+      throw new Error("VERIFICATION");
+    }
+
     var password_dec = decryptPassword(result.password);
     console.log(password_dec);
     if (password_dec !== obj.password) {
@@ -61,11 +72,11 @@ app.post('/login', async function (req, res) {
     }
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify(result));
-  
+
   } catch (err) {
-    console.log(err);
-    res.writeHead(500, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify(err));
+    // res.writeHead(500, { 'Content-Type': 'application/json' });
+    // res.end(JSON.stringify(err));
+    res.status(500).send(err.message);
   }
 });
 
@@ -77,10 +88,11 @@ app.post('/loginf', async function (req, res) {
   var obj = {
     email: req.body.email.toLowerCase(),
     name: req.body.firstname,
-    familyname: req.body.lastname
+    familyname: req.body.lastname,
+    confirmed: true
   }
   try {
-    await db.none('INSERT INTO users(${this:name}) VALUES(${this:csv})',obj);
+    await db.none('INSERT INTO users(${this:name}) VALUES(${this:csv})', obj);
     var query = "SELECT * FROM users WHERE email='" + obj.email + "'";
     let result = await db.one(query);
     res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -92,7 +104,92 @@ app.post('/loginf', async function (req, res) {
   }
 });
 
-//////////////////////////////////////////////---***Register Handling Function***---/////////////////////////////////////////////
+//////////////////////////////////////////////---***Register+Verification Email Handling Function***---/////////////////////////////////////////////
+
+app.get('/resendVerfication', function (req, res) {
+  res.sendFile(process.cwd() + '/email_verfication.html');
+  console.log("Redirected to login page");
+})
+
+app.post('/resendVerfication', async function (req, res) {
+  try {
+    const email = req.body.email;
+    var query = "SELECT * FROM users WHERE email='" + email + "'";
+    let result = await db.oneOrNone(query);
+    if (!result) {
+      throw new Error("User does not exists");
+    }
+
+
+    const hash = generateVerificationHash(email, MY_SECRET, 30);
+    var transporter = await nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'cell4salecontact@gmail.com',
+        pass: 'Aa123456!'
+      }
+    });
+
+    const url = `${API_URL}register/confirmation/?email=${email}&verificationHash=${hash}`;
+    var mailOptions = {
+      from: 'testForBraude@gmail.com',
+      to: email,
+      subject: 'Activate your account.',
+    
+      html: prepareMail(url)
+    };
+
+    let mailRes = await transporter.sendMail(mailOptions);
+    res.writeHead(201);
+    res.end();
+  } catch (err) {
+    // console.log(err);
+    // res.writeHead(500, { 'Content-Type': 'application/json' });
+    // res.end(JSON.stringify(err));
+    res.status(500).send(err.message);
+  }
+});
+
+app.get('/register/confirmation/', async function (req, res) {
+  // assuming the hash extracted from the verification url is stored in the verificationHash variable
+  const emailToVerify = req.query.email;
+  const hash = req.query.verificationHash;
+  const isEmailVerified = verifyHash(hash, emailToVerify, MY_SECRET);
+
+  if (!isEmailVerified) {
+    throw new Error('Not Found');
+  }
+
+  var query = "UPDATE users SET confirmed=$1 WHERE email=$2";
+  await db.none(query, [true, emailToVerify]);
+
+  try {
+
+    var transporter = await nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'cell4salecontact@gmail.com',
+        pass: 'Aa123456!'
+      }
+    });
+
+    var mailOptions = {
+      from: 'testForBraude@gmail.com',
+      to: emailToVerify,
+      subject: 'Congratulations!',
+      html: prepareCongratsMail()
+    };
+
+    let mailRes = await transporter.sendMail(mailOptions);
+    res.redirect('/login');
+
+  } catch (err) {
+    console.log(err);
+    res.writeHead(500, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(err));
+  }
+});
+
 app.get('/register', function (req, res) {
   res.sendFile(path.join(__dirname + '/register.html'));
   console.log("Requested register via get");
@@ -105,18 +202,20 @@ app.post('/register', async function (req, res) {
     familyname: req.body.familyname.toLowerCase(),
     email: req.body.email.toLowerCase(),
     password: encryptPassword(req.body.password),
-
+    confirmed: false
   }
 
   try {
     var query = "SELECT * FROM users WHERE email='" + obj.email + "'";
     let results = await db.any(query);
-    if (results.length > 0 ) {
+    if (results.length > 0) {
       throw new Error("User already exits");
     }
-    await db.none('INSERT INTO users(${this:name}) VALUES(${this:csv})',obj)
+    await db.none('INSERT INTO users(${this:name}) VALUES(${this:csv})', obj)
     //new user add successfuly
     console.log("new user added successfuly");
+    const hash = generateVerificationHash(obj.email, MY_SECRET, 30);
+
     var transporter = await nodemailer.createTransport({
       service: 'gmail',
       auth: {
@@ -125,11 +224,14 @@ app.post('/register', async function (req, res) {
       }
     });
 
+
+
+    const url = `${API_URL}register/confirmation/?email=${obj.email}&verificationHash=${hash}`;
     var mailOptions = {
       from: 'testForBraude@gmail.com',
       to: obj.email,
       subject: 'Welcome to Cell4Sale!',
-      text: 'Congratulations you are a new member in our site !'
+      html: prepareMail(url)
     };
 
     let mailRes = await transporter.sendMail(mailOptions);
@@ -146,6 +248,7 @@ app.get('/index', function (req, res) {
   res.sendFile(path.join(__dirname + '/index.html'));
   console.log("Requested main view via get");
 });
+
 
 
 
@@ -171,17 +274,11 @@ app.post('/forget-password', function (req, res) {
         }
       });
 
-      //////////////////////////////////////////////////////////////////////////////////////////////////////
-      const { generateVerificationHash } = require('dbless-email-verification');
-      const hash = generateVerificationHash(userName, 'NSLU', 60);
-      // add the email and generated hash to the verification link
-      /////////////////////////////////////////////////////////////////////////////////////////////////////
 
       var mailOptions = {
         from: 'testForBraude@gmail.com',
         to: userName,
         subject: 'Cell4Sale Password verification',
-        text: hash ////////////////////////////////////////maybe
       };
 
       transporter.sendMail(mailOptions, function (error, info) {
@@ -242,7 +339,361 @@ function decryptPassword(ciphertext) {
 
 
 // app.listen(port);
-// console.log('Server started! At http://localhost:' + port );  
 var server = app.listen(port, function () {
   console.log('Server is running on port ' + port + '..');
 });
+
+
+
+
+
+
+
+
+//////////////////////////////////////////////---***Forgeet-Password Handling Function***---/////////////////////////////////////////////
+
+
+function prepareMail(url){
+  return `<head>
+  <title></title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <style type="text/css">
+      @media screen {
+          @font-face {
+              font-family: 'Lato';
+              font-style: normal;
+              font-weight: 400;
+              src: local('Lato Regular'), local('Lato-Regular'), url(https://fonts.gstatic.com/s/lato/v11/qIIYRU-oROkIk8vfvxw6QvesZW2xOQ-xsNqO47m55DA.woff) format('woff');
+          }
+
+          @font-face {
+              font-family: 'Lato';
+              font-style: normal;
+              font-weight: 700;
+              src: local('Lato Bold'), local('Lato-Bold'), url(https://fonts.gstatic.com/s/lato/v11/qdgUG4U09HnJwhYI-uK18wLUuEpTyoUstqEm5AMlJo4.woff) format('woff');
+          }
+
+          @font-face {
+              font-family: 'Lato';
+              font-style: italic;
+              font-weight: 400;
+              src: local('Lato Italic'), local('Lato-Italic'), url(https://fonts.gstatic.com/s/lato/v11/RYyZNoeFgb0l7W3Vu1aSWOvvDin1pK8aKteLpeZ5c0A.woff) format('woff');
+          }
+
+          @font-face {
+              font-family: 'Lato';
+              font-style: italic;
+              font-weight: 700;
+              src: local('Lato Bold Italic'), local('Lato-BoldItalic'), url(https://fonts.gstatic.com/s/lato/v11/HkF_qI1x_noxlxhrhMQYELO3LdcAZYWl9Si6vvxL-qU.woff) format('woff');
+          }
+      }
+
+      /* CLIENT-SPECIFIC STYLES */
+      body,
+      table,
+      td,
+      a {
+          -webkit-text-size-adjust: 100%;
+          -ms-text-size-adjust: 100%;
+      }
+
+      table,
+      td {
+          mso-table-lspace: 0pt;
+          mso-table-rspace: 0pt;
+      }
+
+      img {
+          -ms-interpolation-mode: bicubic;
+      }
+
+      /* RESET STYLES */
+      img {
+          border: 0;
+          height: auto;
+          line-height: 100%;
+          outline: none;
+          text-decoration: none;
+      }
+
+      table {
+          border-collapse: collapse !important;
+      }
+
+      body {
+          height: 100% !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          width: 100% !important;
+      }
+
+      /* iOS BLUE LINKS */
+      a[x-apple-data-detectors] {
+          color: inherit !important;
+          text-decoration: none !important;
+          font-size: inherit !important;
+          font-family: inherit !important;
+          font-weight: inherit !important;
+          line-height: inherit !important;
+      }
+
+      /* MOBILE STYLES */
+      @media screen and (max-width:600px) {
+          h1 {
+              font-size: 32px !important;
+              line-height: 32px !important;
+          }
+      }
+
+      /* ANDROID CENTER FIX */
+      div[style*="margin: 16px 0;"] {
+          margin: 0 !important;
+      }
+  </style>
+</head>
+
+<body style="background-color: #f4f4f4; margin: 0 !important; padding: 0 !important;">
+  <!-- HIDDEN PREHEADER TEXT -->
+  <div style="display: none; font-size: 1px; color: #fefefe; line-height: 1px; font-family: 'Lato', Helvetica, Arial, sans-serif; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;"> We're thrilled to have you here! Get ready to dive into your new account. </div>
+  <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <!-- LOGO -->
+      <tr>
+          <td bgcolor="#3f3d56" align="center">
+              <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+                  <tr>
+                      <td align="center" valign="top" style="padding: 40px 10px 40px 10px;"> </td>
+                  </tr>
+              </table>
+          </td>
+      </tr>
+      <tr>
+          <td bgcolor="#3f3d56" align="center" style="padding: 0px 10px 0px 10px;">
+              <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+                  <tr>
+                      <td bgcolor="#ffffff" align="center" valign="top" style="padding: 40px 20px 20px 20px; border-radius: 4px 4px 0px 0px; color: #111111; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 48px; font-weight: 400; letter-spacing: 4px; line-height: 48px;">
+                     <img src="https://i.ibb.co/0qTd1BG/logo.png" width="250px" style="display: block; border: 0px;" />     <h1 style="font-size: 48px; font-weight: 400; margin: 2;">Welcome!</h1> 
+                      </td>
+                  </tr>
+              </table>
+          </td>
+      </tr>
+      <tr>
+          <td bgcolor="#f4f4f4" align="center" style="padding: 0px 10px 0px 10px;">
+              <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+                  <tr>
+                      <td bgcolor="#ffffff" align="left" style="padding: 20px 30px 40px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
+                          <p style="margin: 0;">We're excited to have you get started. First, you need to confirm your account. Just press the button below.</p>
+                      </td>
+                  </tr>
+                  <tr>
+                      <td bgcolor="#ffffff" align="left">
+                          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                              <tr>
+                                  <td bgcolor="#ffffff" align="center" style="padding: 20px 30px 60px 30px;">
+                                      <table border="0" cellspacing="0" cellpadding="0">
+                                          <tr>
+                                              <td align="center" style="border-radius: 3px;" bgcolor="#3f3d56"><a href="${url}" target="_blank" style="font-size: 20px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; padding: 15px 25px; border-radius: 2px; border: 1px solid #3f3d56; display: inline-block;">Confirm Account</a></td>
+                                          </tr>
+                                      </table>
+                                  </td>
+                              </tr>
+                          </table>
+                      </td>
+                  </tr> <!-- COPY -->
+                  <tr>
+                      <td bgcolor="#ffffff" align="left" style="padding: 0px 30px 0px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
+                          <p style="margin: 0;">If that doesn't work, copy and paste the following link in your browser:</p>
+                      </td>
+                  </tr> <!-- COPY -->
+                  <tr>
+                      <td bgcolor="#ffffff" align="left" style="padding: 20px 30px 20px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
+                          <p style="margin: 0;"><a href="#" target="_blank" style="color: #3f3d56;" id="encrypted_link">${url}</a></p>
+                      </td>
+                  </tr>
+                  <tr>
+                      <td bgcolor="#ffffff" align="left" style="padding: 0px 30px 20px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
+                          <p style="margin: 0;">If you have any questions, just reply to this email—we're always happy to help out.</p>
+                      </td>
+                  </tr>
+                  <tr>
+                      <td bgcolor="#ffffff" align="left" style="padding: 0px 30px 40px 30px; border-radius: 0px 0px 4px 4px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
+                          <p style="margin: 0;">Thank You,<br>Cell4Sale Team</p>
+                      </td>
+                  </tr>
+              </table>
+          </td>
+      </tr> 
+  </table>
+</body>`
+}
+
+
+function prepareCongratsMail(){
+
+  return `<!DOCTYPE html>
+  <html>
+  
+  <head>
+      <title></title>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <style type="text/css">
+          @media screen {
+              @font-face {
+                  font-family: 'Lato';
+                  font-style: normal;
+                  font-weight: 400;
+                  src: local('Lato Regular'), local('Lato-Regular'), url(https://fonts.gstatic.com/s/lato/v11/qIIYRU-oROkIk8vfvxw6QvesZW2xOQ-xsNqO47m55DA.woff) format('woff');
+              }
+  
+              @font-face {
+                  font-family: 'Lato';
+                  font-style: normal;
+                  font-weight: 700;
+                  src: local('Lato Bold'), local('Lato-Bold'), url(https://fonts.gstatic.com/s/lato/v11/qdgUG4U09HnJwhYI-uK18wLUuEpTyoUstqEm5AMlJo4.woff) format('woff');
+              }
+  
+              @font-face {
+                  font-family: 'Lato';
+                  font-style: italic;
+                  font-weight: 400;
+                  src: local('Lato Italic'), local('Lato-Italic'), url(https://fonts.gstatic.com/s/lato/v11/RYyZNoeFgb0l7W3Vu1aSWOvvDin1pK8aKteLpeZ5c0A.woff) format('woff');
+              }
+  
+              @font-face {
+                  font-family: 'Lato';
+                  font-style: italic;
+                  font-weight: 700;
+                  src: local('Lato Bold Italic'), local('Lato-BoldItalic'), url(https://fonts.gstatic.com/s/lato/v11/HkF_qI1x_noxlxhrhMQYELO3LdcAZYWl9Si6vvxL-qU.woff) format('woff');
+              }
+          }
+  
+          /* CLIENT-SPECIFIC STYLES */
+          body,
+          table,
+          td,
+          a {
+              -webkit-text-size-adjust: 100%;
+              -ms-text-size-adjust: 100%;
+          }
+  
+          table,
+          td {
+              mso-table-lspace: 0pt;
+              mso-table-rspace: 0pt;
+          }
+  
+          img {
+              -ms-interpolation-mode: bicubic;
+          }
+  
+          /* RESET STYLES */
+          img {
+              border: 0;
+              height: auto;
+              line-height: 100%;
+              outline: none;
+              text-decoration: none;
+          }
+  
+          table {
+              border-collapse: collapse !important;
+          }
+  
+          body {
+              height: 100% !important;
+              margin: 0 !important;
+              padding: 0 !important;
+              width: 100% !important;
+          }
+  
+          /* iOS BLUE LINKS */
+          a[x-apple-data-detectors] {
+              color: inherit !important;
+              text-decoration: none !important;
+              font-size: inherit !important;
+              font-family: inherit !important;
+              font-weight: inherit !important;
+              line-height: inherit !important;
+          }
+  
+          /* MOBILE STYLES */
+          @media screen and (max-width:600px) {
+              h1 {
+                  font-size: 32px !important;
+                  line-height: 32px !important;
+              }
+          }
+  
+          /* ANDROID CENTER FIX */
+          div[style*="margin: 16px 0;"] {
+              margin: 0 !important;
+          }
+      </style>
+  </head>
+  
+  <body style="background-color: #f4f4f4; margin: 0 !important; padding: 0 !important;">
+      <!-- HIDDEN PREHEADER TEXT -->
+      <div style="display: none; font-size: 1px; color: #fefefe; line-height: 1px; font-family: 'Lato', Helvetica, Arial, sans-serif; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;"> We're thrilled to have you here! Get ready to dive into your new account. </div>
+      <table border="0" cellpadding="0" cellspacing="0" width="100%">
+          <!-- LOGO -->
+          <tr>
+              <td bgcolor="#3f3d56" align="center">
+                  <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+                      <tr>
+                          <td align="center" valign="top" style="padding: 40px 10px 40px 10px;"> </td>
+                      </tr>
+                  </table>
+              </td>
+          </tr>
+          <tr>
+              <td bgcolor="#3f3d56" align="center" style="padding: 0px 10px 0px 10px;">
+                  <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+                      <tr>
+                          <td bgcolor="#ffffff" align="center" valign="top" style="padding: 40px 20px 20px 20px; border-radius: 4px 4px 0px 0px; color: #111111; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 48px; font-weight: 400; letter-spacing: 4px; line-height: 48px;">
+                         <img src="https://i.ibb.co/0qTd1BG/logo.png" width="250px" style="display: block; border: 0px;" />     <h1 style="font-size: 48px; font-weight: 400; margin: 2;">Congarulations!</h1> 
+                          </td>
+                      </tr>
+                  </table>
+              </td>
+          </tr>
+          <tr>
+              <td bgcolor="#f4f4f4" align="center" style="padding: 0px 10px 0px 10px;">
+                  <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+                      <tr>
+                          <td bgcolor="#ffffff" align="left" style="padding: 20px 30px 40px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
+                              <p style="margin: 0;">We're excited to have you in our team!</p>
+                          </td>
+                      </tr>
+                  
+                      <tr>
+                          <td bgcolor="#ffffff" align="left" style="padding: 0px 30px 20px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
+                              <p style="margin: 0;">If you have any questions, just reply to this email—we're always happy to help out.</p>
+                          </td>
+                      </tr>
+                      <tr>
+                          <td bgcolor="#ffffff" align="center" valign="top" style="padding: 40px 20px 20px 20px; border-radius: 4px 4px 0px 0px; color: #111111; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 48px; font-weight: 400; letter-spacing: 4px; line-height: 48px;">
+                         <img src="https://i.ibb.co/xDb1XNT/undraw-celebration-0jvk.png" width="550px" style="display: block; border: 0px;" />  
+                          </td>
+                      </tr>
+                      <tr>
+                          <td bgcolor="#ffffff" align="left" style="padding: 0px 30px 40px 30px; border-radius: 0px 0px 4px 4px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
+                              <p style="margin: 0;">Thank You,<br>Cell4Sale Team</p>
+                          </td>
+                      </tr>
+                  </table>
+              </td>
+          </tr> 
+      </table>
+  </body>
+  
+  </html>`
+
+
+
+
+
+}

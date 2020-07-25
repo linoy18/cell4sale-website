@@ -1,6 +1,6 @@
 .bg-gradient-primary {
     
-     background-image:  linear-gradient(rgb(226 233 234) 40%, rgb(113 174 189) 10%) ;
+     background-image:  linear-gradient(rgb(226 233 234) 40%, rgb(112 109 146) 10%) ;
 }
 
 .bg-login-image{
@@ -27,3 +27,21 @@ a {
      background-color: #4285F4;
      border-color: #fff;
  }
+
+ .bg-emailverification-image{
+     background: url(https://svgshare.com/i/NDE.svg);
+     background-position: center;
+     background-size: 90%;
+     background-repeat: no-repeat;
+}
+
+.bg-emailverifi2-image{
+     background: url(https://svgshare.com/i/ND7.svg);
+     background-position: center;
+     background-size: 55%;
+     background-repeat: no-repeat;
+}
+
+
+
+
