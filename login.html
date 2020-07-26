@@ -13,17 +13,19 @@
 
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    rel="stylesheet">
 
   <!-- Custom styles for this template-->
   <link href="/css/sb-admin-2.min.css" rel="stylesheet">
   <link href="/css/login1.css" rel="stylesheet">
-  
+
 
 </head>
 
 <body class="bg-gradient-primary">
-  
+
 
   <div class="container">
 
@@ -43,38 +45,44 @@
                     <h1 class="h4 text-gray-900 mb-4">Welcome to Cell4Sale!</h1>
                   </div>
                   <center>
-                  <form class="user">
-                    <div class="form-group">
-                      <input type="email" class="form-control form-control-user" id="emailLogin" aria-describedby="emailHelp" placeholder="Enter Email Address...">
-                    </div>
-                    <div class="form-group">
-                      <input type="password" class="form-control form-control-user" id="passwordLogin" placeholder="Password">
-                    </div>
-                    <div class="text-center">
-                      <p class="small" style="color:#a90e0e;" id="errorMessage">  </p>
-                    </div>
-                    <div class="form-group">
-                      <div class="custom-control custom-checkbox small">
-                        <input type="checkbox" class="custom-control-input" id="customCheck">
-                        <label class="custom-control-label" for="customCheck">Remember Me</label>
+                    <form class="user">
+                      <div class="form-group">
+                        <input type="email" class="form-control form-control-user" id="emailLogin"
+                          aria-describedby="emailHelp" placeholder="Enter Email Address...">
                       </div>
-                    </div>
-                    <div class="col g-recaptcha"  style="margin-left: 1.9%; margin-bottom: 3%;" data-sitekey="6LdYkbUZAAAAAOMot2c1wF6OExBEAJr91zRhEfYR" data-callback='onSubmit'  data-action='submit'>Submit</div>
- 
-                    <button class="btn btn-primary btn-user btn-block" type="button" onclick="Login()">
-                      Login
-                    </button> 
+                      <div class="form-group">
+                        <input type="password" class="form-control form-control-user" id="passwordLogin"
+                          placeholder="Password">
+                      </div>
+                      <div class="text-center">
+                        <p class="small" style="color:#a90e0e;" id="errorMessage"> </p>
+                      </div>
+                      <div class="form-group">
+                        <div class="custom-control custom-checkbox small">
+                          <input type="checkbox" class="custom-control-input" id="customCheck">
+                          <label class="custom-control-label" for="customCheck">Remember Me</label>
+                        </div>
+                      </div>
+                      <div class="col g-recaptcha" style="margin-left: 1.9%; margin-bottom: 3%;"
+                        data-sitekey="6LdYkbUZAAAAAOMot2c1wF6OExBEAJr91zRhEfYR" data-callback='onSubmit'
+                        data-action='submit'>Submit</div>
 
-                    <hr>
+                      <button class="btn btn-primary btn-user btn-block" type="button" onclick="Login()">
+                        Login
+                      </button>
 
-                    <fb:login-button class="fb-login-button " data-layout="rounded" data-auto-logout-link="false" data-use-continue-as="true" data-width="345px" data-size="large" data-button-type="login_with" scope="public_profile,email" onlogin="checkLoginState();">
-<Label>Login With Facebook</Label></fb:login-button>
+                      <hr>
 
-                    <!-- <a href="/index.html" class="btn btn-facebook btn-user btn-block">
+                      <fb:login-button class="fb-login-button " data-layout="rounded" data-auto-logout-link="false"
+                        data-use-continue-as="true" data-width="345px" data-size="large" data-button-type="login_with"
+                        scope="public_profile,email" onlogin="checkLoginState();">
+                        <Label>Login With Facebook</Label></fb:login-button>
+
+                      <!-- <a href="/index.html" class="btn btn-facebook btn-user btn-block">
                       <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
                     </a> -->
-                  </form> 
-                </center>
+                    </form>
+                  </center>
                   <hr>
                   <div class="text-center">
                     <a class="small" href="/login/">Forgot Password?</a>
@@ -110,38 +118,38 @@
       document.getElementById("demo-form").submit();
     }
 
-////////////////////////////////////////Facebook functions///////////////////////////////////////////////////
+    ////////////////////////////////////////Facebook functions///////////////////////////////////////////////////
     function statusChangeCallback(response) {  // Called with the results from FB.getLoginStatus().
-    console.log('statusChangeCallback');
-    console.log(response);                   // The current login status of the person.
-    if (response.status === 'connected') {   // Logged into your webpage and Facebook.
-      loginWithFacebook();  
-    } else {                                 // Not logged into your webpage or we are unable to tell.
-      document.getElementById('errorMessage').innerHTML = "Can't login with Facebook"
+      console.log('statusChangeCallback');
+      console.log(response);                   // The current login status of the person.
+      if (response.status === 'connected') {   // Logged into your webpage and Facebook.
+        loginWithFacebook();
+      } else {                                 // Not logged into your webpage or we are unable to tell.
+        document.getElementById('errorMessage').innerHTML = "Can't login with Facebook"
+      }
     }
-  }
-  function checkLoginState() {               // Called when a person is finished with the Login Button.
-    FB.getLoginStatus(function(response) {   // See the onlogin handler
-      statusChangeCallback(response);
-    });
-  }
+    function checkLoginState() {               // Called when a person is finished with the Login Button.
+      FB.getLoginStatus(function (response) {   // See the onlogin handler
+        statusChangeCallback(response);
+      });
+    }
 
-  window.fbAsyncInit = function() {
-    FB.init({
-      appId      : '1009707419459074',
-      cookie     : true,
-      xfbml      : true,
-      version    : 'v7.0'
-    });
-      
-    FB.AppEvents.logPageView();   
-    FB.getLoginStatus(function(response) {   // Called after the JS SDK has been initialized.
-	if (response.status === 'connected') {
-    var accessToken = response.authResponse.accessToken;
-  }
-      statusChangeCallback(response);        // Returns the login status.
-    });  
-  };
+    window.fbAsyncInit = function () {
+      FB.init({
+        appId: '1009707419459074',
+        cookie: true,
+        xfbml: true,
+        version: 'v7.0'
+      });
+
+      FB.AppEvents.logPageView();
+      FB.getLoginStatus(function (response) {   // Called after the JS SDK has been initialized.
+        if (response.status === 'connected') {
+          var accessToken = response.authResponse.accessToken;
+        }
+        statusChangeCallback(response);        // Returns the login status.
+      });
+    };
 
   // (function(d, s, id){
   //    var js, fjs = d.getElementsByTagName(s)[0];

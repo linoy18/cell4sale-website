@@ -21,3 +21,12 @@ a {
     text-decoration: none;
     background-color: transparent;
 }
+
+.bg-password-update-image{
+
+    background: url(https://svgshare.com/i/NCq.svg);
+    background-position: center;
+    background-size: 80%;
+    background-repeat: no-repeat;
+
+}

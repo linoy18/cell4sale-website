@@ -135,7 +135,7 @@ app.post('/resendVerfication', async function (req, res) {
     var mailOptions = {
       from: 'testForBraude@gmail.com',
       to: email,
-      subject: 'Activate your account.',
+      subject: 'Welcome! Please activate your account',
     
       html: prepareMail(url)
     };
@@ -253,57 +253,33 @@ app.get('/index', function (req, res) {
 
 
 
-//////////////////////////////////////////////---***Forgeet-Password Handling Function***---/////////////////////////////////////////////
-
-app.post('/forget-password', function (req, res) {
-  var userName = req.body.email
-  userName = userName.toLowerCase();
-  console.log(userName);
-  var query = "SELECT * FROM users WHERE email='" + userName + "'";
-  db.query(query).then(results => {
-    var resultsFound = results.rowCount;
-    if (resultsFound == 1) {
-      var data = results.rows[0];
-      psw = data.password;
-      var password_dec = decryptPassword(psw);
-
-      var transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-          user: 'testForBraude@gmail.com',
-          pass: 'Aa123456!'
-        }
-      });
-
-
-      var mailOptions = {
-        from: 'testForBraude@gmail.com',
-        to: userName,
-        subject: 'Cell4Sale Password verification',
-      };
-
-      transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-          res.writeHead(404);
-          res.end();
-          console.log(error);
-        } else {
-          res.writeHead(200);
-          res.end();
-          console.log('Email sent: ' + info.response);
-        }
-      });
-    }
-    else {
-      console.log("user not exists")
-      res.writeHead(404);
-      res.end();
-    }
-  }).catch(() => {
-    console.error("DB failed in Login attempt");
-  });
-
+//////////////////////////////////////////////---***Forget-Password Handling Function***---/////////////////////////////////////////////
+app.get('/forget-password', function (req, res) {
+  res.sendFile(process.cwd() + '/forget-password.html');
+  console.log("Redirected to forget password page");
 });
+
+
+app.post('/forgetpassword', async function (req, res) {
+  var obj = {
+    email: req.body.email.toLowerCase(),
+  }
+
+  try {
+    var query = "SELECT * FROM users WHERE email='" + obj.email + "'";
+    let result = await db.oneOrNone(query);
+    if (!result) {
+      throw new Error("User does not exists");
+    }
+    else{
+////////////////////////////////////////send link to the mail to insert new password
+    }
+
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+});
+
 
 //Gקא the cell-phones data from json file
 app.get('/get-phones', async function (req, res) {

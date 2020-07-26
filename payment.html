@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+
+    <title>Cell4Sale - Payment</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="/css/all.min.css" rel="stylesheet">
+    <link href="/css/payment.css" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+                <div class="sidebar-brand-icon">
+                    <img src="https://i.ibb.co/gTnvrC6/Logopurpel2.png" style="width: 2.3rem; margin: 30%;"
+                        alt="Responsive image">
+                </div>
+                <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="margin-top: 15% !important;"
+                    src="https://i.ibb.co/5Y6pqF0/Logopurpel1.png" alt="">
+            </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item active">
+                <a class="nav-link" href="index.html">
+                    <i class="fa fa-home" aria-hidden="true"></i>
+                    <span>Homepage</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Things To Buy
+            </div>
+
+            <!-- Nav Item - Mobile Phones Menu -->
+            <li class="nav-item">
+                <a class="nav-link" href="phones.html">
+                    <i class="fa fa-mobile" aria-hidden="true"></i>
+                    <span>Mobile Phones</span></a>
+
+            </li>
+
+            <!-- Nav Item - Computers Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link" href="404.html">
+                    <i class="fa fa-laptop" aria-hidden="true"></i>
+                    <span> Computers</span>
+                </a>
+
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                About Us
+            </div>
+
+
+            <!-- Nav Item - Contact -->
+            <li class="nav-item">
+                <a class="nav-link" href="contactus.html">
+                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                    <span>Contact Us</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+
+        </ul>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+
+
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+
+                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+                        <li class="nav-item dropdown no-arrow d-sm-none">
+
+                            <!-- Dropdown - Messages -->
+                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+                                aria-labelledby="searchDropdown">
+                                <form class="form-inline mr-auto w-100 navbar-search">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control bg-light border-0 small"
+                                            placeholder="Search for..." aria-label="Search"
+                                            aria-describedby="basic-addon2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="button">
+                                                <i class="fas fa-search fa-sm"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+
+                        <!-- Nav Item - Alerts -->
+                        <li class="nav-item dropdown no-arrow mx-1">
+                            <a class="nav-link dropdown-toggle" href="cart.html" id="alertsDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                                <!-- Counter - Alerts -->
+                                <span class="badge badge-info badge-counter">+1</span>
+                            </a>
+                        </li>
+
+                        <div class="topbar-divider d-none d-sm-block"></div>
+
+                        <!-- Nav Item - User Information -->
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">User Name</span>
+                                <i class="fa fa-user-circle" aria-hidden="true"></i>
+
+
+                            </a>
+                            <!-- Dropdown - User Information -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="profile.html">
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Profile
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </li>
+
+                    </ul>
+
+                </nav>
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="content">
+                    <!--content inner-->
+                    <div class="content__inner">
+        
+                      <div class="container overflow-hidden">
+                        <!--multisteps-form-->
+                        <div class="multisteps-form">
+                          <!--progress bar-->
+                          <div class="row" style="margin-top:2%">
+                            <div class="col-12 col-lg-8 ml-auto mr-auto mb-4">
+                              <div class="multisteps-form__progress">
+                                <button class="multisteps-form__progress-btn js-active" type="button" title="User Info">Address</button>
+                                <button class="multisteps-form__progress-btn" type="button" title="Order Info">Payment</button>
+                                <button class="multisteps-form__progress-btn" type="button" title="Payment">Thank you!</button>
+                              </div>
+                            </div>
+                          </div>
+                          <!--form panels-->
+                          <div class="row">
+                            <div class="col-12 col-lg-8">
+                              <form class="multisteps-form__form">
+                                <!--single form panel-->
+                                <div class="multisteps-form__panel shadow p-4 rounded bg-white" data-animation="scaleIn">
+                                    <h6 class="multisteps-form__title">Please approve your billing address before purchase</h6>
+                                    <div class="multisteps-form__content">
+                                      <div class="form-row mt-4">
+                                      <div class="col-12 col-sm-6">
+                                          <input class="multisteps-form__input form-control" type="text" placeholder="First Name"/>
+                                        </div>
+                                        <div class="col-12 col-sm-6 mt-4 mt-sm-0">
+                                          <input class="multisteps-form__input form-control" type="text" placeholder="Last Name"/>
+                                        </div>
+                                      </div>
+                                      
+                                      <div class="form-row mt-4">
+                                          <div class="col-12 col-sm-6">
+                                            <input class="multisteps-form__input form-control" type="tel" placeholder="Phone Number"/>
+                                          </div>
+                                          <div class="col-12 col-sm-6 mt-4 mt-sm-0">
+                                            <input class="multisteps-form__input form-control" type="text" placeholder="Country"/>
+                                          </div>
+                                        </div>
+                                      <div class="form-row mt-4">
+                                        <div class="col-12 col-sm-4">
+                                          <input class="multisteps-form__input form-control" type="text" placeholder="City"/>
+                                        </div>
+                                        <div class="col-6 col-sm-5 mt-4 mt-sm-0">
+                                          <input class="multisteps-form__input form-control" type="text" placeholder="Street"/>
+                                        </div>
+                                        <div class="col-6 col-sm-3 mt-4 mt-sm-0">
+                                          <input class="multisteps-form__input form-control" type="text" placeholder="Zip"/>
+                                        </div>
+                                      </div>
+                                      <div class="button-row d-flex mt-4">
+                                        <button class="btn btn-primary ml-auto js-btn-next" type="button" title="Next">Next</button>
+                                      </div>
+                                    
+                                    
+                                      <img class="Responsive"style="width:30%; height:30%; margin-left: 28%;" src="https://svgshare.com/i/NED.svg"/>
+
+                                    </div>
+                                  </div>
+                                
+                                <!--single form panel-->
+                                
+                                <div class="multisteps-form__panel shadow p-4 rounded bg-white js-active" data-animation="scaleIn">
+                                    <h6 class="modal-title">Please insert purchase details:</h6>
+                                    <div class="multisteps-form__content">
+
+                                        <div class="form-row mt-4">
+
+
+                                        </div>
+                                        <hr>
+           
+                                        <div class="form-row d- mt-4">
+                                            <div class="col-12 col-sm-6 mt-4 mt-sm-0">
+                                                <div class="icon-container" style="display: inline-flex;">
+                                                    <i class="fab fa-cc-visa fa-3x" style="color:rgb(20, 20, 90);margin-right:2%;"></i>
+                                                  <i class="fab fa-cc-mastercard fa-3x" style="color:rgb(146, 20, 20);margin-right:2%;"></i>
+                                                </div>
+                                              </div>
+                                            </div>
+                                      <div class="form-row mt-4">
+                                        <div class="col-12 col-sm-6">
+                                            <lable>Credit card number</lable>
+                                          <input class="multisteps-form__input form-control" type="text" placeholder="1111-2222-3333-4444"/>
+                                        </div>
+                                        <div class="col-12 col-sm-6 mt-4 mt-sm-0">
+                                            <lable>Name on Card</lable>
+                                          <input class="multisteps-form__input form-control" type="text" placeholder="John Doe"/>
+                                        </div>
+                                      </div>
+                                      <div class="form-row mt-4">
+                                        <div class="col-12 col-sm-6">
+                                            <lable>Exp. date</lable>
+                                          <input class="multisteps-form__input form-control" type="text" placeholder="10/2022"/>
+                                        </div>
+                                        <div class="col-12 col-sm-6 mt-4 mt-sm-0">
+                                            <lable>CVV</lable>
+                                          <input class="multisteps-form__input form-control" type="text" placeholder="352"/>
+                                        </div>
+                                      </div>
+                                  
+                                      <div class="button-row d-flex mt-4">
+                                        <button class="btn btn-primary js-btn-prev" type="button" title="Prev" >Prev</button>
+                                        <button class="btn btn-primary ml-auto js-btn-next" type="button" title="Next">Next</button>
+
+                                      </div>
+                           
+                                      <img class="Responsive"style="width:30%; height:30%; margin-left: 28%;" src="https://svgshare.com/i/NBt.svg"/>
+
+                                    </div>
+                                  </div>
+
+
+                                <!--single form panel-->
+
+
+                                <div class="multisteps-form__panel shadow p-4 rounded bg-white js-active" data-animation="scaleIn">
+                                    <h6 class="modal-title">Thank you for the purchase!</h6>
+                                    <h6 class="modal-title">We have sent an email with the order details to your email address.</h6>
+                                    <div class="multisteps-form__content">
+                                    </br>
+                                      <img class="Responsive"style="width:30%; height:30%; margin-left: 28%;" src="https://svgshare.com/i/NDv.svg"/>
+                                      <div class="button-row d-flex mt-5">
+                                       <a href="index.html">&larr; Click to finish and return to Homepage</a>
+
+                                        <!-- <button class="btn btn-primary ml-auto js-btn-next" type="button" title="Next">Finish</button> -->
+                                      </div>
+
+                                    </div>
+
+                    
+                                  </div>
+
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                <!-- End of Main Content -->
+            </div>
+            <!-- End of Content Wrapper -->
+
+        </div>
+        <!-- End of Page Wrapper -->
+
+        <!-- Scroll to Top Button-->
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>
+
+        <!-- Logout Modal-->
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                    <div class="modal-footer-product">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <a class="btn btn-primary" href="login.html">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- Bootstrap core JavaScript-->
+        <script src="vendor/jquery/jquery.min.js"></script>
+        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+        <!-- Core plugin JavaScript-->
+        <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+        <!-- Custom scripts for all pages-->
+        <script src="js/sb-admin-2.min.js"></script>
+        <script src="client.js"></script>
+
+<script>
+const DOMstrings = {
+  stepsBtnClass: 'multisteps-form__progress-btn',
+  stepsBtns: document.querySelectorAll(`.multisteps-form__progress-btn`),
+  stepsBar: document.querySelector('.multisteps-form__progress'),
+  stepsForm: document.querySelector('.multisteps-form__form'),
+  stepsFormTextareas: document.querySelectorAll('.multisteps-form__textarea'),
+  stepFormPanelClass: 'multisteps-form__panel',
+  stepFormPanels: document.querySelectorAll('.multisteps-form__panel'),
+  stepPrevBtnClass: 'js-btn-prev',
+  stepNextBtnClass: 'js-btn-next' };
+
+
+//remove class from a set of items
+const removeClasses = (elemSet, className) => {
+
+  elemSet.forEach(elem => {
+
+    elem.classList.remove(className);
+
+  });
+
+};
+
+//return exect parent node of the element
+const findParent = (elem, parentClass) => {
+
+  let currentNode = elem;
+
+  while (!currentNode.classList.contains(parentClass)) {if (window.CP.shouldStopExecution(0)) break;
+    currentNode = currentNode.parentNode;
+  }window.CP.exitedLoop(0);
+
+  return currentNode;
+
+};
+
+//get active button step number
+const getActiveStep = elem => {
+  return Array.from(DOMstrings.stepsBtns).indexOf(elem);
+};
+
+//set all steps before clicked (and clicked too) to active
+const setActiveStep = activeStepNum => {
+
+  //remove active state from all the state
+  removeClasses(DOMstrings.stepsBtns, 'js-active');
+
+  //set picked items to active
+  DOMstrings.stepsBtns.forEach((elem, index) => {
+
+    if (index <= activeStepNum) {
+      elem.classList.add('js-active');
+    }
+
+  });
+};
+
+//get active panel
+const getActivePanel = () => {
+
+  let activePanel;
+
+  DOMstrings.stepFormPanels.forEach(elem => {
+
+    if (elem.classList.contains('js-active')) {
+
+      activePanel = elem;
+
+    }
+
+  });
+
+  return activePanel;
+
+};
+
+//open active panel (and close unactive panels)
+const setActivePanel = activePanelNum => {
+
+  //remove active class from all the panels
+  removeClasses(DOMstrings.stepFormPanels, 'js-active');
+
+  //show active panel
+  DOMstrings.stepFormPanels.forEach((elem, index) => {
+    if (index === activePanelNum) {
+
+      elem.classList.add('js-active');
+
+      setFormHeight(elem);
+
+    }
+  });
+
+};
+
+//set form height equal to current panel height
+const formHeight = activePanel => {
+
+  const activePanelHeight = activePanel.offsetHeight;
+
+  DOMstrings.stepsForm.style.height = `${activePanelHeight}px`;
+
+};
+
+const setFormHeight = () => {
+  const activePanel = getActivePanel();
+
+  formHeight(activePanel);
+};
+
+//STEPS BAR CLICK FUNCTION
+DOMstrings.stepsBar.addEventListener('click', e => {
+
+  //check if click target is a step button
+  const eventTarget = e.target;
+
+  if (!eventTarget.classList.contains(`${DOMstrings.stepsBtnClass}`)) {
+    return;
+  }
+
+  //get active button step number
+  const activeStep = getActiveStep(eventTarget);
+
+  //set all steps before clicked (and clicked too) to active
+  setActiveStep(activeStep);
+
+  //open active panel
+  setActivePanel(activeStep);
+});
+
+//PREV/NEXT BTNS CLICK
+DOMstrings.stepsForm.addEventListener('click', e => {
+
+  const eventTarget = e.target;
+
+  //check if we clicked on `PREV` or NEXT` buttons
+  if (!(eventTarget.classList.contains(`${DOMstrings.stepPrevBtnClass}`) || eventTarget.classList.contains(`${DOMstrings.stepNextBtnClass}`)))
+  {
+    return;
+  }
+
+  //find active panel
+  const activePanel = findParent(eventTarget, `${DOMstrings.stepFormPanelClass}`);
+
+  let activePanelNum = Array.from(DOMstrings.stepFormPanels).indexOf(activePanel);
+
+  //set active step and active panel onclick
+  if (eventTarget.classList.contains(`${DOMstrings.stepPrevBtnClass}`)) {
+    activePanelNum--;
+
+  } else {
+
+    activePanelNum++;
+
+  }
+
+  setActiveStep(activePanelNum);
+  setActivePanel(activePanelNum);
+
+});
+
+//SETTING PROPER FORM HEIGHT ONLOAD
+window.addEventListener('load', setFormHeight, false);
+
+//SETTING PROPER FORM HEIGHT ONRESIZE
+window.addEventListener('resize', setFormHeight, false);
+
+//changing animation via animation select !!!YOU DON'T NEED THIS CODE (if you want to change animation type, just change form panels data-attr)
+
+const setAnimationType = newType => {
+  DOMstrings.stepFormPanels.forEach(elem => {
+    elem.dataset.animation = newType;
+  });
+};
+
+//selector onchange - changing animation
+const animationSelect = document.querySelector('.pick-animation__select');
+
+animationSelect.addEventListener('change', () => {
+  const newAnimationType = animationSelect.value;
+
+  setAnimationType(newAnimationType);
+});
+
+</script>
+
+</body>
+
+</html>
