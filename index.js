@@ -304,7 +304,7 @@ app.post('/forget-password', function (req, res) {
 
 });
 
-//Gקא the cell-phones data from json file
+//Get the cell-phones data from json file
 app.get('/get-phones', async function (req, res) {
   try{
     let jsonFile = fs.readFileSync('cell_phone_data.json');
@@ -315,6 +315,63 @@ app.get('/get-phones', async function (req, res) {
     console.log(err);
     res.writeHead(500, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify(err));
+}
+});
+
+app.post('/add-to-cart',async function (req, res) {
+  try{
+    var userName = req.body.email;
+    userName = userName.toLowerCase();
+    var productName = req.body.productId;
+    var productType = req.body.productType;
+    var userID;
+    console.log(userName,productName,productType);
+    //taking user ID by email from users table
+    var query = "SELECT * FROM users WHERE email='" + userName + "'";
+    let results = await db.any(query);
+    if(results.length==1)
+    {
+      var data = results.rows[0];
+      userID = data.id;
+      console.log(userID);
+    } else{
+      res.writeHead(200);
+      res.end();
+    }
+    
+    //query = "INSERT INTO userproducts(id, product_name, product_type) VALUES('"+userID+"','"+productName+"','"+productType+"')";
+    //await db.none(query);
+} catch (err) {
+}
+});
+
+
+
+
+
+//Get user's products in cart
+app.post('/get-cart',function (req, res) {
+  try{
+    var userName = req.body.email;
+    userName = userName.toLowerCase();
+    var userID;
+    console.log(userName);
+    //taking user ID by email from users table
+    var query = "SELECT * FROM users WHERE email='" + userName + "'";
+    db.query(query).then(results => {
+      var resultsFound = results.rowCount;
+      if (resultsFound == 1) {
+        var data = results.rows[0];
+        userID = data.id;
+      }else {
+        res.writeHead(200);
+        res.end();
+        console.log('user not found: ' + info.response);
+      }
+    });
+    //taking products in cart from userProducts table by user ID
+    query = "SELECT * FROM users WHERE email='" + userName + "'";//to be continue..
+} catch (err) {
 }
 });
 
