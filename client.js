@@ -166,7 +166,7 @@ function open_login() {
         type: 'GET',
         url: '/login',
         success: function () {
-           // sessionStorage.setItem('user', JSON.stringify())
+            // sessionStorage.setItem('user', JSON.stringify())
             location.replace('/login');
         },
         error: function (err) {
@@ -274,135 +274,177 @@ function logOut() {
     location.replace('/login');
 }
 
-function getProfileDetails(){
-   //Get request from server - get all profile details from DB
-   var userName = {
-    email: JSON.parse(sessionStorage.getItem('user')).email,
-}
-   $.ajax({
-    type: 'POST',
-    url: '/profile-details',
-    data: userName, 
-    success: function(profile_details){
-        console.log(profile_details);
-    //    data = JSON.parse(JSON.stringify(profile_details));
-    console.log(password);
-        $('#email_profile').val(profile_details.email);
-        $('#password_profile').val(profile_details.password);
-        $('#firstName_profile').val(profile_details.name);
-        $('#lastName_profile').val(profile_details.familyname);
-        $('#street_profile').val(profile_details.street);
-        $('#city_profile').val(profile_details.city);
-        $('#country_profile').val(profile_details.country);
-        $('#number_profile').val(profile_details.phonenumber);
-        $('#zipcode_profile').val(profile_details.zipcode);
-    },
-    error: function(err){  console.log(err); }
-});
+
+
+function getProfileDetails() {
+    //Get request from server - get all profile details from DB
+    var userName = {
+        email: JSON.parse(sessionStorage.getItem('user')).email,
+    }
+    $.ajax({
+        type: 'POST',
+        url: '/profiledetails',
+        data: userName,
+        success: function (profile_details) {
+            updateUserProfileFields(profile_details);
+        },
+        error: function (err) { console.log(err); }
+    });
 }
 
-function getPhones()
-{
+function updateDetails() {
+    //update profile fields after change
+    var userToUpdate = {
+        email: $('#email_profile').val(),
+        password: $('#password_profile').val(),
+        name: $('#firstName_profile').val(),
+        familyname: $('#lastName_profile').val(),
+        street: $('#street_profile').val(),
+        city: $('#city_profile').val(),
+        country: $('#country_profile').val(),
+        phonenumber: $('#number_profile').val(),
+        zipcode: $('#zipcode_profile').val()
+    }
+    $.ajax({
+        type: 'POST',
+        url: '/profileupdate',
+        data: userToUpdate,
+        success: function (user_updated) {
+            console.log(user_updated);
+            updateUserProfileFields(user_updated);
+        },
+        error: function (err) { console.log(err); }
+    });
+}
+function updateUserProfileFields(userDetails) {
+    $('#email_profile').val(userDetails.email);
+    $('#password_profile').val(userDetails.password);
+    $('#firstName_profile').val(userDetails.name);
+    $('#lastName_profile').val(userDetails.familyname);
+    $('#street_profile').val(userDetails.street);
+    $('#city_profile').val(userDetails.city);
+    $('#country_profile').val(userDetails.country);
+    $('#number_profile').val(userDetails.phonenumber);
+    $('#zipcode_profile').val(userDetails.zipcode);
+}
+
+function showPassConfirmation() {
+
+    $("#password2div").show();
+
+}
+
+
+function showPassword() {
+
+    $(".toggle-password").click(function () {
+
+        $(this).toggleClass("fa-eye fa-eye-slash");
+        var input = $($(this).attr("toggle"));
+        if (input.attr("type") == "password") {
+            input.attr("type", "text");
+        } else {
+            input.attr("type", "password");
+        }
+    });
+
+}
+
+
+
+function getPhones() {
     //Get request from server - get all phones data from json file
     $.ajax({
         type: 'GET',
         url: '/get-phones',
         dataType: 'json',
-        success: function(phonesData){
+        success: function (phonesData) {
             //Cell-phones images
             let phonesImg = [
-                {  name: "Samsung Galaxy S10", img: "https://i.ibb.co/nMQ5SN4/Samsung-Galaxy-S10.png" },
-                {  name: "Huawei P40",  img: "https://i.ibb.co/xsLQZfG/Huawei-P40.png"  },
-                {  name: "iPhone 11 Pro Max",   img: "https://i.ibb.co/4F1t4hK/iphone.png" },
-                {  name: "OnePlus 8",   img: "https://i.ibb.co/xCRzySM/One-Plus-8.png" },
-                {  name: "Xiaomi Redmi Note 8",  img: "https://pasteboard.co/JjAMW29.png"},
-                {  name: "Google pixel 4",  img: "https://i.ibb.co/8cMHvzB/Google-pixel-4.png"}
+                { name: "Samsung Galaxy S10", img: "https://i.ibb.co/nMQ5SN4/Samsung-Galaxy-S10.png" },
+                { name: "Huawei P40", img: "https://i.ibb.co/xsLQZfG/Huawei-P40.png" },
+                { name: "iPhone 11 Pro Max", img: "https://i.ibb.co/4F1t4hK/iphone.png" },
+                { name: "OnePlus 8", img: "https://i.ibb.co/xCRzySM/One-Plus-8.png" },
+                { name: "Xiaomi Redmi Note 8", img: "https://pasteboard.co/JjAMW29.png" },
+                { name: "Google pixel 4", img: "https://i.ibb.co/8cMHvzB/Google-pixel-4.png" }
             ];
-        
+
             data = JSON.parse(JSON.stringify(phonesData));
 
             for (var i = 0; i < data.length; i++) { //foreach cell-phone type
-                var obj = data[i]; 
-                var innerTypes =``;
+                var obj = data[i];
+                var innerTypes = ``;
                 var phoneImg = ``;
-                
-                for(var k = 0; k < phonesImg.length; k++){  //selecting phone image
-                    if(phonesImg[k].name == obj.id){
+
+                for (var k = 0; k < phonesImg.length; k++) {  //selecting phone image
+                    if (phonesImg[k].name == obj.id) {
                         phoneImg = phonesImg[k].img;
                         console.log(phoneImg);
                     }
                 } //end picking phone image
 
-                for(var j=0; j < obj.models.length; j++){ //foreach type model (size) 
+                for (var j = 0; j < obj.models.length; j++) { //foreach type model (size) 
                     var objModel = obj.models[j];
-                    innerTypes += `<div class="size" onclick="showPriceAndText('${objModel.price}','${objModel.text}','${i}','${objModel.type}')">`+ objModel.type+`</div>`;
+                    innerTypes += `<div class="size" onclick="showPriceAndText('${objModel.price}','${objModel.text}','${i}','${objModel.type}')">` + objModel.type + `</div>`;
                 } //end inserting type models
 
-                var dataRow =  `<div class="container1">
-                <div class="images"><img class="img_product" src=`+phoneImg+`/></div> 
+                var dataRow = `<div class="container1">
+                <div class="images"><img class="img_product" src=`+ phoneImg + `/></div> 
                 <p class="pick">Choose Memory Size</p>
-                <div class="sizes">`+innerTypes +`</div>
-                <div class="product"> <p>Phone for sale</p><h1>`+obj.id+`</h1><div id="price-${i}" class="price1"></div>
-                  <p class="desc">`+obj.description+`</p>
+                <div class="sizes">`+ innerTypes + `</div>
+                <div class="product"> <p>Phone for sale</p><h1>`+ obj.id + `</h1><div id="price-${i}" class="price1"></div>
+                  <p class="desc">`+ obj.description + `</p>
                   <div id="text-${i}"></div>
                   <div class="buttons"><button id="addToCart-${i}" class="add" onclick="addToCart('${obj.id}','${i}')">Add to Cart</button></div>
                 </div></div>`;
                 $(dataRow).appendTo('#wrapper1');
             } //end inserting all phones
         },
-        error: function(err){   alert(err); }
+        error: function (err) { alert(err); }
     });
 }
 
-function showPriceAndText(price, text, index, type)
-{
-    var dataRowPrice= "<h2>"+price+"</h2>";
-    var dataRowText = "<p>"+text+"<p>";
+function showPriceAndText(price, text, index, type) {
+    var dataRowPrice = "<h2>" + price + "</h2>";
+    var dataRowText = "<p>" + text + "<p>";
     $(`#price-${index}`).html(dataRowPrice);
     $(`#text-${index}`).html(dataRowText);
     indexFlag = index;
     phoneType = type;
 }
 
-function updateDetails()
-{
-    console.log("im here in updateDetails function:)!");
-}
-
-function addToCart(productId, index)
-{
-   if(index == indexFlag){
-    var productData = {
-        email: JSON.parse(sessionStorage.getItem('user')).email,
-        productId: productId,
-        productType: phoneType
-    }
-    //Post request from server - add choosing product to cart in DB
-    $.ajax({
-        type: 'POST',
-        url: '/add-to-cart',
-        data: productData,
-        success: function (res) {
-            //here I need to add +1 to cart counter after getting cart items from server
-            alert("Product added to cart successfully!:)");
-        },
-        error: function (err) {
-            alert(err);
+function addToCart(productId, index) {
+    if (index == indexFlag) {
+        var productData = {
+            email: JSON.parse(sessionStorage.getItem('user')).email,
+            productId: productId,
+            productType: phoneType
         }
-    });
-   } else{
+        //Post request from server - add choosing product to cart in DB
+        $.ajax({
+            type: 'POST',
+            url: '/add-to-cart',
+            data: productData,
+            success: function (res) {
+                //here I need to add +1 to cart counter after getting cart items from server
+                alert("Product added to cart successfully!:)");
+            },
+            error: function (err) {
+                alert(err);
+            }
+        });
+    } else {
 
-       alert("Please choose model first");
-   }
+        alert("Please choose model first");
+    }
 }
 
 
-function getCart()
-{
+function getCart() {
     var userName = {
         email: JSON.parse(sessionStorage.getItem('user')).email,
     }
-    
+
 
     //Get request from server - all products in user cart
     $.ajax({
@@ -411,8 +453,8 @@ function getCart()
         data: userName,
         dataType: 'json',
         success: function (cartData) {
-           console.log(JSON.stringify(cartData));
-           location.replace('/cart.html');
+            console.log(JSON.stringify(cartData));
+            location.replace('/cart.html');
         },
         error: function (err) {
             alert(err);

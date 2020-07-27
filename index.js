@@ -44,22 +44,41 @@ app.get('/email_varifi', function (req, res) {
 //////////////////////////////////////////////---***Profile Handling Function***---/////////////////////////////////////////////
 
 //Get the profile-details 
-app.post('/profile-details', async function (req, res) {
-  user_email =req.body.email;
+app.post('/profileupdate', async function (req, res) {
+  var userToUpdate = req.body;
   try {
-    var query = "SELECT * FROM users WHERE email='" + user_email + "'";
+
+    var query = "UPDATE users SET name = $1 , familyname = $2 , phonenumber = $3 , country = $4 , city = $5 , street = $6 , zipcode = $7 WHERE email = $8";
+    await db.none(query, [userToUpdate.name, userToUpdate.familyname, userToUpdate.phonenumber, userToUpdate.country, userToUpdate.city, userToUpdate.street, userToUpdate.zipcode, userToUpdate.email]);
+
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(userToUpdate));
+  }
+  catch (err) {
+    console.log(err);
+    res.status(500).send(err.message);
+  }
+});
+
+
+app.post('/profiledetails', async function (req, res) {
+  userToUpdate = req.body.email;
+  try {
+    var query = "SELECT * FROM users WHERE email='" + userToUpdate + "'";
     let result = await db.oneOrNone(query);
     if (!result) {
       throw new Error("User does not exists");
     }
     var password_dec = decryptPassword(result.password);
-    result.password=password_dec;
+    result.password = password_dec;
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify(result));
-} catch (err) {
+  } catch (err) {
     console.log(err);
-    res.status(500).send(err.message);}
+    res.status(500).send(err.message);
+  }
 });
+
 
 
 //////////////////////////////////////////////---***Login Handling Function***---/////////////////////////////////////////////
@@ -156,7 +175,7 @@ app.post('/resendVerfication', async function (req, res) {
       from: 'testForBraude@gmail.com',
       to: email,
       subject: 'Welcome! Please activate your account',
-    
+
       html: prepareMail(url)
     };
 
@@ -291,8 +310,8 @@ app.post('/forgetpassword', async function (req, res) {
     if (!result) {
       throw new Error("User does not exists");
     }
-    else{
-////////////////////////////////////////send link to the mail to insert new password
+    else {
+      ////////////////////////////////////////send link to the mail to insert new password
     }
 
   } catch (err) {
@@ -302,78 +321,75 @@ app.post('/forgetpassword', async function (req, res) {
 
 //Get the cell-phones data from json file
 app.get('/get-phones', async function (req, res) {
-  try{
+  try {
     let jsonFile = fs.readFileSync('cell_phone_data.json');
-    let cellData = JSON.parse (jsonFile);
+    let cellData = JSON.parse(jsonFile);
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify(cellData));
-} catch (err) {
+  } catch (err) {
     console.log(err);
     res.writeHead(500, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify(err));
-}
+  }
 });
 
-app.post('/add-to-cart',async function (req, res) {
+app.post('/add-to-cart', async function (req, res) {
   var userName = req.body.email;
   userName = userName.toLowerCase();
   var productName = req.body.productId;
   var productType = req.body.productType;
 
-  try{
+  try {
     //taking user ID by email from users table
     var query = "SELECT * FROM users WHERE email='" + userName + "'";
     let results = await db.oneOrNone(query);
-    if(results)
-    {
+    if (results) {
       var userID = results.id;
-    } else{
+    } else {
       res.writeHead(404);
       res.end();
     }
     //insert new row in 'userproducts' table in DB
-    query = "INSERT INTO userproducts(user_id, is_cart, product_name, product_type) VALUES('"+userID+"','"+true+"','"+productName+"','"+productType+"')";
+    query = "INSERT INTO userproducts(user_id, is_cart, product_name, product_type) VALUES('" + userID + "','" + true + "','" + productName + "','" + productType + "')";
     await db.none(query);
     res.writeHead(200);
     res.end();
-} catch (err) {
-  console.log(err.message);
-}
+  } catch (err) {
+    console.log(err.message);
+  }
 });
 
 
 //Get user's products in cart
-app.post('/get-cart',async function (req, res) {
+app.post('/get-cart', async function (req, res) {
   var userName = req.body.email;
   userName = userName.toLowerCase();
-  
-  try{
-   //taking user ID by email from users table
-   var query = "SELECT * FROM users WHERE email='" + userName + "'";
-   let results = await db.oneOrNone(query);
-   if(results)
-   {
-     var userID = results.id;
-   } else{
-     res.writeHead(404);
-     res.end();
-   }
-   //getting all rows in userproducts table where user_id==userID
-   query = "SELECT * FROM userproducts WHERE user_id='" + userID + "'";
-   results = await db.any(query);
-   console.log(results.length);
-   if(results.length == 0)
-   {
-    res.writeHead(404);
-    res.end();
-   }
-  
-   res.writeHead(200, { 'Content-Type': 'application/json' });
-   res.end(JSON.stringify(results));
-   
-} catch (err) {
-  console.log(err.message);
-}
+
+  try {
+    //taking user ID by email from users table
+    var query = "SELECT * FROM users WHERE email='" + userName + "'";
+    let results = await db.oneOrNone(query);
+    if (results) {
+      var userID = results.id;
+    } else {
+      res.writeHead(404);
+      res.end();
+    }
+    //getting all rows in userproducts table where user_id==userID
+    query = "SELECT * FROM userproducts WHERE user_id='" + userID + "'";
+    results = await db.any(query);
+    console.log(results.length);
+    if (results.length == 0) {
+      res.writeHead(404);
+      res.end();
+    }
+
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(results));
+
+  } catch (err) {
+    console.log(err.message);
+  }
 });
 
 
@@ -411,7 +427,7 @@ var server = app.listen(port, function () {
 //////////////////////////////////////////////---***Forgeet-Password Handling Function***---/////////////////////////////////////////////
 
 
-function prepareMail(url){
+function prepareMail(url) {
   return `<head>
   <title></title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -588,7 +604,7 @@ function prepareMail(url){
 }
 
 
-function prepareCongratsMail(){
+function prepareCongratsMail() {
 
   return `<!DOCTYPE html>
   <html>
