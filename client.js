@@ -1,3 +1,5 @@
+const { controllers } = require("chart.js");
+
 var email;
 var password;
 var password_confirmation;
@@ -273,6 +275,30 @@ function logOut() {
     location.replace('/login');
 }
 
+function getProfileDetails(){
+   //Get request from server - get all profile details from DB
+   var userName = {
+    email: JSON.parse(sessionStorage.getItem('user')).email,
+}
+   $.ajax({
+    type: 'POST',
+    url: '/profile-details',
+    data: email, 
+    success: function(profile_details){
+        data = JSON.parse(JSON.stringify(profile_details));
+        $('#email').html(data.email);
+        $('#password').html(data.password);
+        $('#firstName').html(data.first);
+        $('#lastName').html(data.last);
+        $('#street').html(data.street);
+        $('#city').html(data.city);
+        $('#country').html(data.country);
+        $('#number').html(data.phone-number);
+        $('#zipcode').html(data.zip);
+    },
+    error: function(err){  console.log(err); }
+});
+}
 
 function getPhones()
 {

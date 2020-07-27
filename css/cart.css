@@ -133,8 +133,9 @@
 }
 
 .checkoutBtn{
-  padding-top: 1% !important; 
+  padding: 2% !important; 
   width: 100px !important; 
+  margin-left: 2%;
   background-color: #5a5773 !important;
 }
 
@@ -144,8 +145,7 @@
 }
 
 button[class*=btn] {
-  width: 30px;
-  height: 30px;
+
   background-color: #E1E8EE;
   border-radius: 6px;
   border: none;

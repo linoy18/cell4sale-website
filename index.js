@@ -41,6 +41,25 @@ app.get('/email_varifi', function (req, res) {
   console.log("Redirected to login page");
 });
 
+//////////////////////////////////////////////---***Profile Handling Function***---/////////////////////////////////////////////
+
+//Get the profile-details 
+app.post('/profile-details', async function (req, res) {
+  user_email = req.email;
+  console.log(user_email);
+  try {
+    var query = "SELECT * FROM users WHERE email='" + user_email + "'";
+    let result = await db.oneOrNone(query);
+    if (!result) {
+      throw new Error("User does not exists");
+    }
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(result));
+} catch (err) {
+    console.log(err);
+    res.status(500).send(err.message);}
+});
+
 
 //////////////////////////////////////////////---***Login Handling Function***---/////////////////////////////////////////////
 

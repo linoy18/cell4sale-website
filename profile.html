@@ -27,7 +27,7 @@
 
 </head>
 
-<body id="page-top">
+<body id="page-top" onload="getProfileDetails()">
 
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -243,8 +243,7 @@
                                                 <div class="row">
                                                     <div class="col-md-6"></div>
                                                     <div class="col-md-6" style="align-items:flex-end; display: flex;">
-                                                        <input type="submit" class="profile-edit-btn" name="btnAddMore"
-                                                            value="Update Details" />
+                                                        <button class="profile-edit-btn " onclick="updatedetails()" >Update Details</button>
                                                     </div>
                                                 </div>
 
@@ -257,7 +256,7 @@
                                                     </div>
                                                     <div class="col-md-2">
                                                         <p>
-                                                            <input type="email" class="form-control"></input>
+                                                            <input type="email" class="form-control" id="email"></input>
                                                         </p>
                                                     </div>
                                                     <div class="col-md-2">
@@ -265,7 +264,7 @@
                                                     </div>
                                                     <div class="col-md-2">
                                                         <p>
-                                                            <input type="password" class="form-control"></input>
+                                                            <input type="password" class="form-control" id="password"></input>
                                                         </p>
                                                     </div>
                                                 </div>
@@ -275,7 +274,7 @@
                                                     </div>
                                                     <div class="col-md-2">
                                                         <p>
-                                                            <input type="password" class="form-control"></input>
+                                                            <input type="password" class="form-control" id="password2"></input>
                                                         </p>
                                                     </div>
                                                 </div>
@@ -290,7 +289,7 @@
                                                     </div>
                                                     <div class="col-md-2 ">
                                                         <p>
-                                                            <input type="text" class="form-control"></input>
+                                                            <input type="text" class="form-control" id="firstName"></input>
                                                         </p>
                                                     </div>
 
@@ -300,7 +299,7 @@
                                                     </div>
                                                     <div class="col-md-2">
                                                         <p>
-                                                            <input type="text" class="form-control"></input>
+                                                            <input type="text" class="form-control " id="lastName"></input>
                                                         </p>
                                                     </div>
 
@@ -312,7 +311,7 @@
                                                     </div>
                                                     <div class="col-md-2">
                                                         <p>
-                                                            <input type="text" class="form-control"></input>
+                                                            <input type="text" class="form-control" id="street"></input>
                                                         </p>
                                                     </div>
 
@@ -321,7 +320,7 @@
                                                     </div>
                                                     <div class="col-md-2">
                                                         <p>
-                                                            <input type="text" class="form-control"></input>
+                                                            <input type="text" class="form-control"  id="city"></input>
                                                         </p>
                                                     </div>
                                                 </div>
@@ -331,7 +330,7 @@
                                                     </div>
                                                     <div class="col-md-2">
                                                         <p>
-                                                            <input type="text" class="form-control"></input>
+                                                            <input type="text" class="form-control"  id="country"></input>
                                                         </p>
                                                     </div>
 
@@ -340,7 +339,7 @@
                                                     </div>
                                                     <div class="col-md-2">
                                                         <p>
-                                                            <input type="text" class="form-control"></input>
+                                                            <input type="text" class="form-control" id="number"></input>
                                                         </p>
                                                     </div>
                                                 </div>
@@ -351,7 +350,7 @@
                                                     </div>
                                                     <div class="col-md-2">
                                                         <p>
-                                                            <input type="text" class="form-control"></input>
+                                                            <input type="text" class="form-control"  id="zipcode"></input>
                                                         </p>
                                                     </div>
 
@@ -475,6 +474,8 @@
 
             <!-- Custom scripts for all pages-->
             <script src="js/sb-admin-2.min.js"></script>
+            <script src="/client.js"></script>
+
             <script type="text/javascript">
                 $('.minus-btn').on('click', function(e) {
                   e.preventDefault();
