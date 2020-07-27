@@ -1,3 +1,5 @@
+// const { controllers } = require("chart.js");
+
 var email;
 var password;
 var password_confirmation;
@@ -25,7 +27,6 @@ function loginCaptcha() {
     }
     else Login();
 }
-
 
 function loginWithFacebook() {
     var error_message = document.getElementById("errorMessage");
@@ -283,6 +284,32 @@ function logOut() {
     location.replace('/login');
 }
 
+function getProfileDetails(){
+   //Get request from server - get all profile details from DB
+   var userName = {
+    email: JSON.parse(sessionStorage.getItem('user')).email,
+}
+   $.ajax({
+    type: 'POST',
+    url: '/profile-details',
+    data: userName, 
+    success: function(profile_details){
+        console.log(profile_details);
+    //    data = JSON.parse(JSON.stringify(profile_details));
+    console.log(password);
+        $('#email_profile').val(profile_details.email);
+        $('#password_profile').val(profile_details.password);
+        $('#firstName_profile').val(profile_details.name);
+        $('#lastName_profile').val(profile_details.familyname);
+        $('#street_profile').val(profile_details.street);
+        $('#city_profile').val(profile_details.city);
+        $('#country_profile').val(profile_details.country);
+        $('#number_profile').val(profile_details.phonenumber);
+        $('#zipcode_profile').val(profile_details.zipcode);
+    },
+    error: function(err){  console.log(err); }
+});
+}
 
 function getPhones()
 {
@@ -366,6 +393,7 @@ function addToCart(productId, index)
         }
     });
    } else{
+
        alert("Please choose model first");
    }
 }
