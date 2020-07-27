@@ -235,3 +235,24 @@
     -webkit-transform: scale(1);
             transform: scale(1);
   }
+
+  
+span.price {
+    float: right;
+    color: #3a3939;
+  }
+
+  .container-cart {
+    background-color: #9ec8d2f2;
+    padding: 5px 20px 15px 20px;
+    border: 1px solid #9ec8d2f2;
+    border-radius: 3px;
+    color: rgb(39, 39, 39);
+    font-family: Nunito,-apple-system,BlinkMacSystemFont;
+  }
+  .col-25 {
+    -ms-flex: 25%; /* IE10 */
+    flex: 25%;
+  }
+  
+  
