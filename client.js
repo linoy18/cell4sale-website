@@ -334,13 +334,14 @@ function addToCart(productId, index)
         productId: productId,
         productType: phoneType
     }
-
+    //Post request from server - add choosing product to cart in DB
     $.ajax({
         type: 'POST',
         url: '/add-to-cart',
         data: productData,
-        success: function (data) {
-            
+        success: function (res) {
+            //here I need to add +1 to cart counter after getting cart items from server
+            alert("Product added to cart successfully!:)");
         },
         error: function (err) {
             alert(err);
@@ -349,28 +350,25 @@ function addToCart(productId, index)
    } else{
        alert("Please choose model first");
    }
-
- 
-        //alert("Choose a product first");
-    
-
 }
+
 
 function getCart()
 {
     var userName = {
         email: JSON.parse(sessionStorage.getItem('user')).email,
     }
-    location.replace('/cart.html');
+    
 
     //Get request from server - all products in user cart
     $.ajax({
         type: 'POST',
         url: '/get-cart',
         data: userName,
-
+        dataType: 'json',
         success: function (cartData) {
-           
+           console.log(JSON.stringify(cartData));
+           location.replace('/cart.html');
         },
         error: function (err) {
             alert(err);
