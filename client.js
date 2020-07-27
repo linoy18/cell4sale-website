@@ -284,12 +284,12 @@ function getPhones()
         success: function(phonesData){
             //Cell-phones images
             let phonesImg = [
-                {  name: "Samsung Galaxy S10", img: "https://i.ibb.co/ZWPVwBS/galaxy10.jpg" },
-                {  name: "Huawei P40",  img: "https://i.ibb.co/fXbn9bd/hwawi.jpg"  },
-                {  name: "iPhone 11 Pro Max",   img: "https://i.ibb.co/1Ghn9GC/iphone11.jpg" },
-                {  name: "OnePlus 8",   img: "https://i.ibb.co/d4w25nT/1.jpg" },
-                {  name: "Xiaomi Redmi Note 8",  img: "https://i.ibb.co/jR4N7zs/Xiamo.jpg"  },
-                {  name: "Google pixel 4",  img: "https://i.ibb.co/mS4PxHN/googlepixel.jpg"}
+                {  name: "Samsung Galaxy S10", img: "https://i.ibb.co/nMQ5SN4/Samsung-Galaxy-S10.png" },
+                {  name: "Huawei P40",  img: "https://i.ibb.co/xsLQZfG/Huawei-P40.png"  },
+                {  name: "iPhone 11 Pro Max",   img: "https://i.ibb.co/4F1t4hK/iphone.png" },
+                {  name: "OnePlus 8",   img: "https://i.ibb.co/xCRzySM/One-Plus-8.png" },
+                {  name: "Xiaomi Redmi Note 8",  img: "https://pasteboard.co/JjAMW29.png"},
+                {  name: "Google pixel 4",  img: "https://i.ibb.co/8cMHvzB/Google-pixel-4.png"}
             ];
         
             data = JSON.parse(JSON.stringify(phonesData));
@@ -364,6 +364,7 @@ function addToCart(productId, index)
         }
     });
    } else{
+
        alert("Please choose model first");
    }
 }
