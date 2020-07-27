@@ -1,4 +1,4 @@
-const { controllers } = require("chart.js");
+// const { controllers } = require("chart.js");
 
 var email;
 var password;
@@ -17,7 +17,6 @@ function loginCaptcha() {
     }
     else Login();
 }
-
 
 function loginWithFacebook() {
     var error_message = document.getElementById("errorMessage");
@@ -283,18 +282,20 @@ function getProfileDetails(){
    $.ajax({
     type: 'POST',
     url: '/profile-details',
-    data: email, 
+    data: userName, 
     success: function(profile_details){
-        data = JSON.parse(JSON.stringify(profile_details));
-        $('#email').html(data.email);
-        $('#password').html(data.password);
-        $('#firstName').html(data.first);
-        $('#lastName').html(data.last);
-        $('#street').html(data.street);
-        $('#city').html(data.city);
-        $('#country').html(data.country);
-        $('#number').html(data.phone-number);
-        $('#zipcode').html(data.zip);
+        console.log(profile_details);
+    //    data = JSON.parse(JSON.stringify(profile_details));
+    console.log(password);
+        $('#email_profile').val(profile_details.email);
+        $('#password_profile').val(profile_details.password);
+        $('#firstName_profile').val(profile_details.name);
+        $('#lastName_profile').val(profile_details.familyname);
+        $('#street_profile').val(profile_details.street);
+        $('#city_profile').val(profile_details.city);
+        $('#country_profile').val(profile_details.country);
+        $('#number_profile').val(profile_details.phonenumber);
+        $('#zipcode_profile').val(profile_details.zipcode);
     },
     error: function(err){  console.log(err); }
 });
