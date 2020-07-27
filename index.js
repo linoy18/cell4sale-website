@@ -280,8 +280,7 @@ app.post('/forgetpassword', async function (req, res) {
   }
 });
 
-
-//Gקא the cell-phones data from json file
+//Get the cell-phones data from json file
 app.get('/get-phones', async function (req, res) {
   try{
     let jsonFile = fs.readFileSync('cell_phone_data.json');
@@ -292,6 +291,68 @@ app.get('/get-phones', async function (req, res) {
     console.log(err);
     res.writeHead(500, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify(err));
+}
+});
+
+app.post('/add-to-cart',async function (req, res) {
+  var userName = req.body.email;
+  userName = userName.toLowerCase();
+  var productName = req.body.productId;
+  var productType = req.body.productType;
+
+  try{
+    //taking user ID by email from users table
+    var query = "SELECT * FROM users WHERE email='" + userName + "'";
+    let results = await db.oneOrNone(query);
+    if(results)
+    {
+      var userID = results.id;
+    } else{
+      res.writeHead(404);
+      res.end();
+    }
+    //insert new row in 'userproducts' table in DB
+    query = "INSERT INTO userproducts(user_id, is_cart, product_name, product_type) VALUES('"+userID+"','"+true+"','"+productName+"','"+productType+"')";
+    await db.none(query);
+    res.writeHead(200);
+    res.end();
+} catch (err) {
+  console.log(err.message);
+}
+});
+
+
+//Get user's products in cart
+app.post('/get-cart',async function (req, res) {
+  var userName = req.body.email;
+  userName = userName.toLowerCase();
+  
+  try{
+   //taking user ID by email from users table
+   var query = "SELECT * FROM users WHERE email='" + userName + "'";
+   let results = await db.oneOrNone(query);
+   if(results)
+   {
+     var userID = results.id;
+   } else{
+     res.writeHead(404);
+     res.end();
+   }
+   //getting all rows in userproducts table where user_id==userID
+   query = "SELECT * FROM userproducts WHERE user_id='" + userID + "'";
+   results = await db.any(query);
+   console.log(results.length);
+   if(results.length == 0)
+   {
+    res.writeHead(404);
+    res.end();
+   }
+  
+   res.writeHead(200, { 'Content-Type': 'application/json' });
+   res.end(JSON.stringify(results));
+   
+} catch (err) {
+  console.log(err.message);
 }
 });
 

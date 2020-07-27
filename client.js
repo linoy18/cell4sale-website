@@ -4,8 +4,8 @@ var password_confirmation;
 var name;
 var subject;
 var themessage;
-var data;
-
+var indexFlag = -1;
+var phoneType;
 
 function loginCaptcha() {
     var error_message = document.getElementById("errorMessage");
@@ -29,7 +29,6 @@ function loginWithFacebook() {
                 data: data,
                 // Login Successful
                 success: function (userData) {
-                    console.log(userData);
                     sessionStorage.setItem('user', JSON.stringify(userData))
                     location.replace('/index');
                 },
@@ -77,7 +76,6 @@ function Login() {
         data: credentials,
         // Login Successful
         success: function (userData) {
-            console.log(userData);
             sessionStorage.setItem('user', JSON.stringify(userData))
             location.replace('/index');
         },
@@ -284,52 +282,115 @@ function getPhones()
         url: '/get-phones',
         dataType: 'json',
         success: function(phonesData){
-            console.log(phonesData);
+            //Cell-phones images
+            let phonesImg = [
+                {  name: "Samsung Galaxy S10", img: "https://i.ibb.co/ZWPVwBS/galaxy10.jpg" },
+                {  name: "Huawei P40",  img: "https://i.ibb.co/fXbn9bd/hwawi.jpg"  },
+                {  name: "iPhone 11 Pro Max",   img: "https://i.ibb.co/1Ghn9GC/iphone11.jpg" },
+                {  name: "OnePlus 8",   img: "https://i.ibb.co/d4w25nT/1.jpg" },
+                {  name: "Xiaomi Redmi Note 8",  img: "https://i.ibb.co/jR4N7zs/Xiamo.jpg"  },
+                {  name: "Google pixel 4",  img: "https://i.ibb.co/mS4PxHN/googlepixel.jpg"}
+            ];
+        
             data = JSON.parse(JSON.stringify(phonesData));
 
-            for (var i = 0; i < data.length; i++) {
+            for (var i = 0; i < data.length; i++) { //foreach cell-phone type
                 var obj = data[i]; 
-                console.log(obj.id);
                 var innerTypes =``;
+                var phoneImg = ``;
                 
-                for(var j=0; j < obj.models.length; j++){
+                for(var k = 0; k < phonesImg.length; k++){  //selecting phone image
+                    if(phonesImg[k].name == obj.id){
+                        phoneImg = phonesImg[k].img;
+                        console.log(phoneImg);
+                    }
+                } //end picking phone image
+
+                for(var j=0; j < obj.models.length; j++){ //foreach type model (size) 
                     var objModel = obj.models[j];
-                    innerTypes += `<div class="size" onclick="showPrice('${objModel.price}','${i}')">`+ objModel.type+`</div>`;
-                }
+                    innerTypes += `<div class="size" onclick="showPriceAndText('${objModel.price}','${objModel.text}','${i}','${objModel.type}')">`+ objModel.type+`</div>`;
+                } //end inserting type models
+
                 var dataRow =  `<div class="container1">
-                <div class="images ">
-                  <img src="https://i.ibb.co/ZWPVwBS/galaxy10.jpg" class="img_product"/>
-                </div> 
+                <div class="images"><img class="img_product" src=`+phoneImg+`/></div> 
                 <p class="pick">Choose Memory Size</p>
-                <div class="sizes">
-                 `+innerTypes +`</div>
-                <div class="product"> 
-                  <p>Phone for sale</p>
-                  <h1>`+obj.id+`</h1>
-                  <div id="price-${i}"class="price1"></div>
+                <div class="sizes">`+innerTypes +`</div>
+                <div class="product"> <p>Phone for sale</p><h1>`+obj.id+`</h1><div id="price-${i}" class="price1"></div>
                   <p class="desc">`+obj.description+`</p>
-                  <div class="buttons">
-                    <button class="add">Add to Cart</button>
-                  </div></div></div>`;
+                  <div id="text-${i}"></div>
+                  <div class="buttons"><button id="addToCart-${i}" class="add" onclick="addToCart('${obj.id}','${i}')">Add to Cart</button></div>
+                </div></div>`;
                 $(dataRow).appendTo('#wrapper1');
-            }
+            } //end inserting all phones
         },
-        error: function(err){
-            console.log(err);
-        }
+        error: function(err){   alert(err); }
     });
 }
 
-function showPrice(price,index)
+function showPriceAndText(price, text, index, type)
 {
-    console.log(price);
-    var datarow= "<h2>"+price+"</h2>";
-    $(`#price-${index}`).html(datarow);
+    var dataRowPrice= "<h2>"+price+"</h2>";
+    var dataRowText = "<p>"+text+"<p>";
+    $(`#price-${index}`).html(dataRowPrice);
+    $(`#text-${index}`).html(dataRowText);
+    indexFlag = index;
+    phoneType = type;
 }
 
 function updateDetails()
 {
     console.log("im here in updateDetails function:)!");
+}
+
+function addToCart(productId, index)
+{
+   if(index == indexFlag){
+    var productData = {
+        email: JSON.parse(sessionStorage.getItem('user')).email,
+        productId: productId,
+        productType: phoneType
+    }
+    //Post request from server - add choosing product to cart in DB
+    $.ajax({
+        type: 'POST',
+        url: '/add-to-cart',
+        data: productData,
+        success: function (res) {
+            //here I need to add +1 to cart counter after getting cart items from server
+            alert("Product added to cart successfully!:)");
+        },
+        error: function (err) {
+            alert(err);
+        }
+    });
+   } else{
+       alert("Please choose model first");
+   }
+}
+
+
+function getCart()
+{
+    var userName = {
+        email: JSON.parse(sessionStorage.getItem('user')).email,
+    }
+    
+
+    //Get request from server - all products in user cart
+    $.ajax({
+        type: 'POST',
+        url: '/get-cart',
+        data: userName,
+        dataType: 'json',
+        success: function (cartData) {
+           console.log(JSON.stringify(cartData));
+           location.replace('/cart.html');
+        },
+        error: function (err) {
+            alert(err);
+        }
+    });
+
 }
 
 
