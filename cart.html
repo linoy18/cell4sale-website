@@ -22,7 +22,7 @@
   <link href="/css/all.min.css" rel="stylesheet">
 
 </head>
-<body id="page-top">
+<body id="page-top" onload="showCart()">
 
   <!-- Page Wrapper -->
   <div id="wrapper">
@@ -189,44 +189,14 @@
               </div>
              
               <!-- Product #1 -->
-              <div class="item">
-                <div class="buttons">
-                  <span class="delete-btn"></span>
-                </div>
-             
-                <div class="image">
-                  <img src="https://i.ibb.co/pr3j1f3/galaxy10.png" alt="" />
-                </div>
-             
-                <div class="description">
-                  <span>Galaxy S10+</span>
-                  <span>256GB</span>
-                  <span></span>
-                </div>
-             
-                <div class="quantity">
-                  <button class="plus-btn" type="button" name="button">
-                    <!-- <img src="plus.svg" alt="" /> -->
-                    <i class="fa fa-plus" aria-hidden="true"></i>
-                  </button>
-                  <input type="text" name="name" value="1">
-                  <button class="minus-btn" type="button" name="button">
-                    <!-- <img src="minus.svg" alt="" /> -->
-                    <i class="fa fa-minus" aria-hidden="true"></i>
-                  </button>
-                </div>
-          
-                <div class="total-price">Price: $549</div>
-                <div class="total-price">Total Price (including 17% VAT): $549</div>
-
-
-              </div>
+              <div id="cart-item"></div>
+              
       
             
             </div>
             <div class="footer_price" style="margin-top: 3%; align-items: flex-end; margin-left: 80%;" >    
             <div class="title" style="display: inline; "> Total:  </div>
-            <div class="total-price">$549</div>
+            <div class="total-price" id="cart-total-price"></div>
 
             <button class="btn btn-secondary btn-icon-split checkoutBtn"> Checkout </button>
           </div>

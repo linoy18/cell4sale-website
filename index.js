@@ -299,6 +299,7 @@ app.post('/add-to-cart',async function (req, res) {
   userName = userName.toLowerCase();
   var productName = req.body.productId;
   var productType = req.body.productType;
+  var productPrice = req.body.productPrice;
 
   try{
     //taking user ID by email from users table
@@ -311,11 +312,21 @@ app.post('/add-to-cart',async function (req, res) {
       res.writeHead(404);
       res.end();
     }
-    //insert new row in 'userproducts' table in DB
-    query = "INSERT INTO userproducts(user_id, is_cart, product_name, product_type) VALUES('"+userID+"','"+true+"','"+productName+"','"+productType+"')";
+    //checking if item is already in cart- if true the count++, else add new row
+    query = "SELECT * FROM userproducts WHERE user_id='" + userID + "'AND product_name='"+productName+"'AND product_type='"+productType+"'";
+    results = await db.oneOrNone(query);
+    if(!results)//insert new row in 'userproducts' table in DB
+    {
+      query = "INSERT INTO userproducts(user_id, product_name, product_type, product_price,count) VALUES('"+userID+"','"+productName+"','"+productType+"','"+productPrice+"','1')";
+      await db.none(query);
+      res.writeHead(200);
+      res.end();
+    } else{ 
+    query = "UPDATE userproducts SET count=count+1 WHERE user_id='" + userID + "'AND product_name='"+productName+"'AND product_type='"+productType+"'";
     await db.none(query);
     res.writeHead(200);
     res.end();
+    }
 } catch (err) {
   console.log(err.message);
 }
@@ -341,13 +352,13 @@ app.post('/get-cart',async function (req, res) {
    //getting all rows in userproducts table where user_id==userID
    query = "SELECT * FROM userproducts WHERE user_id='" + userID + "'";
    results = await db.any(query);
-   console.log(results.length);
+   //console.log(results.length);
    if(results.length == 0)
    {
     res.writeHead(404);
     res.end();
    }
-  
+
    res.writeHead(200, { 'Content-Type': 'application/json' });
    res.end(JSON.stringify(results));
    
