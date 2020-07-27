@@ -8,6 +8,16 @@ var subject;
 var themessage;
 var indexFlag = -1;
 var phoneType;
+var phonePrice;
+//Cell-phones images
+let phonesImg = [
+    {  name: "Samsung Galaxy S10", img: "https://i.ibb.co/ZWPVwBS/galaxy10.jpg" },
+    {  name: "Huawei P40",  img: "https://i.ibb.co/fXbn9bd/hwawi.jpg"  },
+    {  name: "iPhone 11 Pro Max",   img: "https://i.ibb.co/1Ghn9GC/iphone11.jpg" },
+    {  name: "OnePlus 8",   img: "https://i.ibb.co/d4w25nT/1.jpg" },
+    {  name: "Xiaomi Redmi Note 8",  img: "https://i.ibb.co/jR4N7zs/Xiamo.jpg"  },
+    {  name: "Google pixel 4",  img: "https://i.ibb.co/mS4PxHN/googlepixel.jpg"}
+];
 
 function loginCaptcha() {
     var error_message = document.getElementById("errorMessage");
@@ -358,17 +368,7 @@ function getPhones() {
         type: 'GET',
         url: '/get-phones',
         dataType: 'json',
-        success: function (phonesData) {
-            //Cell-phones images
-            let phonesImg = [
-                { name: "Samsung Galaxy S10", img: "https://i.ibb.co/nMQ5SN4/Samsung-Galaxy-S10.png" },
-                { name: "Huawei P40", img: "https://i.ibb.co/xsLQZfG/Huawei-P40.png" },
-                { name: "iPhone 11 Pro Max", img: "https://i.ibb.co/4F1t4hK/iphone.png" },
-                { name: "OnePlus 8", img: "https://i.ibb.co/xCRzySM/One-Plus-8.png" },
-                { name: "Xiaomi Redmi Note 8", img: "https://pasteboard.co/JjAMW29.png" },
-                { name: "Google pixel 4", img: "https://i.ibb.co/8cMHvzB/Google-pixel-4.png" }
-            ];
-
+        success: function(phonesData){
             data = JSON.parse(JSON.stringify(phonesData));
 
             for (var i = 0; i < data.length; i++) { //foreach cell-phone type
@@ -411,41 +411,41 @@ function showPriceAndText(price, text, index, type) {
     $(`#text-${index}`).html(dataRowText);
     indexFlag = index;
     phoneType = type;
+    phonePrice = price;
 }
 
-function addToCart(productId, index) {
-    if (index == indexFlag) {
-        var productData = {
-            email: JSON.parse(sessionStorage.getItem('user')).email,
-            productId: productId,
-            productType: phoneType
-        }
-        //Post request from server - add choosing product to cart in DB
-        $.ajax({
-            type: 'POST',
-            url: '/add-to-cart',
-            data: productData,
-            success: function (res) {
-                //here I need to add +1 to cart counter after getting cart items from server
-                alert("Product added to cart successfully!:)");
-            },
-            error: function (err) {
-                alert(err);
-            }
-        });
-    } else {
-
-        alert("Please choose model first");
-    }
-}
-
-
-function getCart() {
-    var userName = {
+function addToCart(productId, index)
+{
+   if(index == indexFlag){
+    var productData = {
         email: JSON.parse(sessionStorage.getItem('user')).email,
+        productId: productId,
+        productType: phoneType,
+        productPrice: phonePrice
     }
+    //Post request from server - add choosing product to cart in DB
+    $.ajax({
+        type: 'POST',
+        url: '/add-to-cart',
+        data: productData,
+        success: function (res) {
+            //here I need to add +1 to cart counter after getting cart items from server
+            alert("Product added to cart successfully!:)");
+        },
+        error: function (err) {
+            alert(err);
+        }
+    });
+   } else{
+
+       alert("Please choose model first");
+   }
+}
 
 
+function getCart()
+{
+    var userName = { email: JSON.parse(sessionStorage.getItem('user')).email }
     //Get request from server - all products in user cart
     $.ajax({
         type: 'POST',
@@ -453,15 +453,67 @@ function getCart() {
         data: userName,
         dataType: 'json',
         success: function (cartData) {
-            console.log(JSON.stringify(cartData));
-            location.replace('/cart.html');
+           sessionStorage.setItem('cart-data', JSON.stringify(cartData));
+           location.replace('/cart.html');
         },
         error: function (err) {
             alert(err);
         }
     });
-
 }
 
+
+function showCart()
+{
+    var cartData = JSON.parse(sessionStorage.getItem('cart-data'));
+    var cartTotPrice = 0 ;
+    for(var i = 0; i < cartData.length; i++)
+    {
+        var obj = cartData[i];
+        var totPrice = parseFloat(obj.product_price);
+        var priceCount = parseFloat(obj.product_price)*obj.count;
+        priceCount = priceCount.toFixed(0);
+        priceCount = priceCount.toString()+'$';
+        totPrice = 1.17*totPrice*obj.count;
+        cartTotPrice +=totPrice;
+        totPrice = totPrice.toFixed(0);
+        totPrice = totPrice.toString();
+        var phoneImg = ``;
+
+        for(var k = 0; k < phonesImg.length; k++){  //selecting phone image
+            if(phonesImg[k].name == obj.product_name){
+                phoneImg = phonesImg[k].img;
+            }
+        } //end picking phone image
+       var dataRow = `<div class="item">
+       <div class="buttons"><span class="delete-btn"></span></div>
+     <div class="image">
+       <img src="https://i.ibb.co/pr3j1f3/galaxy10.png" alt="" /></div>
+     <div class="description">
+       <span>`+obj.product_name+`</span>
+       <span>`+obj.product_type+`</span>
+       <span></span>
+     </div>
+     <div class="quantity">
+       <button class="plus-btn" type="button" name="button">
+         <!-- <img src="plus.svg" alt="" /> -->
+         <i class="fa fa-plus" aria-hidden="true"></i>
+       </button>
+       <input type="text" name="name" value="${obj.count}">
+       <button class="minus-btn" type="button" name="button">
+         <!-- <img src="minus.svg" alt="" /> -->
+         <i class="fa fa-minus" aria-hidden="true"></i>
+       </button>
+     </div>
+     <div class="total-price">Price: `+priceCount+`</div>
+     <div class="total-price">Total Price (including 17% VAT):`+totPrice+`$</div></div>` ;
+        $(dataRow).appendTo('#cart-item');
+    }
+    cartTotPrice = parseFloat(cartTotPrice);
+    cartTotPrice =cartTotPrice.toFixed(0);
+    cartTotPrice = cartTotPrice.toString() +'$';
+    $('#cart-total-price').html(cartTotPrice);
+
+}
 
 
