@@ -202,7 +202,7 @@
                                     <div class="col-12 col-lg-8 ml-auto mr-auto mb-4">
                                         <div class="multisteps-form__progress">
                                             <button class="multisteps-form__progress-btn js-active" type="button"
-                                                title="User Info">Address</button>
+                                                title="User Info" onclick="getAddressDetails()">Address</button>
                                             <button class="multisteps-form__progress-btn" type="button"
                                                 title="Order Info">Payment</button>
                                             <button class="multisteps-form__progress-btn" type="button"
@@ -221,42 +221,42 @@
                                                 <div class="multisteps-form__content">
                                                     <div class="form-row mt-4">
                                                         <div class="col-12 col-sm-6">
-                                                            <input class="multisteps-form__input form-control"
+                                                            <input id="check-first-name" class="multisteps-form__input form-control"
                                                                 type="text" placeholder="First Name" />
                                                         </div>
                                                         <div class="col-12 col-sm-6 mt-4 mt-sm-0">
-                                                            <input class="multisteps-form__input form-control"
+                                                            <input id="check-last-name" class="multisteps-form__input form-control"
                                                                 type="text" placeholder="Last Name" />
                                                         </div>
                                                     </div>
 
                                                     <div class="form-row mt-4">
                                                         <div class="col-12 col-sm-6">
-                                                            <input class="multisteps-form__input form-control"
+                                                            <input id="check-phone-number" class="multisteps-form__input form-control"
                                                                 type="tel" placeholder="Phone Number" />
                                                         </div>
                                                         <div class="col-12 col-sm-6 mt-4 mt-sm-0">
-                                                            <input class="multisteps-form__input form-control"
+                                                            <input id="check-country" class="multisteps-form__input form-control"
                                                                 type="text" placeholder="Country" />
                                                         </div>
                                                     </div>
                                                     <div class="form-row mt-4">
                                                         <div class="col-12 col-sm-4">
-                                                            <input class="multisteps-form__input form-control"
+                                                            <input id="check-city" class="multisteps-form__input form-control"
                                                                 type="text" placeholder="City" />
                                                         </div>
                                                         <div class="col-6 col-sm-5 mt-4 mt-sm-0">
-                                                            <input class="multisteps-form__input form-control"
+                                                            <input id="check-street" class="multisteps-form__input form-control"
                                                                 type="text" placeholder="Street" />
                                                         </div>
                                                         <div class="col-6 col-sm-3 mt-4 mt-sm-0">
-                                                            <input class="multisteps-form__input form-control"
+                                                            <input id="check-zip" class="multisteps-form__input form-control"
                                                                 type="text" placeholder="Zip" />
                                                         </div>
                                                     </div>
                                                     <div class="button-row d-flex mt-4">
-                                                        <button class="btn btn-primary ml-auto js-btn-next"
-                                                            type="button" title="Next">Next</button>
+                                                        <button id="check-address-next" class="btn btn-primary ml-auto js-btn-next"
+                                                            type="button" title="Next" onclick="checkAddressFields()">Next</button>
                                                     </div>
 
 
@@ -315,7 +315,7 @@
 
                                                             <div class="col-12 col-sm-9 mt-4 mt-sm-0" style="display: inline-flex;">
                                                                 <input class="multisteps-form__input form-control" type="text" placeholder="Add you promotinal code" style="margin-right: 2%;" />
-                                                                    <button class="btn btn-secondary ml-auto "type="button" title="Submit">Submit</button>
+                                                                    <button id="check-payment-submit" class="btn btn-secondary ml-auto "type="button" title="Submit">Submit</button>
                                                             </div>
                                                         </div>
 

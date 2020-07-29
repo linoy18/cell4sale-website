@@ -390,20 +390,64 @@ app.post('/get-cart',async function (req, res) {
    //getting all rows in userproducts table where user_id==userID
    query = "SELECT * FROM userproducts WHERE user_id='" + userID + "'";
    results = await db.any(query);
-   //console.log(results.length);
-   if(results.length == 0)
+
+   if(!results)
    {
     res.writeHead(404);
     res.end();
+   }else{
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(results));
    }
-
-   res.writeHead(200, { 'Content-Type': 'application/json' });
-   res.end(JSON.stringify(results));
-   
+ 
 } catch (err) {
   console.log(err.message);
 }
 });
+
+app.post('/delete-from-cart',async function (req, res) {
+  var userName = req.body.email;
+  userName = userName.toLowerCase();
+  var productName = req.body.productName;
+  var productType = req.body.productType;
+  try{
+   //taking user ID by email from users table
+   var query = "SELECT * FROM users WHERE email='" + userName + "'";
+   let results = await db.oneOrNone(query);
+   if(results)
+   {
+     var userID = results.id;
+   } else{
+     res.writeHead(404);
+     res.end();
+   }
+   //getting all rows in userproducts table where user_id==userID
+   query = "SELECT count FROM userproducts WHERE user_id='" + userID +"'AND product_name='"+productName+"'AND product_type='"+productType+"'";
+   results = await db.oneOrNone(query);
+  
+   if(!results) //in case there is not such product in cart
+   {
+    res.writeHead(404);
+    res.end();
+   }else{
+     console.log(results);
+     if(results.count == 1)
+     {
+      query = "DELETE FROM userproducts WHERE user_id='"+userID+"'AND product_name='"+productName+"'AND product_type='"+productType+"'";
+      await db.none(query);
+      res.writeHead(200);
+      res.end();
+     } else{
+      query = "UPDATE userproducts SET count=count-1 WHERE user_id='" + userID + "'AND product_name='"+productName+"'AND product_type='"+productType+"'";
+      await db.none(query);
+      res.writeHead(200);
+      res.end();
+     }
+   }
+} catch (err) {
+  console.log(err.message);
+}
+}); 
 
 
 //Password encryption function 

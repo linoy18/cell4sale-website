@@ -284,8 +284,9 @@ function logOut() {
     location.replace('/login');
 }
 
-
-
+/*getProfileDetails:
+trigger: loading 'profile.html' page
+output: get user information from db*/
 function getProfileDetails() {
     //Get request from server - get all profile details from DB
     var userName = {
@@ -297,6 +298,25 @@ function getProfileDetails() {
         data: userName,
         success: function (profile_details) {
             updateUserProfileFields(profile_details);
+        },
+        error: function (err) { console.log(err); }
+    });
+}
+
+/*getAddressDetails:
+trigger: user click on 'address' tab on 'payment.html' page (need to change)
+output: get user information from db */
+function getAddressDetails() {
+    //Get request from server - get all profile details from DB
+    var userName = {
+        email: JSON.parse(sessionStorage.getItem('user')).email,
+    }
+    $.ajax({
+        type: 'POST',
+        url: '/profiledetails',
+        data: userName,
+        success: function (profile_details) {
+            showAddressTabFields(profile_details);
         },
         error: function (err) { console.log(err); }
     });
@@ -326,7 +346,12 @@ function updateDetails() {
         error: function (err) { console.log(err); }
     });
 }
-function updateUserProfileFields(userDetails) {
+
+/*updateUserProfileFields:
+input: userDetails-user updated information from db
+output: displayed updated input fields in 'profile.html' page */
+function updateUserProfileFields(userDetails) 
+{
     $('#email_profile').val(userDetails.email);
     $('#password_profile').val(userDetails.password);
     $('#firstName_profile').val(userDetails.name);
@@ -338,15 +363,29 @@ function updateUserProfileFields(userDetails) {
     $('#zipcode_profile').val(userDetails.zipcode);
 }
 
-function showPassConfirmation() {
-
-    $("#password2div").show();
-
+/*showAddressTabFields:
+input: userDetails-user information from db
+output: displayed input fields in address tab on 'payment.html' page */
+function showAddressTabFields(userDetails) 
+{
+    $('#check-first-name').val(userDetails.name);
+    $('#check-last-name').val(userDetails.familyname);
+    $('#check-street').val(userDetails.street);
+    $('#check-city').val(userDetails.city);
+    $('#check-country').val(userDetails.country);
+    $('#check-phone-number').val(userDetails.phonenumber);
+    $('#check-zip').val(userDetails.zipcode);
 }
 
+function showPassConfirmation() {
+    $("#password2div").show();
+}
 
-function showPassword() {
-
+/*showPassword: 
+trigger: user click on 'eye_pass' element
+output: password diaplayed to the user */ 
+function showPassword()
+{
     $(".toggle-password").click(function () {
 
         $(this).toggleClass("fa-eye fa-eye-slash");
@@ -357,41 +396,36 @@ function showPassword() {
             input.attr("type", "password");
         }
     });
-
 }
 
-
-
+/*getPhones:
+trigger: user click on 'Mobile Phones' tab in side menu
+output: displayed all phones from json file getting from server side*/
 function getPhones() {
-    //Get request from server - get all phones data from json file
     $.ajax({
         type: 'GET',
         url: '/get-phones',
         dataType: 'json',
         success: function(phonesData){
             data = JSON.parse(JSON.stringify(phonesData));
-
             for (var i = 0; i < data.length; i++) { //foreach cell-phone type
                 var obj = data[i];
                 var innerTypes = ``;
                 var phoneImg = ``;
-
                 for (var k = 0; k < phonesImg.length; k++) {  //selecting phone image
                     if (phonesImg[k].name == obj.id) {
                         phoneImg = phonesImg[k].img;
                         console.log(phoneImg);
                     }
                 } //end picking phone image
-
                 for (var j = 0; j < obj.models.length; j++) { //foreach type model (size) 
                     var objModel = obj.models[j];
                     innerTypes += `<Button class="size" onclick="showPriceAndText('${objModel.price}','${objModel.text}','${i}','${objModel.type}')">` + objModel.type + `</Button>`;
                 } //end inserting type models
-
                 var dataRow = `<div class="container1">
                 <div class="row">
                 <div class="col-6">
-                <img class="img_product" src=`+ phoneImg + `/>
+                <img class="img_product" src="https://i.ibb.co/pr3j1f3/galaxy10.png"/>
                 </div>
                 <div class="col-6"> 
                 <div class="product"> 
@@ -400,7 +434,6 @@ function getPhones() {
                 <p class="desc">`+ obj.description + `</p>
                 <div id="text-${i}"></div> 
                 </div> 
-                </div>  
                 </div>
                 <div class="row">
                 <div class="col-6">
@@ -409,7 +442,8 @@ function getPhones() {
                 </div>
                 <div class="col-6">
                 <div class="buttons"><button id="addToCart-${i}" class="add" onclick="addToCart('${obj.id}','${i}')">Add to Cart</button></div>
-                </div></div>
+                </div>
+                </div>
                 </div> `;
                 $(dataRow).appendTo('#wrapper1');
             } //end inserting all phones
@@ -418,6 +452,11 @@ function getPhones() {
     });
 }
 
+/*showPriceAndText:
+input: price-phone price (global variable), text-type description (waranty),
+index-index of phone name (id), type-phone size (global variable)
+trigger: user click on 'size' button
+output: price and text displayed in item 'container1'*/
 function showPriceAndText(price, text, index, type) {
     var dataRowPrice = "<h2>" + price + "</h2>";
     var dataRowText = "<p>" + text + "<p>";
@@ -428,6 +467,11 @@ function showPriceAndText(price, text, index, type) {
     phonePrice = price;
 }
 
+/*addToCart:
+input: productId-phone name (id), index-index of phone name (id)
+trigger: user click on 'add to cart' button in item container
+output: if an item is selected- add the item to 'userproducts' table in db
+else- show error pop-up*/
 function addToCart(productId, index)
 {
    if(index == indexFlag){
@@ -436,8 +480,8 @@ function addToCart(productId, index)
         productId: productId,
         productType: phoneType,
         productPrice: phonePrice
-    }
-    //Post request from server - add choosing product to cart in DB
+    };
+    //Post request from server - add choosing product to cart in db
     $.ajax({
         type: 'POST',
         url: '/add-to-cart',
@@ -451,14 +495,16 @@ function addToCart(productId, index)
         }
     });
    } else{
-
        alert("Please choose model first");
    }
 }
 
+/*getCart:
+trigger: user click on 'cart' span in the top of the window (topbar)
+output: get all user products from 'userproducts' table, store them and replace to 'cart.html' page*/
 function getCart()
 {
-    var userName = { email: JSON.parse(sessionStorage.getItem('user')).email }
+    var userName = { email: JSON.parse(sessionStorage.getItem('user')).email };
     //Get request from server - all products in user cart
     $.ajax({
         type: 'POST',
@@ -473,9 +519,12 @@ function getCart()
             alert(err);
         }
     });
-}
+} 
 
-
+/*showCart:
+trigger: loading 'cart.html' page
+output: get items stored by "getCart()" and displayed in page
+ */
 function showCart()
 {
     var cartData = JSON.parse(sessionStorage.getItem('cart-data'));
@@ -499,9 +548,11 @@ function showCart()
             }
         } //end picking phone image
        var dataRow = `<div class="item">
-       <div class="buttons"><span class="delete-btn"></span></div>
+       <div class="buttons"><span class="delete-btn" onclick="deleteProductFromCart('${obj.product_name}','${obj.product_type}')"></span>
+       </div>
      <div class="image">
-       <img src="https://i.ibb.co/pr3j1f3/galaxy10.png" alt="" /></div>
+       <img src="https://i.ibb.co/pr3j1f3/galaxy10.png" alt="" />
+     </div>
      <div class="description">
        <span>`+obj.product_name+`</span>
        <span>`+obj.product_type+`</span>
@@ -526,7 +577,66 @@ function showCart()
     cartTotPrice =cartTotPrice.toFixed(0);
     cartTotPrice = cartTotPrice.toString() +'$';
     $('#cart-total-price').html(cartTotPrice);
-
 }
+
+/*deleteProductFromCart:
+input: productName-phone name (id), productType-phone size (model id)
+trigger: user click on 'X' button next to product details
+output: if count=1 - remove entiry row, else - sub count by one */
+function deleteProductFromCart(productName, productType)
+{
+    var productData = { 
+        email: JSON.parse(sessionStorage.getItem('user')).email,
+        productName: productName,
+        productType: productType 
+    };
+    $.ajax({
+        type: 'POST',
+        url: '/delete-from-cart',
+        data: productData,
+        success: function (res) {
+            getCart();
+        },
+        error: function (err) {
+            alert(err);
+        }
+    });  
+}
+
+function checkOut()
+{
+    location.replace('/payment.html');
+}
+
+/*checkAddressFields:
+trigger: user click on 'Next' button on 'Address' tab in 'payment.html' page
+output: if all fields have values - move to 'Payment' tab, else- show error pop-up */
+function checkAddressFields()
+{
+    var userDetails = {
+        firstName: $('#check-first-name').val(),
+        lastName: $('#check-last-name').val(),
+        phoneNumber: $('#check-phone-number').val(),
+        country: $('#check-country').val(),
+        city: $('#check-city').val(),
+        street: $('#check-street').val(),
+        zipCode: $('#check-zip').val()
+    };
+    if((userDetails.firstName=="")||(userDetails.lastName=="")||(userDetails.phoneNumber=="")
+    ||(userDetails.country=="")||(userDetails.city=="")||(userDetails.street=="")||(userDetails.zipCode==""))
+    {
+        alert("Plase fill all fields before payment");
+    }
+    else{
+        //document.getElementById('#check-address-next').disabled = false;
+        //display payment tab
+    }
+}
+
+
+
+
+
+
 
 
