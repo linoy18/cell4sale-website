@@ -25,7 +25,7 @@
 
 </head>
 
-<body id="page-top">
+<body id="page-top" onload="getAddressDetails()">
 
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -202,7 +202,7 @@
                                     <div class="col-12 col-lg-8 ml-auto mr-auto mb-4">
                                         <div class="multisteps-form__progress">
                                             <button class="multisteps-form__progress-btn js-active" type="button"
-                                                title="User Info" onclick="getAddressDetails()">Address</button>
+                                                title="User Info">Address</button>
                                             <button class="multisteps-form__progress-btn" type="button"
                                                 title="Order Info">Payment</button>
                                             <button class="multisteps-form__progress-btn" type="button"
@@ -215,10 +215,10 @@
                                     <div class="col-12 col-lg-8">
                                         <form class="multisteps-form__form">
                                             <!--single form panel-->
-                                            <div class="multisteps-form__panel shadow p-4 rounded bg-white"
-                                                data-animation="scaleIn">
+                                            <div class="multisteps-form__panel shadow p-4 rounded bg-white js-active"
+                                                data-animation="scaleIn" >
                                                 <h6 class="multisteps-form__title">Please approve your billing address before purchase</h6>
-                                                <div class="multisteps-form__content">
+                                                <div class="multisteps-form__content multisteps-form__textarea">
                                                     <div class="form-row mt-4">
                                                         <div class="col-12 col-sm-6">
                                                             <input id="check-first-name" class="multisteps-form__input form-control"
@@ -255,7 +255,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="button-row d-flex mt-4">
-                                                        <button id="check-address-next" class="btn btn-primary ml-auto js-btn-next"
+                                                        <button id="check-address-next" class="btn btn-primary ml-auto js-btn-next js-active"
                                                             type="button" title="Next" onclick="checkAddressFields()">Next</button>
                                                     </div>
 
@@ -269,10 +269,10 @@
 
                                             <!--single form panel-->
 
-                                            <div class="multisteps-form__panel shadow p-4 rounded bg-white js-active"
+                                            <div class="multisteps-form__panel shadow p-4 rounded bg-white"
                                                 data-animation="scaleIn">
                                                 <h6 class="modal-title">Please insert payment details:</h6>
-                                                <div class="multisteps-form__content">
+                                                <div class="multisteps-form__content multisteps-form__textarea">
                                                     <div class="container-fluid d-flex">
                                                         <div class="col-md-7">
                                                             <div class="form-row d- mt-4">
@@ -289,24 +289,24 @@
                                                             <div class="form-row mt-4">
                                                                 <div class="col-12 col-sm-6">
                                                                     <lable>Credit card number</lable>
-                                                                    <input class="multisteps-form__input form-control"
+                                                                    <input id="check-card-number" class="multisteps-form__input form-control"
                                                                         type="text" placeholder="1111-2222-3333-4444" />
                                                                 </div>
                                                                 <div class="col-12 col-sm-6 mt-4 mt-sm-0">
                                                                     <lable>Name on Card</lable>
-                                                                    <input class="multisteps-form__input form-control"
+                                                                    <input id="check-name-on-card" class="multisteps-form__input form-control"
                                                                         type="text" placeholder="John Doe" />
                                                                 </div>
                                                             </div>
                                                             <div class="form-row mt-4">
                                                                 <div class="col-12 col-sm-6">
                                                                     <lable>Exp. date</lable>
-                                                                    <input class="multisteps-form__input form-control"
+                                                                    <input id="check-exp-card" class="multisteps-form__input form-control"
                                                                         type="text" placeholder="10/2022" />
                                                                 </div>
                                                                 <div class="col-12 col-sm-6 mt-4 mt-sm-0">
                                                                     <lable>CVV</lable>
-                                                                    <input class="multisteps-form__input form-control"
+                                                                    <input id="check-cvv-card" class="multisteps-form__input form-control"
                                                                         type="text" placeholder="352" />
                                                                 </div>
                                                            
@@ -314,8 +314,8 @@
                                                             <div class="form-row mt-4">
 
                                                             <div class="col-12 col-sm-9 mt-4 mt-sm-0" style="display: inline-flex;">
-                                                                <input class="multisteps-form__input form-control" type="text" placeholder="Add you promotinal code" style="margin-right: 2%;" />
-                                                                    <button id="check-payment-submit" class="btn btn-secondary ml-auto "type="button" title="Submit">Submit</button>
+                                                                <input id="check-promo-code" class="multisteps-form__input form-control" type="text" placeholder="Add you promotinal code" style="margin-right: 2%;" />
+                                                                    <button id="check-payment-submit" class="btn btn-secondary ml-auto" type="button" title="Submit">Submit</button>
                                                             </div>
                                                         </div>
 
@@ -359,7 +359,7 @@
                                                     <div class="button-row d-flex mt-4">
                                                         <button class="btn btn-primary js-btn-prev" type="button"
                                                             title="Prev">Prev</button>
-                                                        <button class="btn btn-primary ml-auto js-btn-next"
+                                                        <button id="check-pay-next" class="btn btn-primary ml-auto js-btn-next"
                                                             type="button" title="Next">Next</button>
 
                                                     </div>
@@ -375,7 +375,7 @@
                                             <!--single form panel-->
 
 
-                                            <div class="multisteps-form__panel shadow p-4 rounded bg-white js-active"
+                                            <div class="multisteps-form__panel shadow p-4 rounded bg-white"
                                                 data-animation="scaleIn">
                                                 <h4 class="modal-title" style="font-family: Nunito,-apple-system,BlinkMacSystemFont;">Thank you for the purchase!</h4>
                                                 <h6 class="modal-title">We have sent an email with the order details to
@@ -455,7 +455,7 @@
                 stepsBtns: document.querySelectorAll(`.multisteps-form__progress-btn`),
                 stepsBar: document.querySelector('.multisteps-form__progress'),
                 stepsForm: document.querySelector('.multisteps-form__form'),
-                stepsFormTextareas: document.querySelectorAll('.multisteps-form__textarea'),
+                stepsFormTextareas: document.querySelector('.multisteps-form__textarea'),
                 stepFormPanelClass: 'multisteps-form__panel',
                 stepFormPanels: document.querySelectorAll('.multisteps-form__panel'),
                 stepPrevBtnClass: 'js-btn-prev',
@@ -480,9 +480,9 @@
                 let currentNode = elem;
 
                 while (!currentNode.classList.contains(parentClass)) {
-                    if (window.CP.shouldStopExecution(0)) break;
+                   // if (window.CP.shouldStopExecution(0)) break;
                     currentNode = currentNode.parentNode;
-                } window.CP.exitedLoop(0);
+                } //window.CP.exitedLoop(0);
 
                 return currentNode;
 
@@ -562,6 +562,17 @@
                 formHeight(activePanel);
             };
 
+            DOMstrings.stepsFormTextareas.addEventListener('input', e =>{
+               var activePanel = getActivePanel();
+               let activePanelNum = Array.from(DOMstrings.stepFormPanels).indexOf(activePanel);
+               console.log(activePanelNum);
+               if(activePanelNum==0)
+               {
+                checkAddressFields();
+               } else if(activePanelNum==1){
+                checkPaymentFields();
+               }
+            });
             //STEPS BAR CLICK FUNCTION
             DOMstrings.stepsBar.addEventListener('click', e => {
 
@@ -582,11 +593,13 @@
                 setActivePanel(activeStep);
             });
 
+
             //PREV/NEXT BTNS CLICK
             DOMstrings.stepsForm.addEventListener('click', e => {
 
                 const eventTarget = e.target;
-
+                checkAddressFields();
+                checkPaymentFields();
                 //check if we clicked on `PREV` or NEXT` buttons
                 if (!(eventTarget.classList.contains(`${DOMstrings.stepPrevBtnClass}`) || eventTarget.classList.contains(`${DOMstrings.stepNextBtnClass}`))) {
                     return;
@@ -629,11 +642,11 @@
             //selector onchange - changing animation
             const animationSelect = document.querySelector('.pick-animation__select');
 
-            animationSelect.addEventListener('change', () => {
+           /* animationSelect.addEventListener('change', () => {
                 const newAnimationType = animationSelect.value;
 
                 setAnimationType(newAnimationType);
-            });
+            });*/
 
         </script>
 

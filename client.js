@@ -375,6 +375,7 @@ function showAddressTabFields(userDetails)
     $('#check-country').val(userDetails.country);
     $('#check-phone-number').val(userDetails.phonenumber);
     $('#check-zip').val(userDetails.zipcode);
+    checkAddressFields();
 }
 
 function showPassConfirmation() {
@@ -605,12 +606,13 @@ function deleteProductFromCart(productName, productType)
 
 function checkOut()
 {
+    $('#check-address-next').prop('disabled', true);
     location.replace('/payment.html');
 }
 
 /*checkAddressFields:
-trigger: user click on 'Next' button on 'Address' tab in 'payment.html' page
-output: if all fields have values - move to 'Payment' tab, else- show error pop-up */
+trigger: eventHendler on input fields in 'Address' tab
+output: if all fields have values - enable 'Next' button*/
 function checkAddressFields()
 {
     var userDetails = {
@@ -625,12 +627,31 @@ function checkAddressFields()
     if((userDetails.firstName=="")||(userDetails.lastName=="")||(userDetails.phoneNumber=="")
     ||(userDetails.country=="")||(userDetails.city=="")||(userDetails.street=="")||(userDetails.zipCode==""))
     {
-        alert("Plase fill all fields before payment");
+        $('#check-address-next').prop('disabled', true);
     }
     else{
-        //document.getElementById('#check-address-next').disabled = false;
-        //display payment tab
+        $('#check-address-next').prop('disabled', false);
     }
+}
+
+function checkPaymentFields()
+{
+    var payDetails = {
+        cardNumber: $('#check-card-number').val(),
+        nameOnCard: $('#check-name-on-card').val(),
+        cardExp: $('#check-exp-card').val(),
+        cardCvv:  $('#check-cvv-card').val(),
+        promoCode: $('#check-promo-code').val()
+    };
+    if((payDetails.cardNumber=="")||(payDetails.nameOnCard=="")||(payDetails.cardExp=="")
+    ||(payDetails.cardCvv=="")||(payDetails.promoCode==""))
+    {
+        $('#check-payment-submit').prop('disabled', true);
+        $('#check-pay-next').prop('disabled', true);
+    } else{
+        $('#check-payment-submit').prop('disabled', false);
+    }
+
 }
 
 
