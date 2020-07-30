@@ -1,5 +1,3 @@
-// const { controllers } = require("chart.js");
-
 var email;
 var password;
 var password_confirmation;
@@ -10,7 +8,7 @@ var indexFlag = -1;
 var phoneType;
 var phonePrice;
 //Cell-phones images
-let phonesImg = [
+const phonesImg = [
     {  name: "Samsung Galaxy S10", img: "https://i.ibb.co/nMQ5SN4/Samsung-Galaxy-S10.png" },
     {  name: "Huawei P40",  img: "https://i.ibb.co/xsLQZfG/Huawei-P40.png"  },
     {  name: "iPhone 11 Pro Max",   img: "https://i.ibb.co/4F1t4hK/iphone.png" },
@@ -426,7 +424,7 @@ function getPhones() {
                 var dataRow = `<div class="container1">
                 <div class="row">
                 <div class="col-6">
-                <img class="img_product" src="https://i.ibb.co/pr3j1f3/galaxy10.png"/>
+                <img class="img_product" src=`+phoneImg+`/>
                 </div>
                 <div class="col-6"> 
                 <div class="product"> 
@@ -506,7 +504,6 @@ output: get all user products from 'userproducts' table, store them and replace 
 function getCart()
 {
     var userName = { email: JSON.parse(sessionStorage.getItem('user')).email };
-    //Get request from server - all products in user cart
     $.ajax({
         type: 'POST',
         url: '/get-cart',
@@ -604,6 +601,10 @@ function deleteProductFromCart(productName, productType)
     });  
 }
 
+/*checkOut:
+trigger: user click on 'check-out' button in 'cart.html' page
+output: 'payment.html' page
+ */
 function checkOut()
 {
     $('#check-address-next').prop('disabled', true);
@@ -634,6 +635,9 @@ function checkAddressFields()
     }
 }
 
+/*checkPaymentFields:
+trigger: eventHendler on input fields in 'Payment' tab
+output: if all fields have values - enable 'Submit' button*/
 function checkPaymentFields()
 {
     var payDetails = {
@@ -649,10 +653,91 @@ function checkPaymentFields()
         $('#check-payment-submit').prop('disabled', true);
         $('#check-pay-next').prop('disabled', true);
     } else{
-        $('#check-payment-submit').prop('disabled', false);
-    }
+        $('#check-payment-submit').prop('disabled', false);  
+    }  
+}
+
+/*fillCart:
+trigger: user click on 'Next' button from 'Address' tab in 'payment.html' page
+output: displayed user cart in container */
+function fillCart()
+{
+    var userName = { email: JSON.parse(sessionStorage.getItem('user')).email };
+    //Get request from server - all products in user cart
+    $.ajax({
+        type: 'POST',
+        url: '/get-cart',
+        data: userName,
+        dataType: 'json',
+        success: function (cartData) {
+            var totalPrice = 0.0;
+            for(var i = 0; i < cartData.length; i++)
+            {
+                var obj = cartData[i];
+                var dataRow = `<p>`+obj.count+`X `+obj.product_name+`</a> <span class="price">`+obj.product_price+`</span>
+                </p>`;
+                $(dataRow).appendTo('#enter-product');
+                totalPrice += parseFloat(obj.product_price)*obj.count;  
+            } //end for
+            totalPriceVat = totalPrice*1.17;
+            cartToPrice = totalPriceVat;
+            totalPrice = totalPrice.toFixed(0);
+            totalPriceVat = totalPriceVat.toFixed(0);
+            totalPrice = totalPrice.toString()+'$';
+            totalPriceVat = totalPriceVat.toString()+'$';
+            $('#total-price-payment').html(totalPrice);
+            $('#total-price-vat').html(totalPriceVat);
+        },
+        error: function (err) {
+            alert(err);
+        }
+    });    
+}
+
+/*checkUserPromocode:
+trigger: user click on 'Submit' button on 'Payment' tab in 'payment.html' page
+output: if promo code valid- check if user have discount */
+function checkUserPromocode()
+{
+    var promocode = {  promocode: $('#check-promo-code').val() } ;
+    var userName = {   email: JSON.parse(sessionStorage.getItem('user')).email };
+    $.ajax({
+        type: 'POST',
+        url: '/get-promocode',
+        data: userName,
+        dataType: 'json',
+        success: function (promocodeData) {
+            console.log(promocodeData);
+            if(promocode.promocode=="3XCRt")
+            {
+                if(promocodeData == "1")
+                {
+                    var totPrice = document.getElementById('total-price-payment').innerHTML;
+                    totPrice = parseFloat(totPrice);
+                    totPrice = totPrice*0.9;
+                    var totPriceVat = totPrice*1.17;
+                    totPrice = totPrice.toFixed(0);
+                    totPriceVat = totPriceVat.toFixed(0);
+                    totPrice = totPrice.toString()+'$';
+                    totPriceVat = totPriceVat.toString()+'$';
+                    alert("You have 10% discount!:)");
+                    $('#total-price-payment').html(totPrice);
+                    $('#total-price-vat').html(totPriceVat);
+                } else {
+                    alert("Sorry we couldn't recognized any discount code!");
+                }
+                $('#check-pay-next').prop('disabled', false);  
+            } else{
+                alert("Invalid promo code. Please enter another");
+            }
+        },
+        error: function (err) {
+            alert(err);
+        }
+    });    
 
 }
+
 
 
 
