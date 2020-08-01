@@ -242,6 +242,7 @@ app.post('/register', async function (req, res) {
     familyname: req.body.familyname.toLowerCase(),
     email: req.body.email.toLowerCase(),
     password: encryptPassword(req.body.password),
+    promocode: req.body.promocode,
     confirmed: false
   }
 

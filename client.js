@@ -107,12 +107,29 @@ function SignUp() {
     first_text_box = document.getElementById("first");
     last_text_box = document.getElementById("last");
     error_message = document.getElementById("errorMessage");
+    promo_code = document.getElementById("promocode").value;
+
+    console.log(promo_code);
+
+    if(promo_code=="3XCRt"){
+        promo_code="1";
+    }
+    else if(promo_code=="4DFG"){
+        promo_code="2";
+    }
+    else if(promo_code=="6DSQW"){
+        promo_code="3";
+    }
+    else {
+        promo_code="0";
+    }
 
     var signUp_details = {
         email: email_text_box.value,
         password: password_text_box.value,
         firstname: first_text_box.value,
-        familyname: last_text_box.value
+        familyname: last_text_box.value,
+        promocode: promo_code
     }
 
     email = email_text_box.value;
