@@ -324,6 +324,8 @@ function getAddressDetails() {
 
 function updateDetails() {
     //update profile fields after change
+
+ 
     var userToUpdate = {
         email: $('#email_profile').val(),
         password: $('#password_profile').val(),
@@ -335,6 +337,35 @@ function updateDetails() {
         phonenumber: $('#number_profile').val(),
         zipcode: $('#zipcode_profile').val()
     }
+    if(userToUpdate.email.val==""){
+
+    }
+    if(userToUpdate.password.val==""){
+
+    }
+    if(userToUpdate.name.val==""){
+
+    }
+    if(userToUpdate.familyname.val==""){
+
+        
+    }
+    if(userToUpdate.street.val==""){
+
+    }
+    if(userToUpdate.city.val==""){
+
+    }
+    if(userToUpdate.country.val==""){
+
+    }
+    if(userToUpdate.phonenumber.val==""){
+
+    }
+    if(userToUpdate.zipcode.val==""){
+
+    }
+
     $.ajax({
         type: 'POST',
         url: '/profileupdate',
