@@ -734,10 +734,14 @@ function fillCart()
         dataType: 'json',
         success: function (cartData) {
             var totalPrice = 0.0;
+            //before showing the cart need to clean cart form
+            $('#enter-product').each(function(){
+                $(".pToEmpty").empty();
+            });
             for(var i = 0; i < cartData.length; i++)
             {
                 var obj = cartData[i];
-                var dataRow = `<p>`+obj.count+`X `+obj.product_name+`</a> <span class="price">`+obj.product_price+`</span>
+                var dataRow = `<p class="pToEmpty">`+obj.count+`X `+obj.product_name+`<span class="price">`+obj.product_price+`</span>
                 </p>`;
                 $(dataRow).appendTo('#enter-product');
                 totalPrice += parseFloat(obj.product_price)*obj.count;  
@@ -773,8 +777,7 @@ function checkUserPromocode()
             console.log(promocodeData);
             if(promocode.promocode=="3XCRt")
             {
-                if(promocodeData == "1")
-                {
+                if(promocodeData == "1"){
                     var totPrice = document.getElementById('total-price-payment').innerHTML;
                     totPrice = parseFloat(totPrice);
                     totPrice = totPrice*0.9;
@@ -783,11 +786,13 @@ function checkUserPromocode()
                     totPriceVat = totPriceVat.toFixed(0);
                     totPrice = totPrice.toString()+'$';
                     totPriceVat = totPriceVat.toString()+'$';
-                    alert("You have 10% discount!:)");
                     $('#total-price-payment').html(totPrice);
                     $('#total-price-vat').html(totPriceVat);
-                } else {
-                    alert("Sorry we couldn't recognized any discount code!");
+                    addToPurchases();
+                } else if (promocodeData == "2"){
+                    alert("You have 15% discount in the next purchas!");
+                } else if (promocodeData == "3"){
+                    alert("You have 30% discount in April month!");
                 }
                 $('#check-pay-next').prop('disabled', false);  
             } else{
@@ -797,15 +802,92 @@ function checkUserPromocode()
         error: function (err) {
             alert(err);
         }
-    });    
-
+    });   
 }
 
+function addToPurchases()
+{
+    
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    today = mm + '/' + dd + '/' + yyyy;
+    var userAndDate = {   email: JSON.parse(sessionStorage.getItem('user')).email,
+                          date: today };
+    $.ajax({
+        type: 'POST',
+        url: '/add-to-purchases',
+        data: userAndDate,
+        success: function (res) {
+           alert("cooooool!");
+        },
+        error: function (err) {
+            alert(err);
+        }
+    });  
+}
 
+function getPurchases()
+{
+    var userName = {   email: JSON.parse(sessionStorage.getItem('user')).email};
+    $.ajax({
+    type: 'POST',
+    url: '/get-purchases',
+    data: userName,
+    success: function (purchasesData) {
+        sessionStorage.setItem('purchases-data', JSON.stringify(purchasesData));
+        showPurchases();
+    },
+    error: function (err) {
+        alert(err);
+    }
+});  
+}
 
-
-
-
-
+function showPurchases()
+{
+    var purchasesData = JSON.parse(sessionStorage.getItem('purchases-data'));
+    for(var i = 0; i < purchasesData.length; i++)
+    {
+        var obj = purchasesData[i];
+        var phoneImg = ``;
+        for(var k = 0; k < phonesImg.length; k++){  //selecting phone image
+            if(phonesImg[k].name == obj.product_name){
+                phoneImg = phonesImg[k].img;
+            }
+        } //end picking phone image
+        var dataRow = `<div class="item">
+        <div class="price"></div>
+        <div class="image"><img src="https://i.ibb.co/pr3j1f3/galaxy10.png" alt="" />
+        </div>
+        <div class="price-pur">
+            <div class="description">
+                <span>`+obj.product_name+`</span>
+                <span>`+obj.product_type+`</span>
+            </div>
+            <div>
+                <div style="display: inline-flex;">Date of purchase:
+                </div>
+                <div style="display: inline-flex;">`+obj.date+`</div>
+            </div>
+            <div>
+                <div style="display: inline-flex;">Total Amount:
+                </div>
+                <div style="display: inline-flex;">`+obj.product_price+`</div>
+            </div>
+            <div>
+                <div>Quantity:</div>
+                <div>`+obj.count+`</div>
+            </div>
+        </div>
+       
+        <div style="margin-top: 1%;">
+            <button class="add">Add to Cart</button>
+        </div>
+    </div>`;
+    $(dataRow).appendTo('#wrapper2');
+    }//end for
+}
 
 

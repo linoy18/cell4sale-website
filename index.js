@@ -471,6 +471,75 @@ app.post('/get-promocode',async function (req, res) {
 }
 });
 
+app.post('/add-to-purchases',async function (req, res) {
+  var userName = req.body.email;
+  userName = userName.toLowerCase();
+  var date = req.body.date;
+  try{
+   //taking user ID by email from users table
+   var query = "SELECT * FROM users WHERE email='" + userName + "'";
+   let result = await db.oneOrNone(query);
+   if(result){
+     var userID = result.id;
+     query = "SELECT * FROM userproducts WHERE user_id='" + userID + "'";
+     let results = await db.any(query);
+     if(!results) {
+      res.writeHead(404);
+      res.end();
+     } else {
+       var productName;
+       var productType;
+       var productPrice;
+       var count; 
+       for(var i=0; i<results.length; i++){
+         var obj = results[i];
+         productName = obj.product_name;
+         productType = obj.product_type;
+         productPrice = obj.product_price;
+         count = obj.count;
+        query = "INSERT INTO userpurchases(user_id, product_name, product_type, product_price,count,date) VALUES('"+userID+"','"+productName+"','"+productType+"','"+productPrice+"','"+count+"','"+date+"')";
+        await db.none(query);
+       }
+      res.writeHead(200);
+      res.end();
+     }
+    
+   } else{
+     res.writeHead(404);
+     res.end();
+   }
+} catch (err) {
+  console.log(err.message);
+}
+});
+
+app.post('/get-purchases',async function (req, res) {
+  var userName = req.body.email;
+  userName = userName.toLowerCase();
+  try{
+   //taking user ID by email from users table
+   var query = "SELECT * FROM users WHERE email='" + userName + "'";
+   let result = await db.oneOrNone(query);
+   if(result){
+     var userID = result.id;
+     query = "SELECT * FROM userpurchases WHERE user_id='" + userID + "'";
+     let results = await db.any(query);
+     if(!results) {
+      res.writeHead(404);
+      res.end();
+     } else {
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(results))
+     }
+ 
+   } else{
+     res.writeHead(404);
+     res.end();
+   }
+} catch (err) {
+  console.log(err.message);
+}
+});
 
 //Password encryption function 
 function encryptPassword(password) {
