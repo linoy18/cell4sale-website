@@ -282,6 +282,10 @@ function logOut() {
     location.replace('/login');
 }
 
+
+
+
+
 /*getProfileDetails:
 trigger: loading 'profile.html' page
 output: get user information from db*/
@@ -322,6 +326,24 @@ function getAddressDetails() {
 
 function updateDetails() {
     //update profile fields after change
+
+    var userName = {
+        email: JSON.parse(sessionStorage.getItem('user')).email,
+    }
+    $.ajax({
+        type: 'POST',
+        url: '/profiledetails',
+        data: userName,
+        success: function (profile_details) {
+            updateDetails2(profile_details);
+        },
+        error: function (err) { console.log(err); }
+    });
+  
+}
+
+
+function updateDetails2(prev_profile_details){
     var userToUpdate = {
         email: $('#email_profile').val(),
         password: $('#password_profile').val(),
@@ -333,6 +355,43 @@ function updateDetails() {
         phonenumber: $('#number_profile').val(),
         zipcode: $('#zipcode_profile').val()
     }
+    if(userToUpdate.email=="")
+    {
+        userToUpdate.email=prev_profile_details.email;
+    }
+    if(userToUpdate.password=="")
+    {
+        userToUpdate.password=prev_profile_details.password;
+    }
+    if(userToUpdate.name=="")
+    {
+        userToUpdate.name=prev_profile_details.name;
+    }
+    if(userToUpdate.familyname=="")
+    {
+        userToUpdate.familyname=prev_profile_details.familyname;
+    }
+    if(userToUpdate.street=="")
+    {
+        userToUpdate.street=prev_profile_details.street;
+    }
+    if(userToUpdate.city=="")
+    {
+        userToUpdate.city=prev_profile_details.city;
+    }
+    if(userToUpdate.country=="")
+    {
+        userToUpdate.country=prev_profile_details.country;
+    }
+    if(userToUpdate.phonenumber=="")
+    {
+        userToUpdate.phonenumber=prev_profile_details.phonenumber;
+    }
+    if(userToUpdate.zipcode=="")
+    {
+        userToUpdate.zipcode=prev_profile_details.zipcode;
+    }
+
     $.ajax({
         type: 'POST',
         url: '/profileupdate',
@@ -340,6 +399,7 @@ function updateDetails() {
         success: function (user_updated) {
             console.log(user_updated);
             updateUserProfileFields(user_updated);
+            $('#updateModal').modal('show');
         },
         error: function (err) { console.log(err); }
     });
@@ -359,6 +419,7 @@ function updateUserProfileFields(userDetails)
     $('#country_profile').val(userDetails.country);
     $('#number_profile').val(userDetails.phonenumber);
     $('#zipcode_profile').val(userDetails.zipcode);
+
 }
 
 /*showAddressTabFields:
@@ -487,14 +548,15 @@ function addToCart(productId, index)
         data: productData,
         success: function (res) {
             //here I need to add +1 to cart counter after getting cart items from server
-            alert("Product added to cart successfully!:)");
+            // alert("Product added to cart successfully!:)");
+            $('#addToCart').modal('show');
         },
         error: function (err) {
             alert(err);
         }
     });
    } else{
-       alert("Please choose model first");
+    $('#phoneCapacityModal').modal('show');
    }
 }
 

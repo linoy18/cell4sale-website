@@ -139,14 +139,15 @@
             </li>
 
            <!-- Nav Item - Alerts -->
-           <li class="nav-item dropdown no-arrow mx-1">
-            <a class="nav-link dropdown-toggle" href="cart.html" id="alertsDropdown" role="button" 
-            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="getCart()">
+           <li class="nav-item dropdown no-arrow mx-1" >
+            <a class="nav-link dropdown-toggle" id="alertsDropdown" href="cart.html" role="button" 
+              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="getCart()">
               <i class="fa fa-shopping-cart" aria-hidden="true"></i>
               <!-- Counter - Alerts -->
-              <span class="badge badge-info badge-counter">+1</span>
+              <span class="badge badge-info badge-counter" >+1</span>
             </a>
           </li>
+
 
             <div class="topbar-divider d-none d-sm-block"></div>
 
@@ -210,26 +211,48 @@
     </div>
   </div>
 
-  <!-- Alert Modal-->
+  <!-- Add to cart Modal-->
 <div class="alert-box" display="none">
-  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="addToCart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel"></h5>
+          <h5 class="modal-title" id="exampleModalLabel">Update Cart</h5>
           <button class="close" type="button" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true"></span>
           </button>
         </div>
-        <div class="modal-body">Here need to fill the description</div>
+        <div class="modal-body">Your Cart Has Been Updated!</div>
         <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" href="login.html">Ok</a>
-        </div>
+          <a class="btn btn-primary" href="phones.html">Continue With Purchase</a>
+          <button class="btn btn-secondary" onclick="getCart()">Go to Cart</button>
+      </div>
       </div>
     </div>
   </div>
 </div>
+
+  <!-- Please Choose Model First Modal-->
+  <div class="alert-box" display="none">
+    <div class="modal fade" id="phoneCapacityModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Please Choose Phone Capacity</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true"></span>
+            </button>
+          </div>
+          <div class="modal-body">Please choose phone capacity before we add it to your cart</div>
+          <div class="modal-footer">
+            <a class="btn btn-primary" href="phones.html">OK</a>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
 
 
   <!-- Bootstrap core JavaScript-->

@@ -154,16 +154,16 @@
                             </div>
                         </li>
 
-                        <!-- Nav Item - Alerts -->
-                        <li class="nav-item dropdown no-arrow mx-1">
-                            <a class="nav-link dropdown-toggle" id="alertsDropdown" role="button" href="/cart.html"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="getCart()">
-                                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                <!-- Counter - Alerts -->
-                                <span class="badge badge-info badge-counter">+1</span>
-                            </a>
-                        </li>
-
+                   <!-- Nav Item - Alerts -->
+            <li class="nav-item dropdown no-arrow mx-1" >
+                <a class="nav-link dropdown-toggle" id="alertsDropdown" href="cart.html" role="button" 
+                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="getCart()">
+                  <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                  <!-- Counter - Alerts -->
+                  <span class="badge badge-info badge-counter" >+1</span>
+                </a>
+              </li>
+  
 
 
                         <div class="topbar-divider d-none d-sm-block"></div>
@@ -479,7 +479,28 @@
                         </div>
                     </div>
                 </div>
+            </div>
 
+            
+            <!-- Update Details Modal-->
+            <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Update Details</h5>
+                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">Your Profile Details Has Been Updated Successfully!
+                        </div>
+                        <div class="modal-footer">
+                            <!-- <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button> -->
+                            <a class="btn btn-primary" href="profile.html">OK</a>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Bootstrap core JavaScript-->
