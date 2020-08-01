@@ -449,6 +449,28 @@ app.post('/delete-from-cart',async function (req, res) {
 }
 }); 
 
+app.post('/get-promocode',async function (req, res) {
+  var userName = req.body.email;
+  userName = userName.toLowerCase();
+  try{
+   //taking user ID by email from users table
+   var query = "SELECT * FROM users WHERE email='" + userName + "'";
+   let results = await db.oneOrNone(query);
+   if(results)
+   {
+     var userID = results.id;
+     var promocode = results.promocode;
+     res.writeHead(200, { 'Content-Type': 'application/json' });
+     res.end(JSON.stringify(promocode));
+   } else{
+     res.writeHead(404);
+     res.end();
+   }
+} catch (err) {
+  console.log(err.message);
+}
+});
+
 
 //Password encryption function 
 function encryptPassword(password) {

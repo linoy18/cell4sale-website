@@ -148,15 +148,16 @@
                             </div>
                         </li>
 
-                        <!-- Nav Item - Alerts -->
-                        <li class="nav-item dropdown no-arrow mx-1">
-                            <a class="nav-link dropdown-toggle" href="cart.html" id="alertsDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                <!-- Counter - Alerts -->
-                                <span class="badge badge-info badge-counter">+1</span>
-                            </a>
-                        </li>
+              <!-- Nav Item - Alerts -->
+            <li class="nav-item dropdown no-arrow mx-1" >
+                <a class="nav-link dropdown-toggle" id="alertsDropdown" href="cart.html" role="button" 
+                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="getCart()">
+                  <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                  <!-- Counter - Alerts -->
+                  <span class="badge badge-info badge-counter" >+1</span>
+                </a>
+              </li>
+  
 
                         <div class="topbar-divider d-none d-sm-block"></div>
 
@@ -256,7 +257,7 @@
                                                     </div>
                                                     <div class="button-row d-flex mt-4">
                                                         <button id="check-address-next" class="btn btn-primary ml-auto js-btn-next js-active"
-                                                            type="button" title="Next" onclick="checkAddressFields()">Next</button>
+                                                            type="button" title="Next" onclick="fillCart()">Next</button>
                                                     </div>
 
 
@@ -315,7 +316,7 @@
 
                                                             <div class="col-12 col-sm-9 mt-4 mt-sm-0" style="display: inline-flex;">
                                                                 <input id="check-promo-code" class="multisteps-form__input form-control" type="text" placeholder="Add you promotinal code" style="margin-right: 2%;" />
-                                                                    <button id="check-payment-submit" class="btn btn-secondary ml-auto" type="button" title="Submit">Submit</button>
+                                                                    <button id="check-payment-submit" class="btn btn-secondary ml-auto" type="button" title="Submit" onclick="checkUserPromocode()">Submit</button>
                                                             </div>
                                                         </div>
 
@@ -331,24 +332,18 @@
                                                                                     class="fa fa-shopping-cart"></i>
                                                                                 <b>4</b></span></h4>
                                                                         </br>
-                                                                        <p>Product 1</a> <span class="price">$15</span>
-                                                                        </p>
-                                                                        <p>Product 2</a> <span class="price">$5</span>
-                                                                        </p>
-                                                                        <p>Product 3</a> <span class="price">$8</span>
-                                                                        </p>
-                                                                        <p>Product 4</a> <span class="price">$2</span>
-                                                                        </p>
+                                                                     <div id="enter-product"></div>
                                                                         <hr>
-                                                                        <p style="font-weight: bold;">Total <span
-                                                                                class="price"
-                                                                                style="  text-decoration: line-through; font-weight: bold;"><b>$30</b></span>
+                                                                     <div >
+                                                                        <p style="font-weight: bold;">Total
+                                                                            <span id="total-price-payment" class="price" style="text-decoration: line-through; font-weight: bold;">0$<b></b></span>
                                                                         </p>
-                                                                        <p style="font-weight: bold;">Total Including
-                                                                            VAT (17%) <span class="price"
-                                                                                style="font-weight: bold;"><b>$30</b></span>
-                                                                        </p>
-
+                                                                        <p style="font-weight: bold;">Total Including VAT (17%) 
+                                                                            <span id="total-price-vat" class="price"
+                                                                            style="font-weight: bold;"><b></b></span>
+                                                                            </p>
+                                                                     </div> 
+                                                                      
                                                                     </div>
                                                                 </div>
 
@@ -430,7 +425,7 @@
                     <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                     <div class="modal-footer-product">
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                        <a class="btn btn-primary" href="login.html">Logout</a>
+                        <button class="btn btn-primary" onclick = "logout()">Logout</button>
                     </div>
                 </div>
             </div>
