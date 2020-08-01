@@ -7,6 +7,7 @@ var themessage;
 var indexFlag = -1;
 var phoneType;
 var phonePrice;
+
 //Cell-phones images
 const phonesImg = [
     {  name: "Samsung Galaxy S10", img: "https://i.ibb.co/nMQ5SN4/Samsung-Galaxy-S10.png" },
@@ -277,7 +278,7 @@ function forget() {
 }
 
 
-function logOut() {
+function logout() {
     sessionStorage.removeItem("user");
     location.replace('/login');
 }
