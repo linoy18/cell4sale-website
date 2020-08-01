@@ -60,7 +60,7 @@ app.post('/profileupdate', async function (req, res) {
   }
 });
 
-
+//change the profile details
 app.post('/profiledetails', async function (req, res) {
   userToUpdate = req.body.email;
   try {
@@ -73,6 +73,25 @@ app.post('/profiledetails', async function (req, res) {
     result.password = password_dec;
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify(result));
+
+    var transporter = await nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'cell4salecontact@gmail.com',
+        pass: 'Aa123456!'
+      }
+    });
+
+    var mailOptions = {
+      from: 'cell4salecontact@gmail.com',
+      to: userToUpdate,
+      subject: 'Your Details Has Been Updated!',
+      html: updateDetailsMail()
+    };
+
+    let mailRes = await transporter.sendMail(mailOptions);
+    res.redirect('/profiledetails');
+
   } catch (err) {
     console.log(err);
     res.status(500).send(err.message);
@@ -172,7 +191,7 @@ app.post('/resendVerfication', async function (req, res) {
 
     const url = `${API_URL}register/confirmation/?email=${email}&verificationHash=${hash}`;
     var mailOptions = {
-      from: 'testForBraude@gmail.com',
+      from: 'cell4salecontact@gmail.com',
       to: email,
       subject: 'Welcome! Please activate your account',
 
@@ -196,14 +215,14 @@ app.get('/register/confirmation/', async function (req, res) {
   const hash = req.query.verificationHash;
   const isEmailVerified = verifyHash(hash, emailToVerify, MY_SECRET);
 
-  if (!isEmailVerified) {
-    throw new Error('Not Found');
-  }
-
-  var query = "UPDATE users SET confirmed=$1 WHERE email=$2";
-  await db.none(query, [true, emailToVerify]);
-
   try {
+    if (!isEmailVerified) {
+      throw new Error('Not Found');
+    }
+
+    var query = "UPDATE users SET confirmed=$1 WHERE email=$2";
+    await db.none(query, [true, emailToVerify]);
+
 
     var transporter = await nodemailer.createTransport({
       service: 'gmail',
@@ -214,7 +233,7 @@ app.get('/register/confirmation/', async function (req, res) {
     });
 
     var mailOptions = {
-      from: 'testForBraude@gmail.com',
+      from: 'cell4salecontact@gmail.com',
       to: emailToVerify,
       subject: 'Congratulations!',
       html: prepareCongratsMail()
@@ -269,7 +288,7 @@ app.post('/register', async function (req, res) {
 
     const url = `${API_URL}register/confirmation/?email=${obj.email}&verificationHash=${hash}`;
     var mailOptions = {
-      from: 'testForBraude@gmail.com',
+      from: 'cell4salecontact@gmail.com',
       to: obj.email,
       subject: 'Welcome to Cell4Sale!',
       html: prepareMail(url)
@@ -300,6 +319,8 @@ app.get('/forget-password', function (req, res) {
 });
 
 
+
+
 app.post('/forgetpassword', async function (req, res) {
   var obj = {
     email: req.body.email.toLowerCase(),
@@ -311,14 +332,72 @@ app.post('/forgetpassword', async function (req, res) {
     if (!result) {
       throw new Error("User does not exists");
     }
-    else {
-      ////////////////////////////////////////send link to the mail to insert new password
-    }
 
+    const hash = generateVerificationHash(obj.email, MY_SECRET, 30);
+
+    var transporter = await nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'cell4salecontact@gmail.com',
+        pass: 'Aa123456!'
+      }
+    });
+
+
+    const url = `${API_URL}resetpassword/?email=${obj.email}&verificationHash=${hash}`;
+    var mailOptions = {
+      from: 'cell4salecontact@gmail.com',
+      to: obj.email,
+      subject: 'Cell4Sale - Reset Password',
+      text: 'For resetting your password please click the link below: \n' + url
+
+    };
+
+    let mailRes = await transporter.sendMail(mailOptions);
+    res.writeHead(201);
+    res.end();
   } catch (err) {
     res.status(500).send(err.message);
   }
 });
+
+app.get('/resetpassword', function (req, res) {
+  res.sendFile(process.cwd() + '/activate_new_pass.html');
+  console.log("Redirected to activate new pass page");
+})
+
+app.get('/setnewpassword', function (req, res) {
+  res.send('success');
+})
+
+
+app.post('/setnewpassword', async function (req, res) {
+
+  try {
+    const emailToVerify = req.body.email;
+    const hash = req.body.hash;
+    const isEmailVerified = verifyHash(hash, emailToVerify, MY_SECRET);
+
+    if (!isEmailVerified) {
+      throw new Error('Validation Failed!');
+    }
+    var query = "SELECT * FROM users WHERE email='" + emailToVerify + "'";
+    let result = await db.oneOrNone(query);
+    if (!result) {
+      throw new Error("User does not exists");
+    }
+
+
+    var query = "UPDATE users SET password=$1 WHERE email=$2";
+    await db.none(query, [req.body.newPassword, emailToVerify]);
+
+    res.writeHead(200);
+    res.end();
+  }
+  catch (err) {
+    res.status(500).send(err.message);
+  }
+})
 
 //Get the cell-phones data from json file
 app.get('/get-phones', async function (req, res) {
@@ -334,214 +413,208 @@ app.get('/get-phones', async function (req, res) {
   }
 });
 
-app.post('/add-to-cart',async function (req, res) {
+app.post('/add-to-cart', async function (req, res) {
   var userName = req.body.email;
   userName = userName.toLowerCase();
   var productName = req.body.productId;
   var productType = req.body.productType;
   var productPrice = req.body.productPrice;
 
-  try{
+  try {
     //taking user ID by email from users table
     var query = "SELECT * FROM users WHERE email='" + userName + "'";
     let results = await db.oneOrNone(query);
-    if(results)
-    {
+    if (results) {
       var userID = results.id;
-    } else{
+    } else {
       res.writeHead(404);
       res.end();
     }
     //checking if item is already in cart- if true the count++, else add new row
-    query = "SELECT * FROM userproducts WHERE user_id='" + userID + "'AND product_name='"+productName+"'AND product_type='"+productType+"'";
+    query = "SELECT * FROM userproducts WHERE user_id='" + userID + "'AND product_name='" + productName + "'AND product_type='" + productType + "'";
     results = await db.oneOrNone(query);
-    if(!results)//insert new row in 'userproducts' table in DB
+    if (!results)//insert new row in 'userproducts' table in DB
     {
-      query = "INSERT INTO userproducts(user_id, product_name, product_type, product_price,count) VALUES('"+userID+"','"+productName+"','"+productType+"','"+productPrice+"','1')";
+      query = "INSERT INTO userproducts(user_id, product_name, product_type, product_price,count) VALUES('" + userID + "','" + productName + "','" + productType + "','" + productPrice + "','1')";
       await db.none(query);
       res.writeHead(200);
       res.end();
-    } else{ 
-    query = "UPDATE userproducts SET count=count+1 WHERE user_id='" + userID + "'AND product_name='"+productName+"'AND product_type='"+productType+"'";
-    await db.none(query);
-    res.writeHead(200);
-    res.end();
+    } else {
+      query = "UPDATE userproducts SET count=count+1 WHERE user_id='" + userID + "'AND product_name='" + productName + "'AND product_type='" + productType + "'";
+      await db.none(query);
+      res.writeHead(200);
+      res.end();
     }
-} catch (err) {
-  console.log(err.message);
-}
+  } catch (err) {
+    console.log(err.message);
+  }
 });
 
 //Get user's products in cart
-app.post('/get-cart',async function (req, res) {
+app.post('/get-cart', async function (req, res) {
   var userName = req.body.email;
   userName = userName.toLowerCase();
-  
-  try{
-   //taking user ID by email from users table
-   var query = "SELECT * FROM users WHERE email='" + userName + "'";
-   let results = await db.oneOrNone(query);
-   if(results)
-   {
-     var userID = results.id;
-   } else{
-     res.writeHead(404);
-     res.end();
-   }
-   //getting all rows in userproducts table where user_id==userID
-   query = "SELECT * FROM userproducts WHERE user_id='" + userID + "'";
-   results = await db.any(query);
 
-   if(!results)
-   {
-    res.writeHead(404);
-    res.end();
-   }else{
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify(results));
-   }
- 
-} catch (err) {
-  console.log(err.message);
-}
+  try {
+    //taking user ID by email from users table
+    var query = "SELECT * FROM users WHERE email='" + userName + "'";
+    let results = await db.oneOrNone(query);
+    if (results) {
+      var userID = results.id;
+    } else {
+      res.writeHead(404);
+      res.end();
+    }
+    //getting all rows in userproducts table where user_id==userID
+    query = "SELECT * FROM userproducts WHERE user_id='" + userID + "'";
+    results = await db.any(query);
+
+    if (!results) {
+      res.writeHead(404);
+      res.end();
+    } else {
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(results));
+    }
+
+  } catch (err) {
+    console.log(err.message);
+  }
 });
 
-app.post('/delete-from-cart',async function (req, res) {
+app.post('/delete-from-cart', async function (req, res) {
   var userName = req.body.email;
   userName = userName.toLowerCase();
   var productName = req.body.productName;
   var productType = req.body.productType;
-  try{
-   //taking user ID by email from users table
-   var query = "SELECT * FROM users WHERE email='" + userName + "'";
-   let results = await db.oneOrNone(query);
-   if(results)
-   {
-     var userID = results.id;
-   } else{
-     res.writeHead(404);
-     res.end();
-   }
-   //getting all rows in userproducts table where user_id==userID
-   query = "SELECT count FROM userproducts WHERE user_id='" + userID +"'AND product_name='"+productName+"'AND product_type='"+productType+"'";
-   results = await db.oneOrNone(query);
-  
-   if(!results) //in case there is not such product in cart
-   {
-    res.writeHead(404);
-    res.end();
-   }else{
-     console.log(results);
-     if(results.count == 1)
-     {
-      query = "DELETE FROM userproducts WHERE user_id='"+userID+"'AND product_name='"+productName+"'AND product_type='"+productType+"'";
-      await db.none(query);
-      res.writeHead(200);
+  try {
+    //taking user ID by email from users table
+    var query = "SELECT * FROM users WHERE email='" + userName + "'";
+    let results = await db.oneOrNone(query);
+    if (results) {
+      var userID = results.id;
+    } else {
+      res.writeHead(404);
       res.end();
-     } else{
-      query = "UPDATE userproducts SET count=count-1 WHERE user_id='" + userID + "'AND product_name='"+productName+"'AND product_type='"+productType+"'";
-      await db.none(query);
-      res.writeHead(200);
-      res.end();
-     }
-   }
-} catch (err) {
-  console.log(err.message);
-}
-}); 
+    }
+    //getting all rows in userproducts table where user_id==userID
+    query = "SELECT count FROM userproducts WHERE user_id='" + userID + "'AND product_name='" + productName + "'AND product_type='" + productType + "'";
+    results = await db.oneOrNone(query);
 
-app.post('/get-promocode',async function (req, res) {
-  var userName = req.body.email;
-  userName = userName.toLowerCase();
-  try{
-   //taking user ID by email from users table
-   var query = "SELECT * FROM users WHERE email='" + userName + "'";
-   let results = await db.oneOrNone(query);
-   if(results)
-   {
-     var userID = results.id;
-     var promocode = results.promocode;
-     res.writeHead(200, { 'Content-Type': 'application/json' });
-     res.end(JSON.stringify(promocode));
-   } else{
-     res.writeHead(404);
-     res.end();
-   }
-} catch (err) {
-  console.log(err.message);
-}
+    if (!results) //in case there is not such product in cart
+    {
+      res.writeHead(404);
+      res.end();
+    } else {
+      console.log(results);
+      if (results.count == 1) {
+        query = "DELETE FROM userproducts WHERE user_id='" + userID + "'AND product_name='" + productName + "'AND product_type='" + productType + "'";
+        await db.none(query);
+        res.writeHead(200);
+        res.end();
+      } else {
+        query = "UPDATE userproducts SET count=count-1 WHERE user_id='" + userID + "'AND product_name='" + productName + "'AND product_type='" + productType + "'";
+        await db.none(query);
+        res.writeHead(200);
+        res.end();
+      }
+    }
+  } catch (err) {
+    console.log(err.message);
+  }
 });
 
-app.post('/add-to-purchases',async function (req, res) {
+app.post('/get-promocode', async function (req, res) {
+  var userName = req.body.email;
+  userName = userName.toLowerCase();
+  try {
+    //taking user ID by email from users table
+    var query = "SELECT * FROM users WHERE email='" + userName + "'";
+    let results = await db.oneOrNone(query);
+    if (results) {
+      var userID = results.id;
+      var promocode = results.promocode;
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(promocode));
+    } else {
+      res.writeHead(404);
+      res.end();
+    }
+  } catch (err) {
+    console.log(err.message);
+  }
+});
+
+app.post('/add-to-purchases', async function (req, res) {
   var userName = req.body.email;
   userName = userName.toLowerCase();
   var date = req.body.date;
   var discount = req.body.discount;
   console.log(discount);
-  try{
-   //taking user ID by email from users table
-   var query = "SELECT * FROM users WHERE email='" + userName + "'";
-   let result = await db.oneOrNone(query);
-   if(result){
-     var userID = result.id;
-     query = "SELECT * FROM userproducts WHERE user_id='" + userID + "'";
-     let results = await db.any(query);
-     if(!results) {
+  try {
+    //taking user ID by email from users table
+    var query = "SELECT * FROM users WHERE email='" + userName + "'";
+    let result = await db.oneOrNone(query);
+    if (result) {
+      var userID = result.id;
+      query = "SELECT * FROM userproducts WHERE user_id='" + userID + "'";
+      let results = await db.any(query);
+      if (!results) {
+        res.writeHead(404);
+        res.end();
+      } else {
+        var productName;
+        var productType;
+        var productPrice;
+        var count;
+        for (var i = 0; i < results.length; i++) {
+          var obj = results[i];
+          productName = obj.product_name;
+          productType = obj.product_type;
+          productPrice = obj.product_price;
+          count = obj.count;
+          query = "INSERT INTO userpurchases(user_id, product_name, product_type, product_price,count,date) VALUES('" + userID + "','" + productName + "','" + productType + "','" + productPrice + "','" + count + "','" + date + "')";
+          await db.none(query);
+        }
+        res.writeHead(200);
+        res.end();
+      }
+
+    } else {
       res.writeHead(404);
       res.end();
-     } else {
-       var productName;
-       var productType;
-       var productPrice;
-       var count; 
-       for(var i=0; i<results.length; i++){
-         var obj = results[i];
-         productName = obj.product_name;
-         productType = obj.product_type;
-         productPrice = obj.product_price;
-         count = obj.count;
-        query = "INSERT INTO userpurchases(user_id, product_name, product_type, product_price,count,date) VALUES('"+userID+"','"+productName+"','"+productType+"','"+productPrice+"','"+count+"','"+date+"')";
-        await db.none(query);
-       }
-      res.writeHead(200);
-      res.end();
-     }
-    
-   } else{
-     res.writeHead(404);
-     res.end();
-   }
-} catch (err) {
-  console.log(err.message);
-}
+    }
+  } catch (err) {
+    console.log(err.message);
+  }
 });
 
-app.post('/get-purchases',async function (req, res) {
+app.post('/get-purchases', async function (req, res) {
   var userName = req.body.email;
   userName = userName.toLowerCase();
-  try{
-   //taking user ID by email from users table
-   var query = "SELECT * FROM users WHERE email='" + userName + "'";
-   let result = await db.oneOrNone(query);
-   if(result){
-     var userID = result.id;
-     query = "SELECT * FROM userpurchases WHERE user_id='" + userID + "'";
-     let results = await db.any(query);
-     if(!results) {
+  try {
+    //taking user ID by email from users table
+    var query = "SELECT * FROM users WHERE email='" + userName + "'";
+    let result = await db.oneOrNone(query);
+    if (result) {
+      var userID = result.id;
+      query = "SELECT * FROM userpurchases WHERE user_id='" + userID + "'";
+      let results = await db.any(query);
+      if (!results) {
+        res.writeHead(404);
+        res.end();
+      } else {
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(results))
+      }
+
+    } else {
       res.writeHead(404);
       res.end();
-     } else {
-      res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify(results))
-     }
- 
-   } else{
-     res.writeHead(404);
-     res.end();
-   }
-} catch (err) {
-  console.log(err.message);
-}
+    }
+  } catch (err) {
+    console.log(err.message);
+  }
 });
 
 //Password encryption function 
@@ -575,7 +648,7 @@ var server = app.listen(port, function () {
 
 
 
-//////////////////////////////////////////////---***Forgeet-Password Handling Function***---/////////////////////////////////////////////
+/////////////////////////////////////////////////---***functions that prepare the emails to send***---///////////////////////////////////////////
 
 
 function prepareMail(url) {
@@ -754,6 +827,166 @@ function prepareMail(url) {
 </body>`
 }
 
+
+
+function updateDetailsMail() {
+  return `<!DOCTYPE html>
+  <html>
+  
+  <head>
+      <title></title>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <style type="text/css">
+          @media screen {
+              @font-face {
+                  font-family: 'Lato';
+                  font-style: normal;
+                  font-weight: 400;
+                  src: local('Lato Regular'), local('Lato-Regular'), url(https://fonts.gstatic.com/s/lato/v11/qIIYRU-oROkIk8vfvxw6QvesZW2xOQ-xsNqO47m55DA.woff) format('woff');
+              }
+  
+              @font-face {
+                  font-family: 'Lato';
+                  font-style: normal;
+                  font-weight: 700;
+                  src: local('Lato Bold'), local('Lato-Bold'), url(https://fonts.gstatic.com/s/lato/v11/qdgUG4U09HnJwhYI-uK18wLUuEpTyoUstqEm5AMlJo4.woff) format('woff');
+              }
+  
+              @font-face {
+                  font-family: 'Lato';
+                  font-style: italic;
+                  font-weight: 400;
+                  src: local('Lato Italic'), local('Lato-Italic'), url(https://fonts.gstatic.com/s/lato/v11/RYyZNoeFgb0l7W3Vu1aSWOvvDin1pK8aKteLpeZ5c0A.woff) format('woff');
+              }
+  
+              @font-face {
+                  font-family: 'Lato';
+                  font-style: italic;
+                  font-weight: 700;
+                  src: local('Lato Bold Italic'), local('Lato-BoldItalic'), url(https://fonts.gstatic.com/s/lato/v11/HkF_qI1x_noxlxhrhMQYELO3LdcAZYWl9Si6vvxL-qU.woff) format('woff');
+              }
+          }
+  
+          /* CLIENT-SPECIFIC STYLES */
+          body,
+          table,
+          td,
+          a {
+              -webkit-text-size-adjust: 100%;
+              -ms-text-size-adjust: 100%;
+          }
+  
+          img {
+              -ms-interpolation-mode: bicubic;
+          }
+  
+          /* RESET STYLES */
+          img {
+              border: 0;
+              height: auto;
+              line-height: 100%;
+              outline: none;
+              text-decoration: none;
+          }
+  
+          table {
+              border-collapse: collapse !important;
+          }
+  
+          body {
+              height: 100% !important;
+              margin: 0 !important;
+              padding: 0 !important;
+              width: 100% !important;
+          }
+  
+          /* iOS BLUE LINKS */
+          a[x-apple-data-detectors] {
+              color: inherit !important;
+              text-decoration: none !important;
+              font-size: inherit !important;
+              font-family: inherit !important;
+              font-weight: inherit !important;
+              line-height: inherit !important;
+          }
+  
+          /* MOBILE STYLES */
+          @media screen and (max-width:600px) {
+              h1 {
+                  font-size: 32px !important;
+                  line-height: 32px !important;
+              }
+          }
+  
+          /* ANDROID CENTER FIX */
+          div[style*="margin: 16px 0;"] {
+              margin: 0 !important;
+          }
+      </style>
+  </head>
+  
+  <body style="background-color: #f4f4f4; margin: 0 !important; padding: 0 !important;">
+      <!-- HIDDEN PREHEADER TEXT -->
+      <div style="display: none; font-size: 1px; color: #fefefe; line-height: 1px; font-family: 'Lato', Helvetica, Arial, sans-serif; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;"> We're thrilled to have you here! Get ready to dive into your new account. </div>
+      <table border="0" cellpadding="0" cellspacing="0" width="100%">
+          <!-- LOGO -->
+          <tr>
+              <td bgcolor="#3f3d56" align="center">
+                  <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+                      <tr>
+                          <td align="center" valign="top" style="padding: 40px 10px 40px 10px;"> </td>
+                      </tr>
+                  </table>
+              </td>
+          </tr>
+          <tr>
+              <td bgcolor="#3f3d56" align="center" style="padding: 0px 10px 0px 10px;">
+                  <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+                      <tr>
+                          <td bgcolor="#ffffff" align="left" valign="top" style="padding: 40px 20px 20px 20px; border-radius: 4px 4px 0px 0px; color: #111111; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 30px; font-weight: 400; line-height: 48px;">
+                         <img src="https://i.ibb.co/0qTd1BG/logo.png" width="250px" style="display: block; border: 0px;" /> <h1 style="font-size: 30px; font-weight: 400; margin: 2;">Your Details Has Been Changed</h1> 
+                          </td>
+                      </tr>
+                  </table>
+              </td>
+          </tr>
+          <tr>
+              <td bgcolor="#f4f4f4" align="center" style="padding: 0px 10px 0px 10px;">
+                  <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+                      <tr>
+                          <td bgcolor="#ffffff" align="left" style="padding: 20px 30px 40px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
+                              <p style="margin: 0;">We just wanted to let you know your new personal details has been changed and saved in our system! </p>
+                          </td>
+                      </tr>
+   
+      
+                      <tr>
+                          <td bgcolor="#ffffff" align="left" style="padding: 0px 30px 20px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
+                              <p style="margin: 0;">If it wasn't you, just reply to this email—we're always happy to help out.</p>
+                          </td>
+                      </tr>
+                      <tr>
+                          <td bgcolor="#ffffff" align="center" valign="top" style="padding: 40px 20px 20px 20px; border-radius: 4px 4px 0px 0px; color: #111111; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 48px; font-weight: 400; letter-spacing: 4px; line-height: 48px;">
+                         <img src="https://svgshare.com/i/NF2.svg" width="250px" style="display: block; border: 0px;" />  
+                          </td>
+                      </tr>
+                      <tr>
+                          <td bgcolor="#ffffff" align="left" style="padding: 0px 30px 40px 30px; border-radius: 0px 0px 4px 4px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
+                              <p style="margin: 0;">Thank You,<br>Cell4Sale Team</p>
+                          </td>
+                      </tr>
+                  </table>
+              </td>
+          </tr> 
+      </table>
+  </body>
+  
+  </html>`
+
+
+}
 
 function prepareCongratsMail() {
 
