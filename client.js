@@ -7,7 +7,7 @@ var themessage;
 var indexFlag = -1;
 var phoneType;
 var phonePrice;
-
+var discount = 0;
 //Cell-phones images
 const phonesImg = [
     {  name: "Samsung Galaxy S10", img: "https://i.ibb.co/nMQ5SN4/Samsung-Galaxy-S10.png" },
@@ -707,16 +707,16 @@ function checkPaymentFields()
         cardNumber: $('#check-card-number').val(),
         nameOnCard: $('#check-name-on-card').val(),
         cardExp: $('#check-exp-card').val(),
-        cardCvv:  $('#check-cvv-card').val(),
-        promoCode: $('#check-promo-code').val()
+        cardCvv:  $('#check-cvv-card').val()
     };
     if((payDetails.cardNumber=="")||(payDetails.nameOnCard=="")||(payDetails.cardExp=="")
-    ||(payDetails.cardCvv=="")||(payDetails.promoCode==""))
+    ||(payDetails.cardCvv==""))
     {
         $('#check-payment-submit').prop('disabled', true);
         $('#check-pay-next').prop('disabled', true);
     } else{
-        $('#check-payment-submit').prop('disabled', false);  
+        $('#check-payment-submit').prop('disabled', false); 
+        $('#check-pay-next').prop('disabled', false);  
     }  
 }
 
@@ -775,6 +775,7 @@ function checkUserPromocode()
         dataType: 'json',
         success: function (promocodeData) {
             console.log(promocodeData);
+            discount = 0;
             if(promocode.promocode=="3XCRt")
             {
                 if(promocodeData == "1"){
@@ -788,15 +789,23 @@ function checkUserPromocode()
                     totPriceVat = totPriceVat.toString()+'$';
                     $('#total-price-payment').html(totPrice);
                     $('#total-price-vat').html(totPriceVat);
-                    addToPurchases();
-                } else if (promocodeData == "2"){
-                    alert("You have 15% discount in the next purchas!");
-                } else if (promocodeData == "3"){
-                    alert("You have 30% discount in April month!");
+                   alert("you have 10% discount!");
+                    discount = 1;
+                } else {
+                    alert("code not found");
+                }      
+            } else if(promocode.promocode=="4DFG"){
+                if(promocodeData == "2"){
+                    discount = 2;
+                } else{
+                    alert("code not found");
                 }
-                $('#check-pay-next').prop('disabled', false);  
-            } else{
-                alert("Invalid promo code. Please enter another");
+            }else if(promocode.promocode=="6DSQW"){
+                if(promocodeData == "3"){
+                    discount = 3;
+                } else{
+                    alert("code not found");
+                }
             }
         },
         error: function (err) {
@@ -806,15 +815,15 @@ function checkUserPromocode()
 }
 
 function addToPurchases()
-{
-    
+{   
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
     var yyyy = today.getFullYear();
     today = mm + '/' + dd + '/' + yyyy;
     var userAndDate = {   email: JSON.parse(sessionStorage.getItem('user')).email,
-                          date: today };
+                          date: today,
+                          discount: discount };
     $.ajax({
         type: 'POST',
         url: '/add-to-purchases',
@@ -823,6 +832,7 @@ function addToPurchases()
            alert("cooooool!");
         },
         error: function (err) {
+
             alert(err);
         }
     });  

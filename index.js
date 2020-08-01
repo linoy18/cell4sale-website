@@ -475,6 +475,8 @@ app.post('/add-to-purchases',async function (req, res) {
   var userName = req.body.email;
   userName = userName.toLowerCase();
   var date = req.body.date;
+  var discount = req.body.discount;
+  console.log(discount);
   try{
    //taking user ID by email from users table
    var query = "SELECT * FROM users WHERE email='" + userName + "'";
