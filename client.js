@@ -19,13 +19,34 @@ const phonesImg = [
 ];
 
 const phonesImgSmall = [
-    { name: "Samsung Galaxy S10", img:"https://i.ibb.co/QYCTsrL/galaxy10.png" },
+    { name: "Samsung Galaxy S10", img: "https://i.ibb.co/QYCTsrL/galaxy10.png" },
     { name: "Huawei P40", img: "https://i.ibb.co/DKS6z8L/hwawi.png" },
     { name: "iPhone 11 Pro Max", img: "https://i.ibb.co/PDNNJG3/iphone11.png" },
     { name: "OnePlus 8", img: "https://i.ibb.co/jD3cjSx/1.png" },
     { name: "Xiaomi Redmi 8", img: "https://i.ibb.co/zNPTjqS/Xiamo.png" },
     { name: "Google pixel 4", img: "https://i.ibb.co/pKL9YP2/googlepixel.png" }
 ];
+
+
+function forgetPassCaptcha() {
+    var error_message = document.getElementById("errorMessage2");
+    var response = grecaptcha.getResponse();
+    if (response.length == 0) {
+        error_message.innerHTML = "You must confirm that you are not a robot!";
+    }
+    else forget();
+}
+
+
+function registerCaptcha() {
+    var error_message = document.getElementById("errorMessage");
+    var response = grecaptcha.getResponse();
+    if (response.length == 0) {
+        error_message.innerHTML = "You must confirm that you are not a robot!";
+    }
+    else SignUp();
+}
+
 
 function loginCaptcha() {
     var error_message = document.getElementById("errorMessage");
@@ -64,10 +85,16 @@ function Login() {
     email_text_box = document.getElementById("emailLogin");
     password_text_box = document.getElementById("passwordLogin");
     error_message = document.getElementById("errorMessage");
-
+    if(document.getElementById("customCheck").value=='on'){
+        remember_me = true;
+    }else{
+        remember_me = false;
+    }
+ 
     var credentials = {
         userName: email_text_box.value,
-        password: password_text_box.value
+        password: password_text_box.value,
+        rememberMe: remember_me
     }
     if (credentials.userName === "" || credentials.password === "") {
 
@@ -95,7 +122,7 @@ function Login() {
         data: credentials,
         // Login Successful
         success: function (userData) {
-            sessionStorage.setItem('user', JSON.stringify(userData))
+            sessionStorage.setItem('user', JSON.stringify(userData));
             location.replace('/index');
         },
         error: function (err) {
@@ -278,6 +305,7 @@ function validatePassword(password) {
 
 
 function forget() {
+    document.getElementById("resetPassBtn").disabled = false;
     error_message = document.getElementById("errorMessage2");
     var forget_details = {
         email: document.getElementById("emailforget").value,
@@ -300,6 +328,7 @@ function forget() {
         }
     });
 }
+
 function updatePassword() {
     var error_message = document.getElementById("errorMessage2");
     var passwordInput = document.getElementById("passforget");
@@ -345,15 +374,10 @@ function updatePassword() {
     });
 }
 
-
 function logout() {
     sessionStorage.removeItem("user");
     location.replace('/login');
 }
-
-
-
-
 
 /*getProfileDetails:
 trigger: loading 'profile.html' page
@@ -451,6 +475,13 @@ function updateDetails2(prev_profile_details) {
     if (userToUpdate.zipcode == "") {
         userToUpdate.zipcode = prev_profile_details.zipcode;
     }
+
+    if(userToUpdate.email!=prev_profile_details.email)
+    {
+        /////////////////mail with link 
+    }
+
+
 
     $.ajax({
         type: 'POST',
