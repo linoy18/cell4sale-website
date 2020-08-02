@@ -18,6 +18,15 @@ const phonesImg = [
     { name: "Google pixel 4", img: "https://i.ibb.co/8cMHvzB/Google-pixel-4.png" }
 ];
 
+const phonesImgSmall = [
+    { name: "Samsung Galaxy S10", img:"https://i.ibb.co/QYCTsrL/galaxy10.png" },
+    { name: "Huawei P40", img: "https://i.ibb.co/DKS6z8L/hwawi.png" },
+    { name: "iPhone 11 Pro Max", img: "https://i.ibb.co/PDNNJG3/iphone11.png" },
+    { name: "OnePlus 8", img: "https://i.ibb.co/jD3cjSx/1.png" },
+    { name: "Xiaomi Redmi 8", img: "https://i.ibb.co/zNPTjqS/Xiamo.png" },
+    { name: "Google pixel 4", img: "https://i.ibb.co/pKL9YP2/googlepixel.png" }
+];
+
 function loginCaptcha() {
     var error_message = document.getElementById("errorMessage");
     var response = grecaptcha.getResponse();
