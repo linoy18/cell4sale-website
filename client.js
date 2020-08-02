@@ -10,12 +10,12 @@ var phonePrice;
 var discount = 0;
 //Cell-phones images
 const phonesImg = [
-    {  name: "Samsung Galaxy S10", img: "https://i.ibb.co/nMQ5SN4/Samsung-Galaxy-S10.png" },
-    {  name: "Huawei P40",  img: "https://i.ibb.co/xsLQZfG/Huawei-P40.png"  },
-    {  name: "iPhone 11 Pro Max",   img: "https://i.ibb.co/4F1t4hK/iphone.png" },
-    {  name: "OnePlus 8",   img: "https://i.ibb.co/xCRzySM/One-Plus-8.png" },
-    {  name: "Xiaomi Redmi 8",  img: "https://i.ibb.co/f03Wkwd/Xiaomi-Redmi-Note-8.png"  },
-    {  name: "Google pixel 4",  img: "https://i.ibb.co/8cMHvzB/Google-pixel-4.png"}
+    { name: "Samsung Galaxy S10", img: "https://i.ibb.co/nMQ5SN4/Samsung-Galaxy-S10.png" },
+    { name: "Huawei P40", img: "https://i.ibb.co/xsLQZfG/Huawei-P40.png" },
+    { name: "iPhone 11 Pro Max", img: "https://i.ibb.co/4F1t4hK/iphone.png" },
+    { name: "OnePlus 8", img: "https://i.ibb.co/xCRzySM/One-Plus-8.png" },
+    { name: "Xiaomi Redmi 8", img: "https://i.ibb.co/f03Wkwd/Xiaomi-Redmi-Note-8.png" },
+    { name: "Google pixel 4", img: "https://i.ibb.co/8cMHvzB/Google-pixel-4.png" }
 ];
 
 function loginCaptcha() {
@@ -111,17 +111,17 @@ function SignUp() {
 
     console.log(promo_code);
 
-    if(promo_code=="3XCRt"){
-        promo_code="1";
+    if (promo_code == "3XCRt") {
+        promo_code = "1";
     }
-    else if(promo_code=="4DFG"){
-        promo_code="2";
+    else if (promo_code == "4DFG") {
+        promo_code = "2";
     }
-    else if(promo_code=="6DSQW"){
-        promo_code="3";
+    else if (promo_code == "6DSQW") {
+        promo_code = "3";
     }
     else {
-        promo_code="0";
+        promo_code = "0";
     }
 
     var signUp_details = {
@@ -269,7 +269,7 @@ function validatePassword(password) {
 
 
 function forget() {
-    error_message = document.getElementById("errorMessage2").value;
+    error_message = document.getElementById("errorMessage2");
     var forget_details = {
         email: document.getElementById("emailforget").value,
     }
@@ -282,7 +282,7 @@ function forget() {
 
     $.ajax({
         type: 'POST',
-        url: '/forget-password',
+        url: '/forgetpassword',
         data: forget_details,
 
         success: function (userData) {
@@ -290,6 +290,51 @@ function forget() {
         },
         error: function (res) {
             error_message.innerHTML = "Oops... Somting wrong happend. Enter your email again!";
+        }
+    });
+}
+function updatePassword() {
+    var error_message = document.getElementById("errorMessage2");
+    var passwordInput = document.getElementById("passforget");
+    var passwordInput2= document.getElementById("pass2forget");
+
+    if (passwordInput.value === "") {
+        error_message.innerHTML = "Please insert your password for confirmation";
+        return;
+    }
+
+    if (passwordInput2.value === "") {
+        error_message.innerHTML = "Please insert your password again for confirmation";
+        return;
+    }
+      
+    if (passwordInput.value != passwordInput2.value) {
+        error_message.innerHTML = "Password and confirm password does not match";
+        return;
+    }
+    if (!validatePassword(passwordInput.value)) {
+        error_message.innerHTML = "Password must contain at least 6 characters, uppercase, lowercase, number, special character.";
+        return;
+    }
+
+    var urlParams = new URLSearchParams(window.location.search);
+    var newPasswordBody = {
+        newPassword: passwordInput.value,
+        email: urlParams.get('email'),
+        hash: urlParams.get('verificationHash')
+    }
+
+    $.ajax({
+        type: 'POST',
+        url: '/setnewpassword',
+        data: newPasswordBody,
+
+        success: function (userData) {
+            location.replace('/login');
+
+        },
+        error: function (res) {
+            error_message.innerHTML = "Oops... Somting wrong happend. Try again please.";
         }
     });
 }
@@ -357,11 +402,11 @@ function updateDetails() {
         },
         error: function (err) { console.log(err); }
     });
-  
+
 }
 
 
-function updateDetails2(prev_profile_details){
+function updateDetails2(prev_profile_details) {
     var userToUpdate = {
         email: $('#email_profile').val(),
         password: $('#password_profile').val(),
@@ -373,41 +418,32 @@ function updateDetails2(prev_profile_details){
         phonenumber: $('#number_profile').val(),
         zipcode: $('#zipcode_profile').val()
     }
-    if(userToUpdate.email=="")
-    {
-        userToUpdate.email=prev_profile_details.email;
+    if (userToUpdate.email == "") {
+        userToUpdate.email = prev_profile_details.email;
     }
-    if(userToUpdate.password=="")
-    {
-        userToUpdate.password=prev_profile_details.password;
+    if (userToUpdate.password == "") {
+        userToUpdate.password = prev_profile_details.password;
     }
-    if(userToUpdate.name=="")
-    {
-        userToUpdate.name=prev_profile_details.name;
+    if (userToUpdate.name == "") {
+        userToUpdate.name = prev_profile_details.name;
     }
-    if(userToUpdate.familyname=="")
-    {
-        userToUpdate.familyname=prev_profile_details.familyname;
+    if (userToUpdate.familyname == "") {
+        userToUpdate.familyname = prev_profile_details.familyname;
     }
-    if(userToUpdate.street=="")
-    {
-        userToUpdate.street=prev_profile_details.street;
+    if (userToUpdate.street == "") {
+        userToUpdate.street = prev_profile_details.street;
     }
-    if(userToUpdate.city=="")
-    {
-        userToUpdate.city=prev_profile_details.city;
+    if (userToUpdate.city == "") {
+        userToUpdate.city = prev_profile_details.city;
     }
-    if(userToUpdate.country=="")
-    {
-        userToUpdate.country=prev_profile_details.country;
+    if (userToUpdate.country == "") {
+        userToUpdate.country = prev_profile_details.country;
     }
-    if(userToUpdate.phonenumber=="")
-    {
-        userToUpdate.phonenumber=prev_profile_details.phonenumber;
+    if (userToUpdate.phonenumber == "") {
+        userToUpdate.phonenumber = prev_profile_details.phonenumber;
     }
-    if(userToUpdate.zipcode=="")
-    {
-        userToUpdate.zipcode=prev_profile_details.zipcode;
+    if (userToUpdate.zipcode == "") {
+        userToUpdate.zipcode = prev_profile_details.zipcode;
     }
 
     $.ajax({
@@ -426,8 +462,7 @@ function updateDetails2(prev_profile_details){
 /*updateUserProfileFields:
 input: userDetails-user updated information from db
 output: displayed updated input fields in 'profile.html' page */
-function updateUserProfileFields(userDetails) 
-{
+function updateUserProfileFields(userDetails) {
     $('#email_profile').val(userDetails.email);
     $('#password_profile').val(userDetails.password);
     $('#firstName_profile').val(userDetails.name);
@@ -443,8 +478,7 @@ function updateUserProfileFields(userDetails)
 /*showAddressTabFields:
 input: userDetails-user information from db
 output: displayed input fields in address tab on 'payment.html' page */
-function showAddressTabFields(userDetails) 
-{
+function showAddressTabFields(userDetails) {
     $('#check-first-name').val(userDetails.name);
     $('#check-last-name').val(userDetails.familyname);
     $('#check-street').val(userDetails.street);
@@ -461,9 +495,8 @@ function showPassConfirmation() {
 
 /*showPassword: 
 trigger: user click on 'eye_pass' element
-output: password diaplayed to the user */ 
-function showPassword()
-{
+output: password diaplayed to the user */
+function showPassword() {
     $(".toggle-password").click(function () {
 
         $(this).toggleClass("fa-eye fa-eye-slash");
@@ -484,7 +517,7 @@ function getPhones() {
         type: 'GET',
         url: '/get-phones',
         dataType: 'json',
-        success: function(phonesData){
+        success: function (phonesData) {
             data = JSON.parse(JSON.stringify(phonesData));
             for (var i = 0; i < data.length; i++) { //foreach cell-phone type
                 var obj = data[i];
@@ -503,7 +536,7 @@ function getPhones() {
                 var dataRow = `<div class="container1">
                 <div class="row">
                 <div class="col-6">
-                <img class="img_product" src=`+phoneImg+`/>
+                <img class="img_product" src=`+ phoneImg + `/>
                 </div>
                 <div class="col-6"> 
                 <div class="product"> 
@@ -550,39 +583,37 @@ input: productId-phone name (id), index-index of phone name (id)
 trigger: user click on 'add to cart' button in item container
 output: if an item is selected- add the item to 'userproducts' table in db
 else- show error pop-up*/
-function addToCart(productId, index)
-{
-   if(index == indexFlag){
-    var productData = {
-        email: JSON.parse(sessionStorage.getItem('user')).email,
-        productId: productId,
-        productType: phoneType,
-        productPrice: phonePrice
-    };
-    //Post request from server - add choosing product to cart in db
-    $.ajax({
-        type: 'POST',
-        url: '/add-to-cart',
-        data: productData,
-        success: function (res) {
-            //here I need to add +1 to cart counter after getting cart items from server
-            // alert("Product added to cart successfully!:)");
-            $('#addToCart').modal('show');
-        },
-        error: function (err) {
-            alert(err);
-        }
-    });
-   } else{
-    $('#phoneCapacityModal').modal('show');
-   }
+function addToCart(productId, index) {
+    if (index == indexFlag) {
+        var productData = {
+            email: JSON.parse(sessionStorage.getItem('user')).email,
+            productId: productId,
+            productType: phoneType,
+            productPrice: phonePrice
+        };
+        //Post request from server - add choosing product to cart in db
+        $.ajax({
+            type: 'POST',
+            url: '/add-to-cart',
+            data: productData,
+            success: function (res) {
+                //here I need to add +1 to cart counter after getting cart items from server
+                // alert("Product added to cart successfully!:)");
+                $('#addToCart').modal('show');
+            },
+            error: function (err) {
+                alert(err);
+            }
+        });
+    } else {
+        $('#phoneCapacityModal').modal('show');
+    }
 }
 
 /*getCart:
 trigger: user click on 'cart' span in the top of the window (topbar)
 output: get all user products from 'userproducts' table, store them and replace to 'cart.html' page*/
-function getCart()
-{
+function getCart() {
     var userName = { email: JSON.parse(sessionStorage.getItem('user')).email };
     $.ajax({
         type: 'POST',
@@ -590,50 +621,48 @@ function getCart()
         data: userName,
         dataType: 'json',
         success: function (cartData) {
-           sessionStorage.setItem('cart-data', JSON.stringify(cartData));
-           location.replace('/cart.html');
+            sessionStorage.setItem('cart-data', JSON.stringify(cartData));
+            location.replace('/cart.html');
         },
         error: function (err) {
             alert(err);
         }
     });
-} 
+}
 
 /*showCart:
 trigger: loading 'cart.html' page
 output: get items stored by "getCart()" and displayed in page
  */
-function showCart()
-{
+function showCart() {
     var cartData = JSON.parse(sessionStorage.getItem('cart-data'));
-    var cartTotPrice = 0 ;
-    for(var i = 0; i < cartData.length; i++)
-    {
+    var cartTotPrice = 0;
+    for (var i = 0; i < cartData.length; i++) {
         var obj = cartData[i];
         var totPrice = parseFloat(obj.product_price);
-        var priceCount = parseFloat(obj.product_price)*obj.count;
+        var priceCount = parseFloat(obj.product_price) * obj.count;
         priceCount = priceCount.toFixed(0);
-        priceCount = priceCount.toString()+'$';
-        totPrice = 1.17*totPrice*obj.count;
-        cartTotPrice +=totPrice;
+        priceCount = priceCount.toString() + '$';
+        totPrice = 1.17 * totPrice * obj.count;
+        cartTotPrice += totPrice;
         totPrice = totPrice.toFixed(0);
         totPrice = totPrice.toString();
         var phoneImg = ``;
 
-        for(var k = 0; k < phonesImg.length; k++){  //selecting phone image
-            if(phonesImg[k].name == obj.product_name){
+        for (var k = 0; k < phonesImg.length; k++) {  //selecting phone image
+            if (phonesImg[k].name == obj.product_name) {
                 phoneImg = phonesImg[k].img;
             }
         } //end picking phone image
-       var dataRow = `<div class="item">
+        var dataRow = `<div class="item">
        <div class="buttons"><span class="delete-btn" onclick="deleteProductFromCart('${obj.product_name}','${obj.product_type}')"></span>
        </div>
      <div class="image">
        <img src="https://i.ibb.co/pr3j1f3/galaxy10.png" alt="" />
      </div>
      <div class="description">
-       <span>`+obj.product_name+`</span>
-       <span>`+obj.product_type+`</span>
+       <span>`+ obj.product_name + `</span>
+       <span>`+ obj.product_type + `</span>
        <span></span>
      </div>
      <div class="quantity">
@@ -647,13 +676,13 @@ function showCart()
          <i class="fa fa-minus" aria-hidden="true"></i>
        </button>
      </div>
-     <div class="total-price">Price: `+priceCount+`</div>
-     <div class="total-price">Total Price (including 17% VAT):`+totPrice+`$</div></div>` ;
+     <div class="total-price">Price: `+ priceCount + `</div>
+     <div class="total-price">Total Price (including 17% VAT):`+ totPrice + `$</div></div>`;
         $(dataRow).appendTo('#cart-item');
     }
     cartTotPrice = parseFloat(cartTotPrice);
-    cartTotPrice =cartTotPrice.toFixed(0);
-    cartTotPrice = cartTotPrice.toString() +'$';
+    cartTotPrice = cartTotPrice.toFixed(0);
+    cartTotPrice = cartTotPrice.toString() + '$';
     $('#cart-total-price').html(cartTotPrice);
 }
 
@@ -661,12 +690,11 @@ function showCart()
 input: productName-phone name (id), productType-phone size (model id)
 trigger: user click on 'X' button next to product details
 output: if count=1 - remove entiry row, else - sub count by one */
-function deleteProductFromCart(productName, productType)
-{
-    var productData = { 
+function deleteProductFromCart(productName, productType) {
+    var productData = {
         email: JSON.parse(sessionStorage.getItem('user')).email,
         productName: productName,
-        productType: productType 
+        productType: productType
     };
     $.ajax({
         type: 'POST',
@@ -678,15 +706,14 @@ function deleteProductFromCart(productName, productType)
         error: function (err) {
             alert(err);
         }
-    });  
+    });
 }
 
 /*checkOut:
 trigger: user click on 'check-out' button in 'cart.html' page
 output: 'payment.html' page
  */
-function checkOut()
-{
+function checkOut() {
     $('#check-address-next').prop('disabled', true);
     location.replace('/payment.html');
 }
@@ -694,8 +721,7 @@ function checkOut()
 /*checkAddressFields:
 trigger: eventHendler on input fields in 'Address' tab
 output: if all fields have values - enable 'Next' button*/
-function checkAddressFields()
-{
+function checkAddressFields() {
     var userDetails = {
         firstName: $('#check-first-name').val(),
         lastName: $('#check-last-name').val(),
@@ -705,12 +731,11 @@ function checkAddressFields()
         street: $('#check-street').val(),
         zipCode: $('#check-zip').val()
     };
-    if((userDetails.firstName=="")||(userDetails.lastName=="")||(userDetails.phoneNumber=="")
-    ||(userDetails.country=="")||(userDetails.city=="")||(userDetails.street=="")||(userDetails.zipCode==""))
-    {
+    if ((userDetails.firstName == "") || (userDetails.lastName == "") || (userDetails.phoneNumber == "")
+        || (userDetails.country == "") || (userDetails.city == "") || (userDetails.street == "") || (userDetails.zipCode == "")) {
         $('#check-address-next').prop('disabled', true);
     }
-    else{
+    else {
         $('#check-address-next').prop('disabled', false);
     }
 }
@@ -718,30 +743,27 @@ function checkAddressFields()
 /*checkPaymentFields:
 trigger: eventHendler on input fields in 'Payment' tab
 output: if all fields have values - enable 'Submit' button*/
-function checkPaymentFields()
-{
+function checkPaymentFields() {
     var payDetails = {
         cardNumber: $('#check-card-number').val(),
         nameOnCard: $('#check-name-on-card').val(),
         cardExp: $('#check-exp-card').val(),
-        cardCvv:  $('#check-cvv-card').val()
+        cardCvv: $('#check-cvv-card').val()
     };
-    if((payDetails.cardNumber=="")||(payDetails.nameOnCard=="")||(payDetails.cardExp=="")
-    ||(payDetails.cardCvv==""))
-    {
+    if ((payDetails.cardNumber == "") || (payDetails.nameOnCard == "") || (payDetails.cardExp == "")
+        || (payDetails.cardCvv == "")) {
         $('#check-payment-submit').prop('disabled', true);
         $('#check-pay-next').prop('disabled', true);
-    } else{
-        $('#check-payment-submit').prop('disabled', false); 
-        $('#check-pay-next').prop('disabled', false);  
-    }  
+    } else {
+        $('#check-payment-submit').prop('disabled', false);
+        $('#check-pay-next').prop('disabled', false);
+    }
 }
 
 /*fillCart:
 trigger: user click on 'Next' button from 'Address' tab in 'payment.html' page
 output: displayed user cart in container */
-function fillCart()
-{
+function fillCart() {
     var userName = { email: JSON.parse(sessionStorage.getItem('user')).email };
     //Get request from server - all products in user cart
     $.ajax({
@@ -752,35 +774,33 @@ function fillCart()
         success: function (cartData) {
             var totalPrice = 0.0;
             //before showing the cart need to clean cart form
-            $('#enter-product').each(function(){
+            $('#enter-product').each(function () {
                 $(".pToEmpty").empty();
             });
-            for(var i = 0; i < cartData.length; i++)
-            {
+            for (var i = 0; i < cartData.length; i++) {
                 var obj = cartData[i];
-                var dataRow = `<p class="pToEmpty">`+obj.count+`X `+obj.product_name+`<span class="price">`+obj.product_price+`</span>
+                var dataRow = `<p class="pToEmpty">` + obj.count + `X ` + obj.product_name + `<span class="price">` + obj.product_price + `</span>
                 </p>`;
                 $(dataRow).appendTo('#enter-product');
-                totalPrice += parseFloat(obj.product_price)*obj.count;  
+                totalPrice += parseFloat(obj.product_price) * obj.count;
             } //end for
-            totalPriceVat = totalPrice*1.17;
+            totalPriceVat = totalPrice * 1.17;
             cartToPrice = totalPriceVat;
             totalPrice = totalPrice.toFixed(0);
             totalPriceVat = totalPriceVat.toFixed(0);
-            totalPrice = totalPrice.toString()+'$';
-            totalPriceVat = totalPriceVat.toString()+'$';
+            totalPrice = totalPrice.toString() + '$';
+            totalPriceVat = totalPriceVat.toString() + '$';
             $('#total-price-payment').html(totalPrice);
             $('#total-price-vat').html(totalPriceVat);
         },
         error: function (err) {
             alert(err);
         }
-    });    
+    });
 }
 
 
-function addToPurchases()
-{   
+function addToPurchases() {
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
@@ -793,41 +813,38 @@ function addToPurchases()
         url: '/add-to-purchases',
         data: userAndDate,
         success: function (res) {
-           alert("cooooool!");
+            alert("cooooool!");
         },
         error: function (err) {
 
             alert(err);
         }
-    });  
+    });
 }
 
-function getPurchases()
-{
-    var userName = {   email: JSON.parse(sessionStorage.getItem('user')).email};
+function getPurchases() {
+    var userName = { email: JSON.parse(sessionStorage.getItem('user')).email };
     $.ajax({
-    type: 'POST',
-    url: '/get-purchases',
-    data: userName,
-    success: function (purchasesData) {
-        sessionStorage.setItem('purchases-data', JSON.stringify(purchasesData));
-        showPurchases();
-    },
-    error: function (err) {
-        alert(err);
-    }
-});  
+        type: 'POST',
+        url: '/get-purchases',
+        data: userName,
+        success: function (purchasesData) {
+            sessionStorage.setItem('purchases-data', JSON.stringify(purchasesData));
+            showPurchases();
+        },
+        error: function (err) {
+            alert(err);
+        }
+    });
 }
 
-function showPurchases()
-{
+function showPurchases() {
     var purchasesData = JSON.parse(sessionStorage.getItem('purchases-data'));
-    for(var i = 0; i < purchasesData.length; i++)
-    {
+    for (var i = 0; i < purchasesData.length; i++) {
         var obj = purchasesData[i];
         var phoneImg = ``;
-        for(var k = 0; k < phonesImg.length; k++){  //selecting phone image
-            if(phonesImg[k].name == obj.product_name){
+        for (var k = 0; k < phonesImg.length; k++) {  //selecting phone image
+            if (phonesImg[k].name == obj.product_name) {
                 phoneImg = phonesImg[k].img;
             }
         } //end picking phone image
@@ -837,22 +854,22 @@ function showPurchases()
         </div>
         <div class="price-pur">
             <div class="description">
-                <span>`+obj.product_name+`</span>
-                <span>`+obj.product_type+`</span>
+                <span>`+ obj.product_name + `</span>
+                <span>`+ obj.product_type + `</span>
             </div>
             <div>
                 <div style="display: inline-flex;">Date of purchase:
                 </div>
-                <div style="display: inline-flex;">`+obj.date+`</div>
+                <div style="display: inline-flex;">`+ obj.date + `</div>
             </div>
             <div>
                 <div style="display: inline-flex;">Total Amount:
                 </div>
-                <div style="display: inline-flex;">`+obj.product_price+`</div>
+                <div style="display: inline-flex;">`+ obj.product_price + `</div>
             </div>
             <div>
                 <div>Quantity:</div>
-                <div>`+obj.count+`</div>
+                <div>`+ obj.count + `</div>
             </div>
         </div>
        
@@ -860,7 +877,7 @@ function showPurchases()
             <button class="add">Add to Cart</button>
         </div>
     </div>`;
-    $(dataRow).appendTo('#wrapper2');
+        $(dataRow).appendTo('#wrapper2');
     }//end for
 }
 
