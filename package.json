@@ -39,6 +39,7 @@
         "express": "^4.17.1",
         "jquery": "3.4.1",
         "jquery.easing": "^1.4.1",
+        "money": "^0.2.0",
         "mysql": "^2.18.1",
         "nodemailer": "^6.4.10",
         "pg": "^8.3.0",

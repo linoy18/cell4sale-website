@@ -13,6 +13,7 @@ const { verifyHash, generateVerificationHash } = require('dbless-email-verificat
 var pgp = require('pg-promise')();
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
+
 const MY_SECRET = 'linoyshirannofaruri';
 
 //////////////////////////////////////////////---***our URL String***---/////////////////////////////////////////////
@@ -419,14 +420,30 @@ app.post('/add-to-cart', async function (req, res) {
   var productName = req.body.productId;
   var productType = req.body.productType;
   var productPrice = req.body.productPrice;
-
-  try {
+  try{
     //taking user ID by email from users table
     var query = "SELECT * FROM users WHERE email='" + userName + "'";
     let results = await db.oneOrNone(query);
     if (results) {
       var userID = results.id;
-    } else {
+      var promocode = results.promocode;
+      if(promocode=="1"){
+        productPrice = parseFloat(productPrice);
+        productPrice = productPrice*0.9;
+        //here add the localPrice calculating
+        productPrice = productPrice.toString()+'$';
+      } else if(promocode=="2"){
+        productPrice = parseFloat(productPrice);
+        productPrice = productPrice*0.8;
+        //here add the localPrice calculating
+        productPrice = productPrice.toString()+'$';
+      } else if(promocode=="3"){
+        productPrice = parseFloat(productPrice);
+        productPrice = productPrice*0.7;
+        //here add the localPrice calculating
+        productPrice = productPrice.toString()+'$';
+      }
+    } else{
       res.writeHead(404);
       res.end();
     }
@@ -487,32 +504,33 @@ app.post('/delete-from-cart', async function (req, res) {
   userName = userName.toLowerCase();
   var productName = req.body.productName;
   var productType = req.body.productType;
-  try {
-    //taking user ID by email from users table
-    var query = "SELECT * FROM users WHERE email='" + userName + "'";
-    let results = await db.oneOrNone(query);
-    if (results) {
-      var userID = results.id;
-    } else {
-      res.writeHead(404);
+  try{
+   //taking user ID by email from users table
+   var query = "SELECT * FROM users WHERE email='" + userName + "'";
+   let results = await db.oneOrNone(query);
+   if(results)
+   {
+     var userID = results.id;
+   } else{
+     res.writeHead(404);
+     res.end();
+   }
+   //getting all rows in userproducts table where user_id==userID
+   query = "SELECT count FROM userproducts WHERE user_id='" + userID +"'AND product_name='"+productName+"'AND product_type='"+productType+"'";
+   results = await db.oneOrNone(query);
+  
+   if(!results) //in case there is not such product in cart
+   {
+    res.writeHead(404);
+    res.end();
+   }else{
+     if(results.count == 1)
+     {
+      query = "DELETE FROM userproducts WHERE user_id='"+userID+"'AND product_name='"+productName+"'AND product_type='"+productType+"'";
+      await db.none(query);
+      res.writeHead(200);
       res.end();
-    }
-    //getting all rows in userproducts table where user_id==userID
-    query = "SELECT count FROM userproducts WHERE user_id='" + userID + "'AND product_name='" + productName + "'AND product_type='" + productType + "'";
-    results = await db.oneOrNone(query);
-
-    if (!results) //in case there is not such product in cart
-    {
-      res.writeHead(404);
-      res.end();
     } else {
-      console.log(results);
-      if (results.count == 1) {
-        query = "DELETE FROM userproducts WHERE user_id='" + userID + "'AND product_name='" + productName + "'AND product_type='" + productType + "'";
-        await db.none(query);
-        res.writeHead(200);
-        res.end();
-      } else {
         query = "UPDATE userproducts SET count=count-1 WHERE user_id='" + userID + "'AND product_name='" + productName + "'AND product_type='" + productType + "'";
         await db.none(query);
         res.writeHead(200);
@@ -524,69 +542,49 @@ app.post('/delete-from-cart', async function (req, res) {
   }
 });
 
-app.post('/get-promocode', async function (req, res) {
-  var userName = req.body.email;
-  userName = userName.toLowerCase();
-  try {
-    //taking user ID by email from users table
-    var query = "SELECT * FROM users WHERE email='" + userName + "'";
-    let results = await db.oneOrNone(query);
-    if (results) {
-      var userID = results.id;
-      var promocode = results.promocode;
-      res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify(promocode));
-    } else {
-      res.writeHead(404);
-      res.end();
-    }
-  } catch (err) {
-    console.log(err.message);
-  }
-});
 
 app.post('/add-to-purchases', async function (req, res) {
   var userName = req.body.email;
   userName = userName.toLowerCase();
   var date = req.body.date;
-  var discount = req.body.discount;
-  console.log(discount);
-  try {
-    //taking user ID by email from users table
-    var query = "SELECT * FROM users WHERE email='" + userName + "'";
-    let result = await db.oneOrNone(query);
-    if (result) {
-      var userID = result.id;
-      query = "SELECT * FROM userproducts WHERE user_id='" + userID + "'";
-      let results = await db.any(query);
-      if (!results) {
-        res.writeHead(404);
-        res.end();
-      } else {
-        var productName;
-        var productType;
-        var productPrice;
-        var count;
-        for (var i = 0; i < results.length; i++) {
-          var obj = results[i];
-          productName = obj.product_name;
-          productType = obj.product_type;
-          productPrice = obj.product_price;
-          count = obj.count;
-          query = "INSERT INTO userpurchases(user_id, product_name, product_type, product_price,count,date) VALUES('" + userID + "','" + productName + "','" + productType + "','" + productPrice + "','" + count + "','" + date + "')";
-          await db.none(query);
-        }
-        res.writeHead(200);
-        res.end();
-      }
-
-    } else {
+  try{
+   //taking user ID by email from users table
+   var query = "SELECT * FROM users WHERE email='" + userName + "'";
+   let result = await db.oneOrNone(query);
+   if(result){
+     var userID = result.id;
+     query = "SELECT * FROM userproducts WHERE user_id='" + userID + "'";
+     let results = await db.any(query);
+     if(!results) {
       res.writeHead(404);
       res.end();
-    }
-  } catch (err) {
-    console.log(err.message);
-  }
+     } else {
+       var productName;
+       var productType;
+       var productPrice;
+       var count; 
+       for(var i=0; i<results.length; i++){
+         var obj = results[i];
+         productName = obj.product_name;
+         productType = obj.product_type;
+         productPrice = obj.product_price;
+         count = obj.count;
+        query = "INSERT INTO userpurchases(user_id, product_name, product_type, product_price,count,date) VALUES('"+userID+"','"+productName+"','"+productType+"','"+productPrice+"','"+count+"','"+date+"')";
+        await db.none(query);
+        query = "DELETE FROM userproducts WHERE user_id='" + userID + "'";
+        await db.none(query);
+       }
+      res.writeHead(200);
+      res.end();
+     }
+    
+   } else{
+     res.writeHead(404);
+     res.end();
+   }
+} catch (err) {
+  console.log(err.message);
+}
 });
 
 app.post('/get-purchases', async function (req, res) {
@@ -611,10 +609,10 @@ app.post('/get-purchases', async function (req, res) {
     } else {
       res.writeHead(404);
       res.end();
-    }
-  } catch (err) {
-    console.log(err.message);
-  }
+     } 
+} catch (err) {
+  console.log(err.message);
+}
 });
 
 //Password encryption function 
