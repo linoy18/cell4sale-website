@@ -9,13 +9,13 @@ var app = express();
 var port = process.env.PORT || 3000;
 var fs = require('fs');
 const path = require('path');
+const https = require('https');
 const { verifyHash, generateVerificationHash } = require('dbless-email-verification');
 var pgp = require('pg-promise')();
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-
-
+var convertUSDtoILSrate;
 const MY_SECRET = 'linoyshirannofaruri';
-
+var loginUser = { id:0, email:'', confirmed: false, rememberMe: false};
 //////////////////////////////////////////////---***our URL String***---/////////////////////////////////////////////
 
 const API_URL = 'http://localhost:3000/';
@@ -30,8 +30,15 @@ app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 app.get('/', function (req, res) {
-  res.redirect('/login/');
-  console.log("Requested Main Menu, Opening \"login\" page by defaults.");
+  if(loginUser.id != 0) {
+    if(loginUser.rememberMe==true) {
+      res.redirect('/index');
+      console.log("Requested Main Menu, Opening \"index\" page by defaults.");
+    }
+  } else {
+    res.redirect('/login/');
+    console.log("Requested Main Menu, Opening \"login\" page by defaults.");
+  }
 });
 
 app.use(express.static(__dirname));
@@ -99,10 +106,7 @@ app.post('/profiledetails', async function (req, res) {
   }
 });
 
-
-
 //////////////////////////////////////////////---***Login Handling Function***---/////////////////////////////////////////////
-
 
 app.get('/login', function (req, res) {
   res.sendFile(process.cwd() + '/login.html');
@@ -112,7 +116,8 @@ app.get('/login', function (req, res) {
 app.post('/login', async function (req, res) {
   var obj = {
     email: req.body.userName.toLowerCase(),
-    password: req.body.password
+    password: req.body.password,
+    rememberMe: req.body.rememberMe
   }
 
   try {
@@ -130,6 +135,17 @@ app.post('/login', async function (req, res) {
     if (password_dec !== obj.password) {
       throw new Error("Wrong password");
     }
+
+    if(obj.rememberMe){
+      var userID = result.id;
+      query = "UPDATE users SET remember_me=$1 WHERE email=$2";
+      await db.none(query, [true, obj.email]);
+      loginUser.id = userID;
+      loginUser.email = obj.email;
+      loginUser.confirmed = true;
+      loginUser.rememberMe = true;
+      } 
+
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify(result));
 
@@ -139,8 +155,6 @@ app.post('/login', async function (req, res) {
     res.status(500).send(err.message);
   }
 });
-
-
 
 //////////////////////////////////////////////---***Login Facebook Handling Function***---///////////////////////////////////
 
@@ -263,7 +277,8 @@ app.post('/register', async function (req, res) {
     email: req.body.email.toLowerCase(),
     password: encryptPassword(req.body.password),
     promocode: req.body.promocode,
-    confirmed: false
+    confirmed: false,
+    remember_me: false
   }
 
   try {
@@ -310,17 +325,11 @@ app.get('/index', function (req, res) {
   console.log("Requested main view via get");
 });
 
-
-
-
 //////////////////////////////////////////////---***Forget-Password Handling Function***---/////////////////////////////////////////////
 app.get('/forget-password', function (req, res) {
   res.sendFile(process.cwd() + '/forget-password.html');
   console.log("Redirected to forget password page");
 });
-
-
-
 
 app.post('/forgetpassword', async function (req, res) {
   var obj = {
@@ -365,11 +374,11 @@ app.post('/forgetpassword', async function (req, res) {
 app.get('/resetpassword', function (req, res) {
   res.sendFile(process.cwd() + '/activate_new_pass.html');
   console.log("Redirected to activate new pass page");
-})
+});
 
 app.get('/setnewpassword', function (req, res) {
   res.send('success');
-})
+});
 
 
 app.post('/setnewpassword', async function (req, res) {
@@ -398,7 +407,7 @@ app.post('/setnewpassword', async function (req, res) {
   catch (err) {
     res.status(500).send(err.message);
   }
-})
+});
 
 //Get the cell-phones data from json file
 app.get('/get-phones', async function (req, res) {
@@ -414,6 +423,7 @@ app.get('/get-phones', async function (req, res) {
   }
 });
 
+//Add product to 'userproducts' table
 app.post('/add-to-cart', async function (req, res) {
   var userName = req.body.email;
   userName = userName.toLowerCase();
@@ -421,42 +431,44 @@ app.post('/add-to-cart', async function (req, res) {
   var productType = req.body.productType;
   var productPrice = req.body.productPrice;
   try{
+    convertUSDtoILSrate = 0.0;
+    getLocalPrice(); //get the ILS rate from USD
     //taking user ID by email from users table
     var query = "SELECT * FROM users WHERE email='" + userName + "'";
     let results = await db.oneOrNone(query);
     if (results) {
       var userID = results.id;
       var promocode = results.promocode;
-      if(promocode=="1"){
-        productPrice = parseFloat(productPrice);
+      productPrice = parseFloat(productPrice);
+      if(promocode=="1"){ //10% discount
         productPrice = productPrice*0.9;
-        //here add the localPrice calculating
-        productPrice = productPrice.toString()+'$';
-      } else if(promocode=="2"){
-        productPrice = parseFloat(productPrice);
+      } else if(promocode=="2"){ //20% discount 
         productPrice = productPrice*0.8;
-        //here add the localPrice calculating
-        productPrice = productPrice.toString()+'$';
-      } else if(promocode=="3"){
-        productPrice = parseFloat(productPrice);
+      } else if(promocode=="3"){ //30% discount
         productPrice = productPrice*0.7;
-        //here add the localPrice calculating
-        productPrice = productPrice.toString()+'$';
       }
+      var localPrice = convertUSDtoILSrate*productPrice;
+      var totalPrice = localPrice*1.17; //calculating price includes VAT
+      localPrice = localPrice.toFixed(2);
+      totalPrice = totalPrice.toFixed(2);
+      productPrice = productPrice.toFixed(2);
+      localPrice = localPrice.toString()+'ILS';
+      totalPrice = totalPrice.toString()+'ILS';
+      productPrice = productPrice.toString()+'$';
     } else{
       res.writeHead(404);
       res.end();
     }
-    //checking if item is already in cart- if true the count++, else add new row
+    //checking if item is already in cart- if true then count++, else add new row
     query = "SELECT * FROM userproducts WHERE user_id='" + userID + "'AND product_name='" + productName + "'AND product_type='" + productType + "'";
     results = await db.oneOrNone(query);
     if (!results)//insert new row in 'userproducts' table in DB
     {
-      query = "INSERT INTO userproducts(user_id, product_name, product_type, product_price,count) VALUES('" + userID + "','" + productName + "','" + productType + "','" + productPrice + "','1')";
+      query = "INSERT INTO userproducts(user_id, product_name, product_type, product_price,count, product_local_price, product_total_price) VALUES('" + userID + "','" + productName + "','" + productType + "','" + productPrice + "','1','"+localPrice+"','"+totalPrice+"')";
       await db.none(query);
       res.writeHead(200);
       res.end();
-    } else {
+    } else { //update the count column in product row 
       query = "UPDATE userproducts SET count=count+1 WHERE user_id='" + userID + "'AND product_name='" + productName + "'AND product_type='" + productType + "'";
       await db.none(query);
       res.writeHead(200);
@@ -562,22 +574,25 @@ app.post('/add-to-purchases', async function (req, res) {
        var productName;
        var productType;
        var productPrice;
+       var productLocalPrice;
+       var productTotalPrice;
        var count; 
        for(var i=0; i<results.length; i++){
          var obj = results[i];
          productName = obj.product_name;
          productType = obj.product_type;
          productPrice = obj.product_price;
+         productLocalPrice = obj.product_local_price;
+         productTotalPrice = obj.product_total_price;
          count = obj.count;
-        query = "INSERT INTO userpurchases(user_id, product_name, product_type, product_price,count,date) VALUES('"+userID+"','"+productName+"','"+productType+"','"+productPrice+"','"+count+"','"+date+"')";
+        query = "INSERT INTO userpurchases(user_id, product_name, product_type, product_price,count,date, product_local_price, product_total_price) VALUES('"+userID+"','"+productName+"','"+productType+"','"+productPrice+"','"+count+"','"+date+"','"+productLocalPrice+"','"+productTotalPrice+"')";
         await db.none(query);
         query = "DELETE FROM userproducts WHERE user_id='" + userID + "'";
         await db.none(query);
-       }
+       } //end for
       res.writeHead(200);
       res.end();
-     }
-    
+     } 
    } else{
      res.writeHead(404);
      res.end();
@@ -615,6 +630,31 @@ app.post('/get-purchases', async function (req, res) {
 }
 });
 
+
+function getLocalPrice() {
+  https.get(' https://api.exchangeratesapi.io/latest?base=USD', (resp) => {
+  let data = '';
+  let ils;
+
+  resp.on('data', (chunk) => {
+    data += chunk;
+  });
+
+  // The whole response has been received. Print out the result.
+  resp.on('end', () => {
+    ils = JSON.parse(data);
+    ils = ils.rates;
+    ils = ils.ILS;
+    ils = parseFloat(ils);
+    convertUSDtoILSrate = ils;
+    convertUSDtoILSrate = convertUSDtoILSrate.toFixed(2);
+  });
+
+}).on("error", (err) => {
+  console.log("Error: " + err.message);
+});
+}
+
 //Password encryption function 
 function encryptPassword(password) {
   var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(password), 'secret key 123');
@@ -631,20 +671,9 @@ function decryptPassword(ciphertext) {
 }
 
 
-
-
-
-// app.listen(port);
 var server = app.listen(port, function () {
   console.log('Server is running on port ' + port + '..');
 });
-
-
-
-
-
-
-
 
 /////////////////////////////////////////////////---***functions that prepare the emails to send***---///////////////////////////////////////////
 
@@ -824,8 +853,6 @@ function prepareMail(url) {
   </table>
 </body>`
 }
-
-
 
 function updateDetailsMail() {
   return `<!DOCTYPE html>

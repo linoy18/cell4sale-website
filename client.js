@@ -55,10 +55,16 @@ function Login() {
     email_text_box = document.getElementById("emailLogin");
     password_text_box = document.getElementById("passwordLogin");
     error_message = document.getElementById("errorMessage");
-
+    if(document.getElementById("customCheck").value=='on'){
+        remember_me = true;
+    }else{
+        remember_me = false;
+    }
+ 
     var credentials = {
         userName: email_text_box.value,
-        password: password_text_box.value
+        password: password_text_box.value,
+        rememberMe: remember_me
     }
     if (credentials.userName === "" || credentials.password === "") {
 
@@ -86,7 +92,7 @@ function Login() {
         data: credentials,
         // Login Successful
         success: function (userData) {
-            sessionStorage.setItem('user', JSON.stringify(userData))
+            sessionStorage.setItem('user', JSON.stringify(userData));
             location.replace('/index');
         },
         error: function (err) {
@@ -293,6 +299,7 @@ function forget() {
         }
     });
 }
+
 function updatePassword() {
     var error_message = document.getElementById("errorMessage2");
     var passwordInput = document.getElementById("passforget");
@@ -339,15 +346,10 @@ function updatePassword() {
     });
 }
 
-
 function logout() {
     sessionStorage.removeItem("user");
     location.replace('/login');
 }
-
-
-
-
 
 /*getProfileDetails:
 trigger: loading 'profile.html' page
