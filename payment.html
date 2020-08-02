@@ -368,7 +368,8 @@
                                                             title="Prev">Prev</button>
                                                         <button id="check-pay-next"
                                                             class="btn btn-primary ml-auto js-btn-next" type="button"
-                                                            title="Next" onclick="addToPurchases()">Purchase</button>
+                                                            data-toggle="modal" data-target="#areyousureppurchase"
+                                                            title="Next">Purchase</button>
 
                                                     </div>
 
@@ -426,25 +427,46 @@
             <i class="fas fa-angle-up"></i>
         </a>
 
-        <!-- Logout Modal-->
-        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                    <div class="modal-footer-product">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                        <button class="btn btn-primary" onclick="logout()">Logout</button>
-                    </div>
-                </div>
-            </div>
+            <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
         </div>
+        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+          <button class="btn btn-primary" onclick = "logout()">Logout</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+      <!-- Are you sure Modal-->
+      <div class="modal fade" id="areyousureppurchase" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Are You Sure?</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">Are You Sure you finish and would like to purchase?</div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" data-dismiss="modal">Back</button>
+            <button class="btn btn-primary" onclick = "addToPurchases()">Yes, Purchase</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
 
 
 
@@ -481,7 +503,6 @@
                     elem.classList.remove(className);
 
                 });
-
             };
 
             //return exect parent node of the element

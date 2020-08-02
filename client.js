@@ -18,6 +18,27 @@ const phonesImg = [
     { name: "Google pixel 4", img: "https://i.ibb.co/8cMHvzB/Google-pixel-4.png" }
 ];
 
+
+function forgetPassCaptcha() {
+    var error_message = document.getElementById("errorMessage2");
+    var response = grecaptcha.getResponse();
+    if (response.length == 0) {
+        error_message.innerHTML = "You must confirm that you are not a robot!";
+    }
+    else forget();
+}
+
+
+function registerCaptcha() {
+    var error_message = document.getElementById("errorMessage");
+    var response = grecaptcha.getResponse();
+    if (response.length == 0) {
+        error_message.innerHTML = "You must confirm that you are not a robot!";
+    }
+    else SignUp();
+}
+
+
 function loginCaptcha() {
     var error_message = document.getElementById("errorMessage");
     var response = grecaptcha.getResponse();
@@ -275,6 +296,7 @@ function validatePassword(password) {
 
 
 function forget() {
+    document.getElementById("resetPassBtn").disabled = false;
     error_message = document.getElementById("errorMessage2");
     var forget_details = {
         email: document.getElementById("emailforget").value,
@@ -444,6 +466,13 @@ function updateDetails2(prev_profile_details) {
     if (userToUpdate.zipcode == "") {
         userToUpdate.zipcode = prev_profile_details.zipcode;
     }
+
+    if(userToUpdate.email!=prev_profile_details.email)
+    {
+        /////////////////mail with link 
+    }
+
+
 
     $.ajax({
         type: 'POST',
