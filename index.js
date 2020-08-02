@@ -387,9 +387,9 @@ app.post('/setnewpassword', async function (req, res) {
       throw new Error("User does not exists");
     }
 
-
+    new_pass= encryptPassword(req.body.newPassword);
     var query = "UPDATE users SET password=$1 WHERE email=$2";
-    await db.none(query, [req.body.newPassword, emailToVerify]);
+    await db.none(query, [new_pass, emailToVerify]);
 
     res.writeHead(200);
     res.end();

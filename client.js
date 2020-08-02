@@ -296,10 +296,26 @@ function forget() {
 function updatePassword() {
     var error_message = document.getElementById("errorMessage2");
     var passwordInput = document.getElementById("passforget");
+    var passwordInput2= document.getElementById("pass2forget");
 
-// TODO: Validation here!
+    if (passwordInput.value === "") {
+        error_message.innerHTML = "Please insert your password for confirmation";
+        return;
+    }
 
-
+    if (passwordInput2.value === "") {
+        error_message.innerHTML = "Please insert your password again for confirmation";
+        return;
+    }
+      
+    if (passwordInput.value != passwordInput2.value) {
+        error_message.innerHTML = "Password and confirm password does not match";
+        return;
+    }
+    if (!validatePassword(passwordInput.value)) {
+        error_message.innerHTML = "Password must contain at least 6 characters, uppercase, lowercase, number, special character.";
+        return;
+    }
 
     var urlParams = new URLSearchParams(window.location.search);
     var newPasswordBody = {
@@ -307,8 +323,6 @@ function updatePassword() {
         email: urlParams.get('email'),
         hash: urlParams.get('verificationHash')
     }
-
-
 
     $.ajax({
         type: 'POST',
