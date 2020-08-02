@@ -778,58 +778,6 @@ function fillCart()
     });    
 }
 
-/*checkUserPromocode:
-trigger: user click on 'Submit' button on 'Payment' tab in 'payment.html' page
-output: if promo code valid- check if user have discount */
-function checkUserPromocode()
-{
-    var promocode = {  promocode: $('#check-promo-code').val() } ;
-    var userName = {   email: JSON.parse(sessionStorage.getItem('user')).email };
-    $.ajax({
-        type: 'POST',
-        url: '/get-promocode',
-        data: userName,
-        dataType: 'json',
-        success: function (promocodeData) {
-            console.log(promocodeData);
-            discount = 0;
-            if(promocode.promocode=="3XCRt")
-            {
-                if(promocodeData == "1"){
-                    var totPrice = document.getElementById('total-price-payment').innerHTML;
-                    totPrice = parseFloat(totPrice);
-                    totPrice = totPrice*0.9;
-                    var totPriceVat = totPrice*1.17;
-                    totPrice = totPrice.toFixed(0);
-                    totPriceVat = totPriceVat.toFixed(0);
-                    totPrice = totPrice.toString()+'$';
-                    totPriceVat = totPriceVat.toString()+'$';
-                    $('#total-price-payment').html(totPrice);
-                    $('#total-price-vat').html(totPriceVat);
-                   alert("you have 10% discount!");
-                    discount = 1;
-                } else {
-                    alert("code not found");
-                }      
-            } else if(promocode.promocode=="4DFG"){
-                if(promocodeData == "2"){
-                    discount = 2;
-                } else{
-                    alert("code not found");
-                }
-            }else if(promocode.promocode=="6DSQW"){
-                if(promocodeData == "3"){
-                    discount = 3;
-                } else{
-                    alert("code not found");
-                }
-            }
-        },
-        error: function (err) {
-            alert(err);
-        }
-    });   
-}
 
 function addToPurchases()
 {   
@@ -839,8 +787,7 @@ function addToPurchases()
     var yyyy = today.getFullYear();
     today = mm + '/' + dd + '/' + yyyy;
     var userAndDate = {   email: JSON.parse(sessionStorage.getItem('user')).email,
-                          date: today,
-                          discount: discount };
+                          date: today   };
     $.ajax({
         type: 'POST',
         url: '/add-to-purchases',
