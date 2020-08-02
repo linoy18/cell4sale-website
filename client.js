@@ -284,15 +284,13 @@ function forget() {
         error_message.innerHTML = "Please insert your E-mail address";
         return;
     }
-
-
     $.ajax({
         type: 'POST',
         url: '/forgetpassword',
         data: forget_details,
 
         success: function (userData) {
-            error_message.innerHTML = "Email with a verification link is sent to your email!";
+            $('#forgetPassModal').modal('show');
         },
         error: function (res) {
             error_message.innerHTML = "Oops... Somting wrong happend. Enter your email again!";
@@ -304,7 +302,6 @@ function updatePassword() {
     var error_message = document.getElementById("errorMessage2");
     var passwordInput = document.getElementById("passforget");
     var passwordInput2= document.getElementById("pass2forget");
-
     if (passwordInput.value === "") {
         error_message.innerHTML = "Please insert your password for confirmation";
         return;
@@ -337,10 +334,10 @@ function updatePassword() {
         data: newPasswordBody,
 
         success: function (userData) {
-            location.replace('/login');
-
-        },
+            $('#activatePassModal').modal('show');
+                },
         error: function (res) {
+            console.log("hi3");
             error_message.innerHTML = "Oops... Somting wrong happend. Try again please.";
         }
     });
