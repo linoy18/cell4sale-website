@@ -278,15 +278,13 @@ function forget() {
         error_message.innerHTML = "Please insert your E-mail address";
         return;
     }
-
-
     $.ajax({
         type: 'POST',
         url: '/forgetpassword',
         data: forget_details,
 
         success: function (userData) {
-            error_message.innerHTML = "Email with a verification link is sent to your email!";
+            $('#forgetPassModal').modal('show');
         },
         error: function (res) {
             error_message.innerHTML = "Oops... Somting wrong happend. Enter your email again!";
@@ -329,11 +327,10 @@ function updatePassword() {
         data: newPasswordBody,
 
         success: function (userData) {
-            $('#forgetPassModal').modal('show');
-        
-            // location.replace('/login');
-        },
+            $('#activatePassModal').modal('show');
+                },
         error: function (res) {
+            console.log("hi3");
             error_message.innerHTML = "Oops... Somting wrong happend. Try again please.";
         }
     });
