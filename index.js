@@ -530,23 +530,7 @@ app.post('/delete-from-cart', async function (req, res) {
       await db.none(query);
       res.writeHead(200);
       res.end();
-    }
-    //getting all rows in userproducts table where user_id==userID
-    query = "SELECT count FROM userproducts WHERE user_id='" + userID + "'AND product_name='" + productName + "'AND product_type='" + productType + "'";
-    results = await db.oneOrNone(query);
-
-    if (!results) //in case there is not such product in cart
-    {
-      res.writeHead(404);
-      res.end();
     } else {
-      console.log(results);
-      if (results.count == 1) {
-        query = "DELETE FROM userproducts WHERE user_id='" + userID + "'AND product_name='" + productName + "'AND product_type='" + productType + "'";
-        await db.none(query);
-        res.writeHead(200);
-        res.end();
-      } else {
         query = "UPDATE userproducts SET count=count-1 WHERE user_id='" + userID + "'AND product_name='" + productName + "'AND product_type='" + productType + "'";
         await db.none(query);
         res.writeHead(200);
