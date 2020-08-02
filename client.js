@@ -297,7 +297,6 @@ function updatePassword() {
     var error_message = document.getElementById("errorMessage2");
     var passwordInput = document.getElementById("passforget");
     var passwordInput2= document.getElementById("pass2forget");
-
     if (passwordInput.value === "") {
         error_message.innerHTML = "Please insert your password for confirmation";
         return;
@@ -330,8 +329,9 @@ function updatePassword() {
         data: newPasswordBody,
 
         success: function (userData) {
-            location.replace('/login');
-
+            $('#forgetPassModal').modal('show');
+        
+            // location.replace('/login');
         },
         error: function (res) {
             error_message.innerHTML = "Oops... Somting wrong happend. Try again please.";
