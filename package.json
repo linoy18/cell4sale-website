@@ -37,7 +37,7 @@
         "datatables.net-bs4": "1.10.19",
         "dbless-email-verification": "^1.0.0",
         "express": "^4.17.1",
-        "jquery": "3.4.1",
+        "jquery": "3.5.0",
         "jquery.easing": "^1.4.1",
         "money": "^0.2.0",
         "mysql": "^2.18.1",
