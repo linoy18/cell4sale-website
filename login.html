@@ -57,12 +57,14 @@
                       <div class="text-center">
                         <p class="small" style="color:#a90e0e;" id="errorMessage"> </p>
                       </div>
+                    </center>
                       <div class="form-group">
                         <div class="custom-control custom-checkbox small">
                           <input type="checkbox" class="custom-control-input" id="customCheck">
                           <label class="custom-control-label" for="customCheck">Remember Me</label>
                         </div>
                       </div>
+                      <center>
                       <div class="col g-recaptcha" style="margin-left: 1.9%; margin-bottom: 3%;"
                         data-sitekey="6LdYkbUZAAAAAOMot2c1wF6OExBEAJr91zRhEfYR" data-callback='onSubmit'
                         data-action='submit'>Submit</div>
@@ -88,7 +90,7 @@
                     <a class="small" href="/forget-password/">Forgot Password?</a>
                   </div>
                   <div class="text-center">
-                    <a class="small" href="/register/">Create an Account!</a>
+                    <a class="small" href="/register">Create an Account!</a>
                   </div>
                 </div>
               </div>
@@ -117,6 +119,7 @@
     function onSubmit(token) {
       document.getElementById("demo-form").submit();
     }
+
 
     ////////////////////////////////////////Facebook functions///////////////////////////////////////////////////
     function statusChangeCallback(response) {  // Called with the results from FB.getLoginStatus().

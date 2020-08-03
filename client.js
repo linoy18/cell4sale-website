@@ -19,6 +19,36 @@ const phonesImg = [
     { name: "Google pixel 4", img: "https://i.ibb.co/8cMHvzB/Google-pixel-4.png" }
 ];
 
+const phonesImgSmall = [
+    { name: "Samsung Galaxy S10", img: "https://i.ibb.co/QYCTsrL/galaxy10.png" },
+    { name: "Huawei P40", img: "https://i.ibb.co/DKS6z8L/hwawi.png" },
+    { name: "iPhone 11 Pro Max", img: "https://i.ibb.co/PDNNJG3/iphone11.png" },
+    { name: "OnePlus 8", img: "https://i.ibb.co/jD3cjSx/1.png" },
+    { name: "Xiaomi Redmi 8", img: "https://i.ibb.co/zNPTjqS/Xiamo.png" },
+    { name: "Google pixel 4", img: "https://i.ibb.co/pKL9YP2/googlepixel.png" }
+];
+
+
+function forgetPassCaptcha() {
+    var error_message = document.getElementById("errorMessage2");
+    var response = grecaptcha.getResponse();
+    if (response.length == 0) {
+        error_message.innerHTML = "You must confirm that you are not a robot!";
+    }
+    else forget();
+}
+
+
+function registerCaptcha() {
+    var error_message = document.getElementById("errorMessage");
+    var response = grecaptcha.getResponse();
+    if (response.length == 0) {
+        error_message.innerHTML = "You must confirm that you are not a robot!";
+    }
+    else SignUp();
+}
+
+
 function loginCaptcha() {
     var error_message = document.getElementById("errorMessage");
     var response = grecaptcha.getResponse();
@@ -89,7 +119,7 @@ function Login() {
 
     $.ajax({
         type: 'POST',
-        url: '/login',
+        url: '/login/',
         data: credentials,
         // Login Successful
         success: function (userData) {
@@ -276,6 +306,7 @@ function validatePassword(password) {
 
 
 function forget() {
+    document.getElementById("resetPassBtn").disabled = false;
     error_message = document.getElementById("errorMessage2");
     var forget_details = {
         email: document.getElementById("emailforget").value,
@@ -389,7 +420,6 @@ function getAddressDetails() {
 
 function updateDetails() {
     //update profile fields after change
-
     var userName = {
         email: JSON.parse(sessionStorage.getItem('user')).email,
     }
@@ -407,9 +437,11 @@ function updateDetails() {
 
 
 function updateDetails2(prev_profile_details) {
+    var error_message = document.getElementById("errorMessageProfile");
     var userToUpdate = {
         email: $('#email_profile').val(),
         password: $('#password_profile').val(),
+        passwordConfirm: $('#password2_profile').val(),
         name: $('#firstName_profile').val(),
         familyname: $('#lastName_profile').val(),
         street: $('#street_profile').val(),
@@ -431,6 +463,7 @@ function updateDetails2(prev_profile_details) {
         userToUpdate.familyname = prev_profile_details.familyname;
     }
     if (userToUpdate.street == "") {
+        
         userToUpdate.street = prev_profile_details.street;
     }
     if (userToUpdate.city == "") {
@@ -444,6 +477,33 @@ function updateDetails2(prev_profile_details) {
     }
     if (userToUpdate.zipcode == "") {
         userToUpdate.zipcode = prev_profile_details.zipcode;
+    }
+
+    if(userToUpdate.password=="" && userToUpdate.passwordConfirm!="")
+    { 
+        error_message.innerHTML = "Please insert your password for confirmation";
+        return;
+    }
+
+    if(userToUpdate.password!="" && userToUpdate.passwordConfirm==""){
+        error_message.innerHTML = "Please insert your password again for confirmation";
+        return;
+    }
+
+    if (userToUpdate.password != userToUpdate.passwordConfirm) {
+        error_message.innerHTML = "Password and confirm password does not match";
+        return;
+    }
+        
+    if (!validatePassword(userToUpdate.password)) {
+      error_message.innerHTML = "Password must contain at least 6 characters, uppercase, lowercase, number, special character.";
+        return;
+    }
+    
+  
+    if(userToUpdate.email!=prev_profile_details.email)
+    {
+        /////////////////mail with link 
     }
 
     $.ajax({
@@ -491,7 +551,10 @@ function showAddressTabFields(userDetails) {
 
 function showPassConfirmation() {
     $("#password2div").show();
+    $('#email_profile_div').addClass('col-sm-3').removeClass('col-sm-4');
+    $('#password_profile_div').addClass('col-sm-3').removeClass('col-sm-5');
 }
+
 
 /*showPassword: 
 trigger: user click on 'eye_pass' element

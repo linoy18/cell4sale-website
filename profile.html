@@ -50,7 +50,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="/index">
                     <i class="fa fa-home" aria-hidden="true"></i>
                     <span>Homepage</span></a>
             </li>
@@ -65,7 +65,7 @@
 
             <!-- Nav Item - Mobile Phones Menu -->
             <li class="nav-item">
-                <a class="nav-link" href="phones.html">
+                <a class="nav-link" href="/phones.html">
                     <i class="fa fa-mobile" aria-hidden="true"></i>
                     <span>Mobile Phones</span></a>
 
@@ -73,7 +73,7 @@
 
             <!-- Nav Item - Computers Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link" href="404.html">
+                <a class="nav-link" href="/404.html">
                     <i class="fa fa-laptop" aria-hidden="true"></i>
                     <span> Computers</span>
                 </a>
@@ -96,7 +96,7 @@
 
             <!-- Nav Item - Contact -->
             <li class="nav-item">
-                <a class="nav-link" href="contactus.html">
+                <a class="nav-link" href="/contactus.html">
                     <i class="fa fa-envelope" aria-hidden="true"></i>
                     <span>Contact Us</span></a>
             </li>
@@ -153,17 +153,17 @@
                                 </form>
                             </div>
                         </li>
-               
-                   <!-- Nav Item - Alerts -->
-            <li class="nav-item dropdown no-arrow mx-1" >
-                <a class="nav-link dropdown-toggle" id="alertsDropdown" href="cart.html" role="button" 
-                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="getCart()">
-                  <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                  <!-- Counter - Alerts -->
-                  <span class="badge badge-info badge-counter" >+1</span>
-                </a>
-              </li>
-  
+
+                        <!-- Nav Item - Alerts -->
+                        <li class="nav-item dropdown no-arrow mx-1">
+                            <a class="nav-link dropdown-toggle" id="alertsDropdown" href="/cart/" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="getCart()">
+                                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                                <!-- Counter - Alerts -->
+                                <span class="badge badge-info badge-counter">+1</span>
+                            </a>
+                        </li>
+
 
 
                         <div class="topbar-divider d-none d-sm-block"></div>
@@ -180,7 +180,7 @@
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="profile.html">
+                                <a class="dropdown-item" href="/profile/">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
                                 </a>
@@ -241,8 +241,8 @@
                                             <div class="tab-pane fade show active" id="home" role="tabpanel"
                                                 aria-labelledby="home-tab">
                                                 <div class="row">
-                                                    <div class="col-md-6"></div>
-                                                    <div class="col-md-6" style="align-items:flex-end; display: flex;">
+                                                    <div class="col-md-8"></div>
+                                                    <div class="col-md-4" style="align-items:flex-end; display: flex;">
                                                         <button type="button" class="profile-edit-btn "
                                                             onclick="updateDetails()">Update Details</button>
                                                     </div>
@@ -251,136 +251,94 @@
                                                 <p style="font-size: 1rem; color:rgb(158, 158, 158);">Personal
                                                     Information</p>
                                                 <hr>
-                                                <div class="row ">
-                                                    <div class="col-md-2">
-                                                        <label>Email</label>
+
+
+                                                <div class="form-row mt-4">
+                                                    <div id="email_profile_div" class="col-12 col-sm-4 mt-4 mt-sm-0">
+                                                        <input id="email_profile"
+                                                            class="multisteps-form__input form-control" type="text"
+                                                            placeholder="Email" />
                                                     </div>
-                                                    <div class="col-md-2">
-                                                        <p>
-                                                            <input type="email" class="form-control"
-                                                                id="email_profile"></input>
-                                                        </p>
+                                                    <div id="password_profile_div" class="col-6 col-sm-5 mt-4 mt-sm-0">
+                                                        <input id="password_profile" onfocus="showPassConfirmation()"
+                                                         class="multisteps-form__input form-control" type="text"
+                                                            placeholder="Password" />
                                                     </div>
-                                                    <div class="col-md-2">
-                                                        <label>Password</label>
+                                                    <div id="password2div" class="col-6 col-sm-3 mt-4 mt-sm-0" style="display:none;">
+                                                        <input id="password2_profile"
+                                                            class="multisteps-form__input form-control" type="text"
+                                                            placeholder="Confirm New Password" />
                                                     </div>
-                                                    <div class="col-md-2">
-                                                        <div style="position: relative;" class="wrapper ">
-                                                            <div onclick="showPassword()">
-                                                                <i id="eye_pass"
-                                                                    style="position: absolute; top: 10px; left: 210px;"
-                                                                    class="fa fa-eye-slash"></i>
-                                                            </div>
-                                                            <input type="password" class="form-control "
-                                                                id="password_profile" onfocus="showPassConfirmation()">
-                                                            </input>
-                                                        </div>
-                                                    </div>
+                                                
                                                 </div>
-                                                <div class="row" style="display:none;" id="password2div">
-                                                    <div class="col-md-2">
-                                                        <label>Confirm New Password</label>
-                                                    </div>
-                                                    <div class="col-md-2">
-                                                        <p>
-                                                            <input type="password" class="form-control"
-                                                                id="password2_profile"></input>
-                                                        </p>
-                                                    </div>
+                                            </br>
+                                                <div>
+                                                    <p class="small" style="color:#a90e0e;" id="errorMessageProfile"></p>
                                                 </div>
-                                                </br>
+                                            </br> 
                                                 <p style="font-size: 1rem; color:rgb(158, 158, 158);">Contact
                                                     Information</p>
                                                 <hr>
-                                                <div class="row ">
-
-                                                    <div class="col-md-2">
-                                                        <label>First Name</label>
+                                                
+                                                <div class="form-row mt-4">
+                                                    <div class="col-12 col-sm-4 ">
+                                                        <label for="firstName_profile">First Name</label>
+                                                        <input id="firstName_profile"
+                                                            class="multisteps-form__input form-control" type="text"
+                                                            placeholder="First Name" />
                                                     </div>
-                                                    <div class="col-md-2 ">
-                                                        <p>
-                                                            <input type="text" class="form-control"
-                                                                id="firstName_profile"></input>
-                                                        </p>
-                                                    </div>
-
-
-                                                    <div class="col-md-2">
-                                                        <label>Last Name</label>
-                                                    </div>
-                                                    <div class="col-md-2">
-                                                        <p>
-                                                            <input type="text" class="form-control "
-                                                                id="lastName_profile"></input>
-                                                        </p>
-                                                    </div>
-
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-md-2">
-                                                        <label>Street</label>
-                                                    </div>
-                                                    <div class="col-md-2">
-                                                        <p>
-                                                            <input type="text" class="form-control"
-                                                                id="street_profile"></input>
-                                                        </p>
-                                                    </div>
-
-                                                    <div class="col-md-2">
-                                                        <label>City</label>
-                                                    </div>
-                                                    <div class="col-md-2">
-                                                        <p>
-                                                            <input type="text" class="form-control"
-                                                                id="city_profile"></input>
-                                                        </p>
+                                                    <div class="col-12 col-sm-5 mt-4 mt-sm-0">
+                                                        <label for="lastName_profile">Last Name</label>
+                                                        <input id="lastName_profile"
+                                                            class="multisteps-form__input form-control" type="text"
+                                                            placeholder="Last Name" />
                                                     </div>
                                                 </div>
-                                                <div class="row">
-                                                    <div class="col-md-2">
-                                                        <label>Country</label>
+                                                <div class="form-row mt-4">
+                                                    <div class="col-12 col-sm-4 ">
+                                                        <label for="number_profile">Phone Number</label>
+                                                        <input id="number_profile"
+                                                            class="multisteps-form__input form-control" type="tel"
+                                                            placeholder="Phone Number" />
                                                     </div>
-                                                    <div class="col-md-2">
-                                                        <p>
-                                                            <input type="text" class="form-control"
-                                                                id="country_profile"></input>
-                                                        </p>
+                                                    <div class="col-12 col-sm-5 mt-4 mt-sm-0">
+                                                        <label for="country_profile">Country</label>
+                                                        <input id="country_profile"
+                                                            class="multisteps-form__input form-control" type="text"
+                                                            placeholder="Country" />
                                                     </div>
-
-                                                    <div class="col-md-2">
-                                                        <label>Phone Number</label>
+                                                </div>
+                                                <div class="form-row mt-4">
+                                                    <div class="col-12 col-sm-3">
+                                                        <label for="city_profile">City</label>
+                                                        <input id="city_profile"
+                                                            class="multisteps-form__input form-control" type="text"
+                                                            placeholder="City" />
                                                     </div>
-                                                    <div class="col-md-2">
-                                                        <p>
-                                                            <input type="text" class="form-control"
-                                                                id="number_profile"></input>
-                                                        </p>
+                                                    <div class="col-6 col-sm-3 mt-4 mt-sm-0">
+                                                        <label for="street_profile">Street</label>
+                                                        <input id="street_profile"
+                                                            class="multisteps-form__input form-control" type="text"
+                                                            placeholder="Street" />
+                                                    </div>
+                                                    <div class="col-6 col-sm-3 mt-4 mt-sm-0">
+                                                        <label for="zipcode_profile">Zip</label>
+                                                        <input id="zipcode_profile"
+                                                            class="multisteps-form__input form-control" type="text"
+                                                            placeholder="Zip" />
                                                     </div>
                                                 </div>
 
-                                                <div class="row">
-                                                    <div class="col-md-2">
-                                                        <label>Zip Code</label>
-                                                    </div>
-                                                    <div class="col-md-2">
-                                                        <p>
-                                                            <input type="text" class="form-control"
-                                                                id="zipcode_profile"></input>
-                                                        </p>
-                                                    </div>
-
-                                                </div>
+                                              
                                             </div>
                                             <div class="tab-pane fade" id="profile" role="tabpanel"
                                                 aria-labelledby="profile-tab">
 
                                                 <!-- Product #1 -->
 
-                                                <div  class="wrapper">
+                                                <div class="wrapper">
                                                     <div id="wrapper2" class="shopping-cart">
-                 
+
                                                     </div>
                                                     <img class="Responsive"
                                                         style="width:35%; height:35%; margin-left: 28%; margin-top:2%"
@@ -410,24 +368,28 @@
             </a>
 
             <!-- Logout Modal-->
-            <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
                 <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">Select "Logout" below if you are ready to end your current session.
+                        </div>
+                        <div class="modal-footer">
+                            <a class="btn btn-secondary" style="color:white; cursor: pointer;" type="button"
+                                data-dismiss="modal">Cancel</a>
+                            <a class="btn btn-primary" style="color:white; cursor: pointer;"
+                                onclick="logout()">Logout</a>
+                        </div>
                     </div>
-                    <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                    <div class="modal-footer">
-                    <a class="btn btn-secondary" style="color:white; cursor: pointer;" type="button" data-dismiss="modal">Cancel</a>
-                    <a class="btn btn-primary"  style="color:white; cursor: pointer;"  onclick = "logout()">Logout</a>
-                    </div>
-                </div>
                 </div>
             </div>
-            
+
             <!-- Update Details Modal-->
             <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
@@ -443,7 +405,7 @@
                         </div>
                         <div class="modal-footer">
                             <!-- <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button> -->
-                            <a class="btn btn-primary" href="profile.html">OK</a>
+                            <a class="btn btn-primary" href="/profile.html">OK</a>
                         </div>
                     </div>
                 </div>
