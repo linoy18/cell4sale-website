@@ -162,6 +162,7 @@ input:focus {
 /* Total Price */
 .total-price {
   align-items: flex-end; 
+  width: 20%;
   padding-top: 25px;
   text-align: center;
   font-size: 16px;

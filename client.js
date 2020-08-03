@@ -8,7 +8,6 @@ var indexFlag = -1;
 var phoneType;
 var phonePrice;
 var discount = 0;
-var isCartFull = false;
 //Cell-phones images
 const phonesImg = [
     { name: "Samsung Galaxy S10", img: "https://i.ibb.co/nMQ5SN4/Samsung-Galaxy-S10.png" },
@@ -685,11 +684,6 @@ function getCart() {
         data: userName,
         dataType: 'json',
         success: function (cartData) {
-            if(cartData.length==0){
-                isCartFull = false;
-            } else{
-                isCartFull = true; 
-            }
             sessionStorage.setItem('cart-data', JSON.stringify(cartData));
             location.replace('/cart.html');
         },
@@ -706,71 +700,73 @@ output: get items stored by "getCart()" and displayed in page
 function showCart() {
     var cartData = JSON.parse(sessionStorage.getItem('cart-data'));
     var cartTotPrice = 0;
-    for (var i = 0; i < cartData.length; i++) {
-        var obj = cartData[i];
-        var totPrice = parseFloat(obj.product_price);
-        var priceCount = parseFloat(obj.product_price) * obj.count;
-        priceCount = priceCount.toFixed(0);
-        priceCount = priceCount.toString() + '$';
-        totPrice = 1.17 * totPrice * obj.count;
-        cartTotPrice += totPrice;
-        totPrice = totPrice.toFixed(0);
-        totPrice = totPrice.toString();
-        var phoneImg = ``;
-
-        for (var k = 0; k < phonesImg.length; k++) {  //selecting phone image
-            if (phonesImg[k].name == obj.product_name) {
-                phoneImg = phonesImg[k].img;
-            }
-        } //end picking phone image
-        var dataRow = `<div class="item">
-       <div class="buttons"><span class="delete-btn" onclick="deleteProductFromCart('${obj.product_name}','${obj.product_type}')"></span>
-       </div>
-     <div class="image">
-       <img src="https://i.ibb.co/pr3j1f3/galaxy10.png" alt="" />
-     </div>
-     <div class="description">
-       <span>`+ obj.product_name + `</span>
-       <span>`+ obj.product_type + `</span>
-       <span></span>
-     </div>
-     <div class="quantity">
-       <button class="plus-btn" type="button" name="button">
-         <!-- <img src="plus.svg" alt="" /> -->
-         <i class="fa fa-plus" aria-hidden="true"></i>
-       </button>
-       <input type="text" name="name" value="${obj.count}">
-       <button class="minus-btn" type="button" name="button">
-         <!-- <img src="minus.svg" alt="" /> -->
-         <i class="fa fa-minus" aria-hidden="true"></i>
-       </button>
-     </div>
-     <div class="total-price">Price: `+ priceCount + `</div>
-     <div class="total-price">Total Price (including 17% VAT):`+ totPrice + `$</div></div>`;
-        $(dataRow).appendTo('#cart-item');
-    }
-    cartTotPrice = parseFloat(cartTotPrice);
-    cartTotPrice = cartTotPrice.toFixed(0);
-    cartTotPrice = cartTotPrice.toString() + '$';
-    $('#cart-total-price').html(cartTotPrice);
-    var promocode = {promocode: JSON.parse(sessionStorage.getItem('user')).promocode}
-    if(promocode.promocode=="1") {
-        $('#discount-message').html("You received a 10% discount!");
-    } else if(promocode.promocode=="2") {
-        $('#discount-message').html("You received a 20% discount!");
-    } else if(promocode.promocode=="3") {
-        $('#discount-message').html("You received a 30% discount!");
+    if(cartData.length==0){
+        $('#discount-message').html("Cart is empty!");
+        $('#total-price-text').html("");
     } else {
-        $('#discount-message').html("");
-    } 
-    if (isCartFull) {
-        dataRow = `<button class="btn btn-secondary"
-         onclick="checkOut()"> Checkout </button>`;
-        $(dataRow).appendTo('#cart-checkout-btn');
-    } else {
-        $("#cart-checkout-btn").empty();
+        for (var i = 0; i < cartData.length; i++) {
+            var obj = cartData[i];
+            var totPrice = parseFloat(obj.product_price);
+            var priceCount = parseFloat(obj.product_price) * obj.count;
+            priceCount = priceCount.toFixed(0);
+            priceCount = priceCount.toString() + '$';
+            totPrice = 1.17 * totPrice * obj.count;
+            cartTotPrice += totPrice;
+            totPrice = totPrice.toFixed(0);
+            totPrice = totPrice.toString();
+            var phoneImg = ``;
+    
+            for (var k = 0; k < phonesImg.length; k++) {  //selecting phone image
+                if (phonesImg[k].name == obj.product_name) {
+                    phoneImg = phonesImg[k].img;
+                }
+            } //end picking phone image
+            var dataRow = `<div class="item">
+           <div class="buttons"><span class="delete-btn" onclick="deleteProductFromCart('${obj.product_name}','${obj.product_type}')"></span>
+           </div>
+         <div class="image">
+           <img src="https://i.ibb.co/pr3j1f3/galaxy10.png" alt="" />
+         </div>
+         <div class="description">
+           <span>`+ obj.product_name + `</span>
+           <span>`+ obj.product_type + `</span>
+           <span></span>
+         </div>
+         <div class="quantity">
+           <button class="plus-btn" type="button" name="button">
+             <!-- <img src="plus.svg" alt="" /> -->
+             <i class="fa fa-plus" aria-hidden="true"></i>
+           </button>
+           <input type="text" name="name" value="${obj.count}">
+           <button class="minus-btn" type="button" name="button">
+             <!-- <img src="minus.svg" alt="" /> -->
+             <i class="fa fa-minus" aria-hidden="true"></i>
+           </button>
+         </div>
+         <div class="total-price">Price: `+ priceCount + `</div>
+         <div class="total-price">Total Price (including 17% VAT):`+ totPrice + `$</div>
+         </div>`;
+            $(dataRow).appendTo('#cart-item');
+        }
+        cartTotPrice = parseFloat(cartTotPrice);
+        cartTotPrice = cartTotPrice.toFixed(0);
+        cartTotPrice = cartTotPrice.toString() + '$';
+        $('#total-price-text').html("Total: ");
+        $('#cart-total-price').html(cartTotPrice);
+        var promocode = {promocode: JSON.parse(sessionStorage.getItem('user')).promocode}
+        if(promocode.promocode=="1") {
+            $('#discount-message').html("You received a 10% discount!");
+        } else if(promocode.promocode=="2") {
+            $('#discount-message').html("You received a 20% discount!");
+        } else if(promocode.promocode=="3") {
+            $('#discount-message').html("You received a 30% discount!");
+        } else {
+            $('#discount-message').html("");
+        } 
+        dataRow = `<button class="btn btn-secondary checkoutBtn"
+        onclick="checkOut()"> Checkout </button>`;
+       $(dataRow).appendTo('#cart-checkout-btn');
     }
-
 }
 
 /*deleteProductFromCart:
