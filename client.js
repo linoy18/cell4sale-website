@@ -8,6 +8,7 @@ var indexFlag = -1;
 var phoneType;
 var phonePrice;
 var discount = 0;
+var isCartFull = false;
 //Cell-phones images
 const phonesImg = [
     { name: "Samsung Galaxy S10", img: "https://i.ibb.co/nMQ5SN4/Samsung-Galaxy-S10.png" },
@@ -614,12 +615,18 @@ trigger: user click on 'cart' span in the top of the window (topbar)
 output: get all user products from 'userproducts' table, store them and replace to 'cart.html' page*/
 function getCart() {
     var userName = { email: JSON.parse(sessionStorage.getItem('user')).email };
+    
     $.ajax({
         type: 'POST',
         url: '/get-cart',
         data: userName,
         dataType: 'json',
         success: function (cartData) {
+            if(cartData.length==0){
+                isCartFull = false;
+            } else{
+                isCartFull = true; 
+            }
             sessionStorage.setItem('cart-data', JSON.stringify(cartData));
             location.replace('/cart.html');
         },
@@ -683,6 +690,24 @@ function showCart() {
     cartTotPrice = cartTotPrice.toFixed(0);
     cartTotPrice = cartTotPrice.toString() + '$';
     $('#cart-total-price').html(cartTotPrice);
+    var promocode = {promocode: JSON.parse(sessionStorage.getItem('user')).promocode}
+    if(promocode.promocode=="1") {
+        $('#discount-message').html("You received a 10% discount!");
+    } else if(promocode.promocode=="2") {
+        $('#discount-message').html("You received a 20% discount!");
+    } else if(promocode.promocode=="3") {
+        $('#discount-message').html("You received a 30% discount!");
+    } else {
+        $('#discount-message').html("");
+    } 
+    if (isCartFull) {
+        dataRow = `<button class="btn btn-secondary"
+         onclick="checkOut()"> Checkout </button>`;
+        $(dataRow).appendTo('#cart-checkout-btn');
+    } else {
+        $("#cart-checkout-btn").empty();
+    }
+
 }
 
 /*deleteProductFromCart:

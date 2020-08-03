@@ -138,8 +138,8 @@
 
 .checkoutBtn:hover{
   background-color: #43484D !important;
-
 }
+
 
 button[class*=btn] {
 
@@ -162,7 +162,6 @@ input:focus {
 /* Total Price */
 .total-price {
   align-items: flex-end; 
-  width: 20%;
   padding-top: 25px;
   text-align: center;
   font-size: 16px;
