@@ -440,7 +440,7 @@ app.get('/get-phones', async function (req, res) {
     // let jsonPath = path.join(__dirname, 'cell_phone_data.json');
     let jsonPath = path.join(process.cwd(),'vendor', 'cell_phone_data.json');
     // let jsonFile = fs.readFileSync(jsonPath);
-    let jsonFile = fs.readFileSync('vendor\\cell_phone_data.json');
+    let jsonFile = fs.readFileSync(jsonPath);
     let cellData = JSON.parse(jsonFile);
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify(cellData));

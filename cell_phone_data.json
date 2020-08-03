@@ -1,0 +1,142 @@
+[
+	{
+      "id": "Samsung Galaxy S10",
+      "type": "Cell Phone",
+	  "in stock": "true",
+      "description": "The phone is powered by Octa core (2.73 GHz, Dual core, M4 Mongoose + 2.31 GHz, Dual core, Cortex A75 + 1.95 GHz, Quad core, Cortex A55) processor. ",
+      "models": [
+        {
+          "id": "1",
+          "type": "128 GB",
+          "text": "2 month of warranty",
+          "price": "699$"
+        },
+        {
+          "id": "2",
+          "type": "512 GB",
+          "text": "4 month warranty",
+		  "price": "949$"
+        }
+      ]
+    },
+    {
+      "id": "Huawei P40",
+      "type": "Cell Phone",
+	  "in stock": "true",
+      "description": "The Huawei P40 is a device from the Huawei flagship series that includes impressive photo capabilities thanks to the 5 cameras it has. The device has a rounded screen on all sides.",
+      "models": [
+        {
+          "id": "1",
+          "type": "128 GB",
+          "text": "1 month of warranty",
+          "price": "150$"
+        },
+        {
+          "id": "2",
+          "type": "256 GB",
+          "text": "3 month warranty",
+		  "price": "200$"
+        },
+        {
+          "id": "3",
+          "type": "512 GB",
+          "text": "4 month warranty",
+          "price": "400$"
+        }
+      ]
+    },
+	{
+      "id": "iPhone 11 Pro Max",
+      "type": "Cell Phone",
+	  "in stock": "true",
+      "description": "iPhone 11 Pro has the first triple-camera system in iPhone and is far and away the best camera ever made, it provides our customers with great range of creative control and advanced photo.. ",
+      "models": [
+        {
+          "id": "1",
+          "type": "64 GB",
+          "text": "life time warranty",
+          "price": "999$"
+        },
+        {
+          "id": "2",
+          "type": "256 GB",
+          "text": "life time warranty",
+		  "price": "1149$"
+        },
+        {
+            "id": "3",
+            "type": "512 GB",
+            "text": "life time warranty",
+            "price": "1349$"
+        }
+      ]
+    },
+	{
+      "id": "OnePlus 8",
+      "type": "Cell Phone",
+	  "in stock": "false",
+      "description": "The OnePluse 8 device features a Snapdragon 865 processor that is divided into a 1 + 3 + 4 core that operates depending on how it is used. ",
+      "models": [
+        {
+            "id": "1",
+            "type": "128 GB",
+            "text": "life time warranty",
+            "price": "619$"
+          },
+          {
+            "id": "2",
+            "type": "256 GB",
+            "text": "life time warranty",
+            "price": "656$"
+          }
+      ]
+    },
+	{
+      "id": "Xiaomi Redmi 8",
+      "type": "Cell Phone",
+	  "in stock": "false",
+      "description": "Xiaomi Redmi Note 8 is one of the Xiomi Note series that is considered to be its premium series. The device has a 6.3-inch LCD screen with Full HD Plus resolution. ",
+      "models": [
+        {
+            "id": "1",
+            "type": "64 GB",
+            "text": "life time warranty",
+            "price": "168$"
+          },
+          {
+            "id": "2",
+            "type": "128 GB",
+            "text": "life time warranty",
+            "price": "189$"
+          }
+          ,
+          {
+            "id": "2",
+            "type": "128 GB",
+            "text": "life time warranty",
+            "price": "189$"
+          }          
+      ]
+    },
+	{
+      "id": "Google pixel 4",
+      "type": "Cell Phone",
+	  "in stock": "false",
+      "description": "The Pixel 4 device is a fourth generation of Pixel devices from Google. The device includes 2 cameras in addition to an advanced AI system that will further improve the image quality. ",
+      "models": [
+        {
+            "id": "1",
+            "type": "64 GB",
+            "text": "life time warranty",
+            "price": "849$"
+          },
+          {
+            "id": "2",
+            "type": "128 GB",
+            "text": "life time warranty",
+            "price": "949$"
+          }
+      ]
+    }
+    
+]
