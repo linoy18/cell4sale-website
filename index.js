@@ -566,13 +566,34 @@ app.post('/delete-from-cart', async function (req, res) {
 app.post('/add-to-purchases', async function (req, res) {
   var userName = req.body.email;
   userName = userName.toLowerCase();
+  //user details to update
+  var userAddress = req.body.userAddress;
+  var firstName = userAddress.firstName;
+  var lastName = userAddress.lastName;
+  var phoneNumber = userAddress.phoneNumber;
+  var country = userAddress.country;
+  var city = userAddress.city;
+  var street = userAddress.street;
+  var zipCode = userAddress.zipCode;
+  //card detils to insert
+  var userPayment = req.body.userPayment;
+  var cardNumber = userPayment.cardNumber;
+  var nameOnCard = userPayment.nameOnCard;
+  var cardExp = userPayment.cardExp;
+  var cardCvv = userPayment.cardCvv;
+  var memo = userAddress.memo;
+ //purchas date
   var date = req.body.date;
   try{
    //taking user ID by email from users table
    var query = "SELECT * FROM users WHERE email='" + userName + "'";
    let result = await db.oneOrNone(query);
    if(result){
-     var userID = result.id;
+    var userID = result.id;
+    //updating user feilds in 'users' table
+    query = "UPDATE users SET name = $1 , familyname = $2 , phonenumber = $3 , country = $4 , city = $5 , street = $6 , zipcode = $7 WHERE email = $8";
+    await db.none(query, [firstName,lastName,phoneNumber,country,city,street,zipCode,userName]);
+    //getting all user products in cart
      query = "SELECT * FROM userproducts WHERE user_id='" + userID + "'";
      let results = await db.any(query);
      if(!results) {
@@ -593,7 +614,7 @@ app.post('/add-to-purchases', async function (req, res) {
          productLocalPrice = obj.product_local_price;
          productTotalPrice = obj.product_total_price;
          count = obj.count;
-        query = "INSERT INTO userpurchases(user_id, product_name, product_type, product_price,count,date, product_local_price, product_total_price) VALUES('"+userID+"','"+productName+"','"+productType+"','"+productPrice+"','"+count+"','"+date+"','"+productLocalPrice+"','"+productTotalPrice+"')";
+        query = "INSERT INTO userpurchases(user_id, product_name, product_type, product_price,count,date, product_local_price, product_total_price, card_number, name_card, exp_date, cvv, memo) VALUES('"+userID+"','"+productName+"','"+productType+"','"+productPrice+"','"+count+"','"+date+"','"+productLocalPrice+"','"+productTotalPrice+"','"+cardNumber+"','"+nameOnCard+"','"+cardExp+"','"+cardCvv+"','"+memo+"')";
         await db.none(query);
         query = "DELETE FROM userproducts WHERE user_id='" + userID + "'";
         await db.none(query);

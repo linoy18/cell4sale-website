@@ -813,7 +813,8 @@ function checkAddressFields() {
         country: $('#check-country').val(),
         city: $('#check-city').val(),
         street: $('#check-street').val(),
-        zipCode: $('#check-zip').val()
+        zipCode: $('#check-zip').val(),
+        memo: $('#special-request').val()
     };
     if ((userDetails.firstName == "") || (userDetails.lastName == "") || (userDetails.phoneNumber == "")
         || (userDetails.country == "") || (userDetails.city == "") || (userDetails.street == "") || (userDetails.zipCode == "")) {
@@ -821,6 +822,7 @@ function checkAddressFields() {
     }
     else {
         $('#check-address-next').prop('disabled', false);
+        sessionStorage.setItem('user-address', JSON.stringify(userDetails));
     }
 }
 
@@ -841,6 +843,7 @@ function checkPaymentFields() {
     } else {
         $('#check-payment-submit').prop('disabled', false);
         $('#check-pay-next').prop('disabled', false);
+        sessionStorage.setItem('user-payment', JSON.stringify(payDetails));
     }
 }
 
@@ -890,12 +893,18 @@ function addToPurchases() {
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
     var yyyy = today.getFullYear();
     today = mm + '/' + dd + '/' + yyyy;
-    var userAndDate = {   email: JSON.parse(sessionStorage.getItem('user')).email,
+    var userAddress = JSON.parse(sessionStorage.getItem('user-address'));
+    var userPayment = JSON.parse(sessionStorage.getItem('user-payment'));
+    console.log(userAddress);
+    var userAddressAndPayment = {   
+                          email: JSON.parse(sessionStorage.getItem('user')).email,
+                          userAddress: userAddress,
+                          userPayment: userPayment,
                           date: today   };
     $.ajax({
         type: 'POST',
         url: '/add-to-purchases',
-        data: userAndDate,
+        data: userAddressAndPayment,
         success: function (res) {
             alert("cooooool!");
         },
