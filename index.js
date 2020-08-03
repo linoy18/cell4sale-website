@@ -724,6 +724,12 @@ var server = app.listen(port, function () {
 
 /////////////////////////////////////////////////---***functions that prepare the emails to send***---///////////////////////////////////////////
 
+function purchaseMail() {
+  return
+}
+
+
+
 function passchangedMail(){
   return `<!DOCTYPE html>
   <html>
@@ -863,7 +869,7 @@ function passchangedMail(){
                       </tr>
                       <tr>
                           <td bgcolor="#ffffff" align="center" valign="top" style="padding: 40px 20px 20px 20px; border-radius: 4px 4px 0px 0px; color: #111111; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 48px; font-weight: 400; letter-spacing: 4px; line-height: 48px;">
-                         <img src="https://svgshare.com/i/NR_.svg" width="350px" style="display: block; border: 0px;" />  
+                         <img src="https://i.ibb.co/wQcTqTj/undraw-authentication-fsn5.png" width="350px" style="display: block; border: 0px;" />  
                           </td>
                       </tr>
                       <tr>
@@ -1043,7 +1049,7 @@ function preparePassMail(url){
                       </tr>
                       <tr>
                           <td bgcolor="#ffffff" align="center" valign="top" style="padding: 40px 20px 20px 20px; border-radius: 4px 4px 0px 0px; color: #111111; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 48px; font-weight: 400; letter-spacing: 4px; line-height: 48px;">
-                         <img src="https://svgshare.com/i/NTZ.svg" width="350px" style="display: block; border: 0px;" />  
+                         <img src="https://i.ibb.co/4YHstvX/undraw-mobile-login-ikmv.png" width="350px" style="display: block; border: 0px;" />  
                           </td>
                       </tr>
                       <tr>
@@ -1377,7 +1383,7 @@ function updateDetailsMail() {
                       </tr>
                       <tr>
                           <td bgcolor="#ffffff" align="center" valign="top" style="padding: 40px 20px 20px 20px; border-radius: 4px 4px 0px 0px; color: #111111; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 48px; font-weight: 400; letter-spacing: 4px; line-height: 48px;">
-                         <img src="https://svgshare.com/i/NF2.svg" width="250px" style="display: block; border: 0px;" />  
+                         <img src="https://i.ibb.co/93tfPyX/undraw-personal-info-0okl.png" width="300px" style="display: block; border: 0px;" />  
                           </td>
                       </tr>
                       <tr>
