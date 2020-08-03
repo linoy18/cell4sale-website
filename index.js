@@ -408,9 +408,26 @@ app.post('/setnewpassword', async function (req, res) {
     var query = "UPDATE users SET password=$1 WHERE email=$2";
     await db.none(query, [new_pass, emailToVerify]);
 
+
+    var transporter = await nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'cell4salecontact@gmail.com',
+        pass: 'Aa123456!'
+      }
+    });
+
+    var mailOptions = {
+      from: 'cell4salecontact@gmail.com',
+      to: emailToVerify,
+      subject: 'Your Details Has Been Updated!',
+      html: passchangedMail()
+    };
+
+    let mailRes = await transporter.sendMail(mailOptions);
+
     res.writeHead(200);
     res.end();
-    //////////////////////////////////////////////////////////////////////
   }
   catch (err) {
     res.status(500).send(err.message);

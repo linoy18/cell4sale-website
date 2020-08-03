@@ -374,6 +374,24 @@ function updatePassword() {
     });
 }
 
+function updateMainUserName(){
+
+    var userName = {
+        email: JSON.parse(sessionStorage.getItem('user')).email,
+    }
+    $.ajax({
+        type: 'POST',
+        url: '/profiledetails',
+        data: userName,
+        success: function (profile_details) {
+            var user_name= profile_details.name + ' ' +profile_details.familyname;
+            $('#user-name-main').append(user_name);
+        },
+        error: function (err) { console.log(err); }
+    });
+
+}
+
 function logout() {
     sessionStorage.removeItem("user");
     location.replace('/login');
@@ -384,6 +402,7 @@ trigger: loading 'profile.html' page
 output: get user information from db*/
 function getProfileDetails() {
     //Get request from server - get all profile details from DB
+
     var userName = {
         email: JSON.parse(sessionStorage.getItem('user')).email,
     }
@@ -504,7 +523,7 @@ function updateDetails2(prev_profile_details) {
   
     if(userToUpdate.email!=prev_profile_details.email)
     {
-        /////////////////mail with link 
+        $('#emailModal').modal('show');
     }
 
     $.ajax({
@@ -523,6 +542,9 @@ function updateDetails2(prev_profile_details) {
 input: userDetails-user updated information from db
 output: displayed updated input fields in 'profile.html' page */
 function updateUserProfileFields(userDetails) {
+    var user_name= userDetails.name + ' ' +userDetails.familyname;
+    $('#user-name-main').append(user_name);
+    $('#user-name-label').append(user_name);
     $('#email_profile').val(userDetails.email);
     $('#password_profile').val(userDetails.password);
     $('#firstName_profile').val(userDetails.name);
@@ -539,6 +561,10 @@ function updateUserProfileFields(userDetails) {
 input: userDetails-user information from db
 output: displayed input fields in address tab on 'payment.html' page */
 function showAddressTabFields(userDetails) {
+
+    var user_name= userDetails.name + ' ' +userDetails.familyname;
+    $('#user-name-main').append(user_name);
+
     $('#check-first-name').val(userDetails.name);
     $('#check-last-name').val(userDetails.familyname);
     $('#check-street').val(userDetails.street);
@@ -576,6 +602,7 @@ function showPassword() {
 trigger: user click on 'Mobile Phones' tab in side menu
 output: displayed all phones from json file getting from server side*/
 function getPhones() {
+    updateMainUserName();
     $.ajax({
         type: 'GET',
         url: '/get-phones',
@@ -699,10 +726,11 @@ trigger: loading 'cart.html' page
 output: get items stored by "getCart()" and displayed in page
  */
 function showCart() {
+    updateMainUserName();
     var cartData = JSON.parse(sessionStorage.getItem('cart-data'));
     var cartTotPrice = 0;
     if(cartData.length==0){
-        $('#discount-message').html("Cart is empty!");
+        $('#discount-message').html("</br> Your cart is empty");
         $('#total-price-text').html("");
     } else {
         for (var i = 0; i < cartData.length; i++) {

@@ -172,7 +172,7 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">User Name</span>
+                                <span id="user-name-main" class="mr-2 d-none d-lg-inline text-gray-600 small"></span>
                                 <i class="fa fa-user-circle" aria-hidden="true"></i>
 
 
@@ -215,9 +215,7 @@
 
                                     <div class="col-md-6 ">
                                         <div class="profile-head">
-                                            <h4>
-                                                Linoy Bar-Gal
-                                            </h4>
+                                            <h4 id="user-name-label"></h4>
                                             <ul class="nav nav-tabs" id="myTab" role="tablist">
                                                 <li class="nav-item">
                                                     <a class="nav-link active" id="home-tab" data-toggle="tab"
@@ -391,6 +389,27 @@
             </div>
 
             <!-- Update Details Modal-->
+            <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Update Details</h5>
+                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">Your Profile Details Has Been Updated Successfully!
+                        </div>
+                        <div class="modal-footer">
+                            <!-- <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button> -->
+                            <a class="btn btn-primary" href="/profile.html">OK</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+              <!-- Change Email Modal-->
             <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog" role="document">
