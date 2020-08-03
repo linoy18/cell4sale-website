@@ -85,12 +85,12 @@ function Login() {
     email_text_box = document.getElementById("emailLogin");
     password_text_box = document.getElementById("passwordLogin");
     error_message = document.getElementById("errorMessage");
-    if(document.getElementById("customCheck").value=='on'){
+    if (document.getElementById("customCheck").value == 'on') {
         remember_me = true;
-    }else{
+    } else {
         remember_me = false;
     }
- 
+
     var credentials = {
         userName: email_text_box.value,
         password: password_text_box.value,
@@ -332,7 +332,7 @@ function forget() {
 function updatePassword() {
     var error_message = document.getElementById("errorMessage2");
     var passwordInput = document.getElementById("passforget");
-    var passwordInput2= document.getElementById("pass2forget");
+    var passwordInput2 = document.getElementById("pass2forget");
     if (passwordInput.value === "") {
         error_message.innerHTML = "Please insert your password for confirmation";
         return;
@@ -342,7 +342,7 @@ function updatePassword() {
         error_message.innerHTML = "Please insert your password again for confirmation";
         return;
     }
-      
+
     if (passwordInput.value != passwordInput2.value) {
         error_message.innerHTML = "Password and confirm password does not match";
         return;
@@ -366,7 +366,7 @@ function updatePassword() {
 
         success: function (userData) {
             $('#activatePassModal').modal('show');
-                },
+        },
         error: function (res) {
             console.log("hi3");
             error_message.innerHTML = "Oops... Somting wrong happend. Try again please.";
@@ -374,7 +374,7 @@ function updatePassword() {
     });
 }
 
-function updateMainUserName(){
+function updateMainUserName() {
 
     var userName = {
         email: JSON.parse(sessionStorage.getItem('user')).email,
@@ -384,7 +384,7 @@ function updateMainUserName(){
         url: '/profiledetails',
         data: userName,
         success: function (profile_details) {
-            var user_name= profile_details.name + ' ' +profile_details.familyname;
+            var user_name = profile_details.name + ' ' + profile_details.familyname;
             $('#user-name-main').append(user_name);
         },
         error: function (err) { console.log(err); }
@@ -479,7 +479,7 @@ function updateDetails2(prev_profile_details) {
         userToUpdate.familyname = prev_profile_details.familyname;
     }
     if (userToUpdate.street == "") {
-        
+
         userToUpdate.street = prev_profile_details.street;
     }
     if (userToUpdate.city == "") {
@@ -498,31 +498,28 @@ function updateDetails2(prev_profile_details) {
     if (userToUpdate.password == "") {
         userToUpdate.password = prev_profile_details.password;
     }
-   
 
-    if(userToUpdate.password!=prev_profile_details.password)
-    {
-        if(userToUpdate.password!="" && userToUpdate.passwordConfirm==""){
-        error_message.innerHTML = "Please insert your password again for confirmation";
-        return;
+
+    if (userToUpdate.password != prev_profile_details.password) {
+        if (userToUpdate.password != "" && userToUpdate.passwordConfirm == "") {
+            error_message.innerHTML = "Please insert your password again for confirmation";
+            return;
         }
         if (userToUpdate.password != userToUpdate.passwordConfirm) {
-        error_message.innerHTML = "Password and confirm password does not match";
-        return;
+            error_message.innerHTML = "Password and confirm password does not match";
+            return;
         }
-        if(userToUpdate.password=="" && userToUpdate.passwordConfirm!="")
-        { 
-        error_message.innerHTML = "Please insert your password for confirmation";
-        return;
+        if (userToUpdate.password == "" && userToUpdate.passwordConfirm != "") {
+            error_message.innerHTML = "Please insert your password for confirmation";
+            return;
         }
         if (!validatePassword(userToUpdate.password)) {
-        error_message.innerHTML = "Password must contain at least 6 characters, uppercase, lowercase, number, special character.";
-        return;
+            error_message.innerHTML = "Password must contain at least 6 characters, uppercase, lowercase, number, special character.";
+            return;
         }
     }
-  
-    if(userToUpdate.email!=prev_profile_details.email)
-    {
+
+    if (userToUpdate.email != prev_profile_details.email) {
         $('#emailModal').modal('show');
     }
 
@@ -542,7 +539,7 @@ function updateDetails2(prev_profile_details) {
 input: userDetails-user updated information from db
 output: displayed updated input fields in 'profile.html' page */
 function updateUserProfileFields(userDetails) {
-    var user_name= userDetails.name + ' ' +userDetails.familyname;
+    var user_name = userDetails.name + ' ' + userDetails.familyname;
     $('#user-name-main').append(user_name);
     $('#user-name-label').append(user_name);
     $('#email_profile').val(userDetails.email);
@@ -562,7 +559,7 @@ input: userDetails-user information from db
 output: displayed input fields in address tab on 'payment.html' page */
 function showAddressTabFields(userDetails) {
 
-    var user_name= userDetails.name + ' ' +userDetails.familyname;
+    var user_name = userDetails.name + ' ' + userDetails.familyname;
     $('#user-name-main').append(user_name);
 
     $('#check-first-name').val(userDetails.name);
@@ -649,7 +646,10 @@ function getPhones() {
                 $(dataRow).appendTo('#wrapper1');
             } //end inserting all phones
         },
-        error: function (err) { alert(err); }
+        error: function (err) {
+            alert(err.responseText);
+            console.error(err);
+        }
     });
 }
 
@@ -705,7 +705,7 @@ trigger: user click on 'cart' span in the top of the window (topbar)
 output: get all user products from 'userproducts' table, store them and replace to 'cart.html' page*/
 function getCart() {
     var userName = { email: JSON.parse(sessionStorage.getItem('user')).email };
-    
+
     $.ajax({
         type: 'POST',
         url: '/get-cart',
@@ -729,7 +729,7 @@ function showCart() {
     updateMainUserName();
     var cartData = JSON.parse(sessionStorage.getItem('cart-data'));
     var cartTotPrice = 0;
-    if(cartData.length==0){
+    if (cartData.length == 0) {
         $('#discount-message').html("</br> Your cart is empty");
         $('#total-price-text').html("");
     } else {
@@ -744,7 +744,7 @@ function showCart() {
             totPrice = totPrice.toFixed(0);
             totPrice = totPrice.toString();
             var phoneImg = ``;
-    
+
             for (var k = 0; k < phonesImg.length; k++) {  //selecting phone image
                 if (phonesImg[k].name == obj.product_name) {
                     phoneImg = phonesImg[k].img;
@@ -782,19 +782,19 @@ function showCart() {
         cartTotPrice = cartTotPrice.toString() + '$';
         $('#total-price-text').html("Total: ");
         $('#cart-total-price').html(cartTotPrice);
-        var promocode = {promocode: JSON.parse(sessionStorage.getItem('user')).promocode}
-        if(promocode.promocode=="1") {
+        var promocode = { promocode: JSON.parse(sessionStorage.getItem('user')).promocode }
+        if (promocode.promocode == "1") {
             $('#discount-message').html("You received a 10% discount!");
-        } else if(promocode.promocode=="2") {
+        } else if (promocode.promocode == "2") {
             $('#discount-message').html("You received a 20% discount!");
-        } else if(promocode.promocode=="3") {
+        } else if (promocode.promocode == "3") {
             $('#discount-message').html("You received a 30% discount!");
         } else {
             $('#discount-message').html("");
-        } 
+        }
         dataRow = `<button class="btn btn-secondary checkoutBtn"
         onclick="checkOut()"> Checkout </button>`;
-       $(dataRow).appendTo('#cart-checkout-btn');
+        $(dataRow).appendTo('#cart-checkout-btn');
     }
 }
 
@@ -924,11 +924,12 @@ function addToPurchases() {
     var userAddress = JSON.parse(sessionStorage.getItem('user-address'));
     var userPayment = JSON.parse(sessionStorage.getItem('user-payment'));
     console.log(userAddress);
-    var userAddressAndPayment = {   
-                          email: JSON.parse(sessionStorage.getItem('user')).email,
-                          userAddress: userAddress,
-                          userPayment: userPayment,
-                          date: today   };
+    var userAddressAndPayment = {
+        email: JSON.parse(sessionStorage.getItem('user')).email,
+        userAddress: userAddress,
+        userPayment: userPayment,
+        date: today
+    };
     $.ajax({
         type: 'POST',
         url: '/add-to-purchases',

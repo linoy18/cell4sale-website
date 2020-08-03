@@ -15,7 +15,7 @@ var pgp = require('pg-promise')();
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 var convertUSDtoILSrate;
 const MY_SECRET = 'linoyshirannofaruri';
-var loginUser = { id:0, email:'', confirmed: false, rememberMe: false};
+var loginUser = { id: 0, email: '', confirmed: false, rememberMe: false };
 //////////////////////////////////////////////---***our URL String***---/////////////////////////////////////////////
 
 const API_URL = 'http://localhost:3000/';
@@ -30,8 +30,8 @@ app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 app.get('/', function (req, res) {
-  if(loginUser.id != 0) {
-    if(loginUser.rememberMe==true) {
+  if (loginUser.id != 0) {
+    if (loginUser.rememberMe == true) {
       res.redirect('/index');
       console.log("Requested Main Menu, Opening \"index\" page by defaults.");
     }
@@ -62,11 +62,11 @@ app.post('/profileupdate', async function (req, res) {
   var userToUpdate = req.body;
   try {
     console.log(userToUpdate.password);
-    var pass= encryptPassword(userToUpdate.password) ;
+    var pass = encryptPassword(userToUpdate.password);
     console.log(pass);
     var query = "UPDATE users SET name = $1 , familyname = $2 , phonenumber = $3 , country = $4 , city = $5 , street = $6 , zipcode = $7 ,password = $8 WHERE email = $9";
-    await db.none(query, [userToUpdate.name, userToUpdate.familyname, userToUpdate.phonenumber, userToUpdate.country, userToUpdate.city, userToUpdate.street, userToUpdate.zipcode,pass, userToUpdate.email]);
-    userToUpdate.password=pass;
+    await db.none(query, [userToUpdate.name, userToUpdate.familyname, userToUpdate.phonenumber, userToUpdate.country, userToUpdate.city, userToUpdate.street, userToUpdate.zipcode, pass, userToUpdate.email]);
+    userToUpdate.password = pass;
 
     var transporter = await nodemailer.createTransport({
       service: 'gmail',
@@ -108,7 +108,7 @@ app.post('/profiledetails', async function (req, res) {
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify(result));
 
-  
+
   } catch (err) {
     console.log(err);
     res.status(500).send(err.message);
@@ -145,7 +145,7 @@ app.post('/login', async function (req, res) {
       throw new Error("Wrong password");
     }
 
-    if(obj.rememberMe){
+    if (obj.rememberMe) {
       var userID = result.id;
       query = "UPDATE users SET remember_me=$1 WHERE email=$2";
       await db.none(query, [true, obj.email]);
@@ -153,7 +153,7 @@ app.post('/login', async function (req, res) {
       loginUser.email = obj.email;
       loginUser.confirmed = true;
       loginUser.rememberMe = true;
-      } 
+    }
 
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify(result));
@@ -404,7 +404,7 @@ app.post('/setnewpassword', async function (req, res) {
       throw new Error("User does not exists");
     }
 
-    new_pass= encryptPassword(req.body.newPassword);
+    new_pass = encryptPassword(req.body.newPassword);
     var query = "UPDATE users SET password=$1 WHERE email=$2";
     await db.none(query, [new_pass, emailToVerify]);
 
@@ -437,7 +437,9 @@ app.post('/setnewpassword', async function (req, res) {
 //Get the cell-phones data from json file
 app.get('/get-phones', async function (req, res) {
   try {
-    let jsonFile = fs.readFileSync('cell_phone_data.json');
+    // let jsonPath = path.join(process.cwd(), 'cell_phone_data.json');
+    // let jsonFile = fs.readFileSync(jsonPath);
+    let jsonFile = fs.readFileSync('/cell_phone_data.json');
     let cellData = JSON.parse(jsonFile);
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify(cellData));
@@ -455,7 +457,7 @@ app.post('/add-to-cart', async function (req, res) {
   var productName = req.body.productId;
   var productType = req.body.productType;
   var productPrice = req.body.productPrice;
-  try{
+  try {
     convertUSDtoILSrate = 0.0;
     getLocalPrice(); //get the ILS rate from USD
     //taking user ID by email from users table
@@ -465,22 +467,22 @@ app.post('/add-to-cart', async function (req, res) {
       var userID = results.id;
       var promocode = results.promocode;
       productPrice = parseFloat(productPrice);
-      if(promocode=="1"){ //10% discount
-        productPrice = productPrice*0.9;
-      } else if(promocode=="2"){ //20% discount 
-        productPrice = productPrice*0.8;
-      } else if(promocode=="3"){ //30% discount
-        productPrice = productPrice*0.7;
+      if (promocode == "1") { //10% discount
+        productPrice = productPrice * 0.9;
+      } else if (promocode == "2") { //20% discount 
+        productPrice = productPrice * 0.8;
+      } else if (promocode == "3") { //30% discount
+        productPrice = productPrice * 0.7;
       }
-      var localPrice = convertUSDtoILSrate*productPrice;
-      var totalPrice = localPrice*1.17; //calculating price includes VAT
+      var localPrice = convertUSDtoILSrate * productPrice;
+      var totalPrice = localPrice * 1.17; //calculating price includes VAT
       localPrice = localPrice.toFixed(2);
       totalPrice = totalPrice.toFixed(2);
       productPrice = productPrice.toFixed(2);
-      localPrice = localPrice.toString()+'ILS';
-      totalPrice = totalPrice.toString()+'ILS';
-      productPrice = productPrice.toString()+'$';
-    } else{
+      localPrice = localPrice.toString() + 'ILS';
+      totalPrice = totalPrice.toString() + 'ILS';
+      productPrice = productPrice.toString() + '$';
+    } else {
       res.writeHead(404);
       res.end();
     }
@@ -489,7 +491,7 @@ app.post('/add-to-cart', async function (req, res) {
     results = await db.oneOrNone(query);
     if (!results)//insert new row in 'userproducts' table in DB
     {
-      query = "INSERT INTO userproducts(user_id, product_name, product_type, product_price,count, product_local_price, product_total_price) VALUES('" + userID + "','" + productName + "','" + productType + "','" + productPrice + "','1','"+localPrice+"','"+totalPrice+"')";
+      query = "INSERT INTO userproducts(user_id, product_name, product_type, product_price,count, product_local_price, product_total_price) VALUES('" + userID + "','" + productName + "','" + productType + "','" + productPrice + "','1','" + localPrice + "','" + totalPrice + "')";
       await db.none(query);
       res.writeHead(200);
       res.end();
@@ -541,33 +543,31 @@ app.post('/delete-from-cart', async function (req, res) {
   userName = userName.toLowerCase();
   var productName = req.body.productName;
   var productType = req.body.productType;
-  try{
-   //taking user ID by email from users table
-   var query = "SELECT * FROM users WHERE email='" + userName + "'";
-   let results = await db.oneOrNone(query);
-   if(results)
-   {
-     var userID = results.id;
-   } else{
-     res.writeHead(404);
-     res.end();
-   }
-   //getting all rows in userproducts table where user_id==userID
-   query = "SELECT count FROM userproducts WHERE user_id='" + userID +"'AND product_name='"+productName+"'AND product_type='"+productType+"'";
-   results = await db.oneOrNone(query);
-  
-   if(!results) //in case there is not such product in cart
-   {
-    res.writeHead(404);
-    res.end();
-   }else{
-     if(results.count == 1)
-     {
-      query = "DELETE FROM userproducts WHERE user_id='"+userID+"'AND product_name='"+productName+"'AND product_type='"+productType+"'";
-      await db.none(query);
-      res.writeHead(200);
+  try {
+    //taking user ID by email from users table
+    var query = "SELECT * FROM users WHERE email='" + userName + "'";
+    let results = await db.oneOrNone(query);
+    if (results) {
+      var userID = results.id;
+    } else {
+      res.writeHead(404);
+      res.end();
+    }
+    //getting all rows in userproducts table where user_id==userID
+    query = "SELECT count FROM userproducts WHERE user_id='" + userID + "'AND product_name='" + productName + "'AND product_type='" + productType + "'";
+    results = await db.oneOrNone(query);
+
+    if (!results) //in case there is not such product in cart
+    {
+      res.writeHead(404);
       res.end();
     } else {
+      if (results.count == 1) {
+        query = "DELETE FROM userproducts WHERE user_id='" + userID + "'AND product_name='" + productName + "'AND product_type='" + productType + "'";
+        await db.none(query);
+        res.writeHead(200);
+        res.end();
+      } else {
         query = "UPDATE userproducts SET count=count-1 WHERE user_id='" + userID + "'AND product_name='" + productName + "'AND product_type='" + productType + "'";
         await db.none(query);
         res.writeHead(200);
@@ -599,53 +599,53 @@ app.post('/add-to-purchases', async function (req, res) {
   var cardExp = userPayment.cardExp;
   var cardCvv = userPayment.cardCvv;
   var memo = userAddress.memo;
- //purchas date
+  //purchas date
   var date = req.body.date;
-  try{
-   //taking user ID by email from users table
-   var query = "SELECT * FROM users WHERE email='" + userName + "'";
-   let result = await db.oneOrNone(query);
-   if(result){
-    var userID = result.id;
-    //updating user feilds in 'users' table
-    query = "UPDATE users SET name = $1 , familyname = $2 , phonenumber = $3 , country = $4 , city = $5 , street = $6 , zipcode = $7 WHERE email = $8";
-    await db.none(query, [firstName,lastName,phoneNumber,country,city,street,zipCode,userName]);
-    //getting all user products in cart
-     query = "SELECT * FROM userproducts WHERE user_id='" + userID + "'";
-     let results = await db.any(query);
-     if(!results) {
+  try {
+    //taking user ID by email from users table
+    var query = "SELECT * FROM users WHERE email='" + userName + "'";
+    let result = await db.oneOrNone(query);
+    if (result) {
+      var userID = result.id;
+      //updating user feilds in 'users' table
+      query = "UPDATE users SET name = $1 , familyname = $2 , phonenumber = $3 , country = $4 , city = $5 , street = $6 , zipcode = $7 WHERE email = $8";
+      await db.none(query, [firstName, lastName, phoneNumber, country, city, street, zipCode, userName]);
+      //getting all user products in cart
+      query = "SELECT * FROM userproducts WHERE user_id='" + userID + "'";
+      let results = await db.any(query);
+      if (!results) {
+        res.writeHead(404);
+        res.end();
+      } else {
+        var productName;
+        var productType;
+        var productPrice;
+        var productLocalPrice;
+        var productTotalPrice;
+        var count;
+        for (var i = 0; i < results.length; i++) {
+          var obj = results[i];
+          productName = obj.product_name;
+          productType = obj.product_type;
+          productPrice = obj.product_price;
+          productLocalPrice = obj.product_local_price;
+          productTotalPrice = obj.product_total_price;
+          count = obj.count;
+          query = "INSERT INTO userpurchases(user_id, product_name, product_type, product_price,count,date, product_local_price, product_total_price, card_number, name_card, exp_date, cvv, memo) VALUES('" + userID + "','" + productName + "','" + productType + "','" + productPrice + "','" + count + "','" + date + "','" + productLocalPrice + "','" + productTotalPrice + "','" + cardNumber + "','" + nameOnCard + "','" + cardExp + "','" + cardCvv + "','" + memo + "')";
+          await db.none(query);
+          query = "DELETE FROM userproducts WHERE user_id='" + userID + "'";
+          await db.none(query);
+        } //end for
+        res.writeHead(200);
+        res.end();
+      }
+    } else {
       res.writeHead(404);
       res.end();
-     } else {
-       var productName;
-       var productType;
-       var productPrice;
-       var productLocalPrice;
-       var productTotalPrice;
-       var count; 
-       for(var i=0; i<results.length; i++){
-         var obj = results[i];
-         productName = obj.product_name;
-         productType = obj.product_type;
-         productPrice = obj.product_price;
-         productLocalPrice = obj.product_local_price;
-         productTotalPrice = obj.product_total_price;
-         count = obj.count;
-        query = "INSERT INTO userpurchases(user_id, product_name, product_type, product_price,count,date, product_local_price, product_total_price, card_number, name_card, exp_date, cvv, memo) VALUES('"+userID+"','"+productName+"','"+productType+"','"+productPrice+"','"+count+"','"+date+"','"+productLocalPrice+"','"+productTotalPrice+"','"+cardNumber+"','"+nameOnCard+"','"+cardExp+"','"+cardCvv+"','"+memo+"')";
-        await db.none(query);
-        query = "DELETE FROM userproducts WHERE user_id='" + userID + "'";
-        await db.none(query);
-       } //end for
-      res.writeHead(200);
-      res.end();
-     } 
-   } else{
-     res.writeHead(404);
-     res.end();
-   }
-} catch (err) {
-  console.log(err.message);
-}
+    }
+  } catch (err) {
+    console.log(err.message);
+  }
 });
 
 app.post('/get-purchases', async function (req, res) {
@@ -670,35 +670,35 @@ app.post('/get-purchases', async function (req, res) {
     } else {
       res.writeHead(404);
       res.end();
-     } 
-} catch (err) {
-  console.log(err.message);
-}
+    }
+  } catch (err) {
+    console.log(err.message);
+  }
 });
 
 
 function getLocalPrice() {
   https.get(' https://api.exchangeratesapi.io/latest?base=USD', (resp) => {
-  let data = '';
-  let ils;
+    let data = '';
+    let ils;
 
-  resp.on('data', (chunk) => {
-    data += chunk;
+    resp.on('data', (chunk) => {
+      data += chunk;
+    });
+
+    // The whole response has been received. Print out the result.
+    resp.on('end', () => {
+      ils = JSON.parse(data);
+      ils = ils.rates;
+      ils = ils.ILS;
+      ils = parseFloat(ils);
+      convertUSDtoILSrate = ils;
+      convertUSDtoILSrate = convertUSDtoILSrate.toFixed(2);
+    });
+
+  }).on("error", (err) => {
+    console.log("Error: " + err.message);
   });
-
-  // The whole response has been received. Print out the result.
-  resp.on('end', () => {
-    ils = JSON.parse(data);
-    ils = ils.rates;
-    ils = ils.ILS;
-    ils = parseFloat(ils);
-    convertUSDtoILSrate = ils;
-    convertUSDtoILSrate = convertUSDtoILSrate.toFixed(2);
-  });
-
-}).on("error", (err) => {
-  console.log("Error: " + err.message);
-});
 }
 
 //Password encryption function 
@@ -730,7 +730,7 @@ function purchaseMail() {
 
 
 
-function passchangedMail(){
+function passchangedMail() {
   return `<!DOCTYPE html>
   <html>
   
@@ -886,7 +886,7 @@ function passchangedMail(){
   </html>`
 }
 
-function preparePassMail(url){
+function preparePassMail(url) {
   return `<!DOCTYPE html>
   <html>
   
