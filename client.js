@@ -634,11 +634,7 @@ function getPhones() {
                     </div>
                   </div>
                 </div>
-<<<<<<< HEAD
-                </div>
-=======
               
->>>>>>> 6064e6aec48c73f0b1263681750c3ff1e03dac99
                 <div class="row">
                   <div class="col-8">
                     <p class="pick">Choose Memory Size</p>
