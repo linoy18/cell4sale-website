@@ -18,7 +18,8 @@ const MY_SECRET = 'linoyshirannofaruri';
 var loginUser = { id: 0, email: '', confirmed: false, rememberMe: false };
 //////////////////////////////////////////////---***our URL String***---/////////////////////////////////////////////
 
-const API_URL = 'http://localhost:3000/';
+const API_URL = 'http://localhost:3000/'; // dev env
+// const API_URL = 'https://desolate-inlet-43132.herokuapp.com/'; // prod env
 
 //////////////////////////////////////////////---***Database Connection String***---/////////////////////////////////////////////
 var conn = process.env.DATABASE_URL || "postgres://emvsgzoirewkxt:4553cd6f71d9235f18aca6f487215f0ecf3de517cb7e038c710e79678a2b16b7@ec2-54-217-236-206.eu-west-1.compute.amazonaws.com:5432/dddicparrqfs3s?ssl=true"
@@ -57,16 +58,21 @@ app.get('/profile', function (req, res) {
   console.log("Redirected to profile page");
 });
 
-//Get the profile-details 
-app.post('/profileupdate', async function (req, res) {
-  var userToUpdate = req.body;
+app.get('/profileupdate/mailconfirmation', async function (req,res) {
+  // assuming the hash extracted from the verification url is stored in the verificationHash variable
+  const emailToVerify = req.query.email;
+  const emailToChange = req.query.toChange;
+  const hash = req.query.verificationHash;
+  const isEmailVerified = verifyHash(hash, emailToVerify, MY_SECRET);
+
   try {
-    console.log(userToUpdate.password);
-    var pass = encryptPassword(userToUpdate.password);
-    console.log(pass);
-    var query = "UPDATE users SET name = $1 , familyname = $2 , phonenumber = $3 , country = $4 , city = $5 , street = $6 , zipcode = $7 ,password = $8 WHERE email = $9";
-    await db.none(query, [userToUpdate.name, userToUpdate.familyname, userToUpdate.phonenumber, userToUpdate.country, userToUpdate.city, userToUpdate.street, userToUpdate.zipcode, pass, userToUpdate.email]);
-    userToUpdate.password = pass;
+    if (!isEmailVerified) {
+      throw new Error('Validation Error');
+    }
+
+    var query = "UPDATE users SET email=$1 WHERE email=$2";
+    await db.none(query, [emailToChange, emailToVerify]);
+
 
     var transporter = await nodemailer.createTransport({
       service: 'gmail',
@@ -75,6 +81,57 @@ app.post('/profileupdate', async function (req, res) {
         pass: 'Aa123456!'
       }
     });
+
+    var mailOptions = {
+      from: 'cell4salecontact@gmail.com',
+      to: emailToChange,
+      subject: 'Your email changed successfully!',
+      text: 'Your email is now changed to '+ emailToChange
+    };
+
+    let mailRes = await transporter.sendMail(mailOptions);
+    res.redirect('/login');
+
+  } catch (err) {
+    console.log(err);
+    res.writeHead(500, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(err));
+  }
+})
+
+//Get the profile-details 
+app.post('/profileupdate', async function (req, res) {
+  var userToUpdate = req.body;
+  try {
+
+    var pass = encryptPassword(userToUpdate.password);
+    var query = "UPDATE users SET name = $1 , familyname = $2 , phonenumber = $3 , country = $4 , city = $5 , street = $6 , zipcode = $7 ,password = $8 WHERE email = $9";
+    await db.none(query, [userToUpdate.name, userToUpdate.familyname, userToUpdate.phonenumber, userToUpdate.country, userToUpdate.city, userToUpdate.street, userToUpdate.zipcode, pass, userToUpdate.email]);
+
+    var transporter = await nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'cell4salecontact@gmail.com',
+        pass: 'Aa123456!'
+      }
+    });
+
+    if (userToUpdate.newEmail) {
+      const hash = generateVerificationHash(userToUpdate.email, MY_SECRET, 30);
+
+      const url = `${API_URL}profileupdate/mailconfirmation?email=${userToUpdate.email}&verificationHash=${hash}&toChange=${userToUpdate.newEmail}`;
+      var emailMailOptions = {
+        from: 'cell4salecontact@gmail.com',
+        to: userToUpdate.newEmail,
+        subject: 'Change Your Email',
+        // html: prepareMail(url)
+        text: 'For changing your email press the link below: \n ' + url
+      };
+
+      let emailMailRes = await transporter.sendMail(emailMailOptions);
+
+    }
+
 
     var mailOptions = {
       from: 'cell4salecontact@gmail.com',
@@ -437,7 +494,7 @@ app.post('/setnewpassword', async function (req, res) {
 //Get the cell-phones data from json file
 app.get('/get-phones', async function (req, res) {
   try {
-    let jsonPath = path.join(process.cwd(),'vendor', 'cell_phone_data.json');
+    let jsonPath = path.join(process.cwd(), 'vendor', 'cell_phone_data.json');
     let jsonFile = fs.readFileSync(jsonPath);
     let cellData = JSON.parse(jsonFile);
     res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -674,6 +731,10 @@ app.post('/get-purchases', async function (req, res) {
     console.log(err.message);
   }
 });
+
+app.get('*', (req, res) => {
+  res.sendfile('404.html'); /////////////////////////////////////////////////////////////////FIX 404
+})
 
 
 function getLocalPrice() {

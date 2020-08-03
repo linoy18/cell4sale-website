@@ -457,7 +457,7 @@ function updateDetails() {
 function updateDetails2(prev_profile_details) {
     var error_message = document.getElementById("errorMessageProfile");
     var userToUpdate = {
-        email: $('#email_profile').val(),
+        email: prev_profile_details.email,
         password: $('#password_profile').val(),
         passwordConfirm: $('#password2_profile').val(),
         name: $('#firstName_profile').val(),
@@ -467,9 +467,6 @@ function updateDetails2(prev_profile_details) {
         country: $('#country_profile').val(),
         phonenumber: $('#number_profile').val(),
         zipcode: $('#zipcode_profile').val()
-    }
-    if (userToUpdate.email == "") {
-        userToUpdate.email = prev_profile_details.email;
     }
 
     if (userToUpdate.name == "") {
@@ -519,7 +516,14 @@ function updateDetails2(prev_profile_details) {
         }
     }
 
-    if (userToUpdate.email != prev_profile_details.email) {
+    var emailInput = $('#email_profile').val();
+
+    if (emailInput == "") {
+        emailInput = prev_profile_details.email;
+    }
+
+    else if (emailInput !== prev_profile_details.email) {
+        userToUpdate.newEmail = emailInput;
         $('#emailModal').modal('show');
     }
 
