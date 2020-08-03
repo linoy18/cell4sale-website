@@ -761,7 +761,7 @@ function showCart() {
            <div class="buttons"><span class="delete-btn" onclick="deleteProductFromCart('${obj.product_name}','${obj.product_type}')"></span>
            </div>
          <div class="image">
-           <img src="https://i.ibb.co/pr3j1f3/galaxy10.png" alt="" />
+           <img src=`+phoneImg+` alt="" />
          </div>
          <div class="description">
            <span>`+ obj.product_name + `</span>
@@ -921,7 +921,8 @@ function fillCart() {
     });
 }
 
-
+/*addToPurchases:
+trigger: user click on 'purchas' button in 'Payment' tab*/
 function addToPurchases() {
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
@@ -943,12 +944,29 @@ function addToPurchases() {
         data: userAddressAndPayment,
         success: function (res) {
             // alert("cooooool!");
+            sendPurchasMail();
         },
         error: function (err) {
 
             alert(err);
         }
     });
+}
+
+function sendPurchasMail() {
+    var userName = {  email: JSON.parse(sessionStorage.getItem('user')).email}
+    $.ajax({
+    type: 'POST',
+    url: '/send-purchas-mail',
+    data: userName,
+    success: function (res) {
+
+    },
+    error: function (err) {
+
+        alert(err);
+    }
+});
 }
 
 function getPurchases() {
@@ -972,14 +990,14 @@ function showPurchases() {
     for (var i = 0; i < purchasesData.length; i++) {
         var obj = purchasesData[i];
         var phoneImg = ``;
-        for (var k = 0; k < phonesImg.length; k++) {  //selecting phone image
-            if (phonesImg[k].name == obj.product_name) {
-                phoneImg = phonesImg[k].img;
+        for (var k = 0; k < phonesImgSmall.length; k++) {  //selecting phone image
+            if (phonesImgSmall[k].name == obj.product_name) {
+                phoneImg = phonesImgSmall[k].img;
             }
         } //end picking phone image
         var dataRow = `<div class="item">
         <div class="price"></div>
-        <div class="image"><img src="https://i.ibb.co/pr3j1f3/galaxy10.png" alt="" />
+        <div class="image"><img src=`+phoneImg+` alt="" />
         </div>
         <div class="price-pur">
             <div class="description">
@@ -1000,10 +1018,6 @@ function showPurchases() {
                 <div>Quantity:</div>
                 <div>`+ obj.count + `</div>
             </div>
-        </div>
-       
-        <div style="margin-top: 1%;">
-            <button class="add">Add to Cart</button>
         </div>
     </div>`;
         $(dataRow).appendTo('#wrapper2');

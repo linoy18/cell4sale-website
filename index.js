@@ -783,9 +783,217 @@ var server = app.listen(port, function () {
 });
 
 /////////////////////////////////////////////////---***functions that prepare the emails to send***---///////////////////////////////////////////
+function preparePurchaseMail(products) {
+  var dataRow=``;
+  var subTotal =0.0;
+  for(var i=0; i<products.length; i++) {
+    var obj = products[i];
+    dataRow += `<tr>
+    <td bgcolor="#ffffff" align="left" style="padding: 0px 10px 5px 40px;"> ${obj.product_name}</td>
+    <td bgcolor="#ffffff" align="left" style="padding: 0px 10px 5px 10px;" class="text-xs-center">${obj.count}</td>
+    <td bgcolor="#ffffff" align="left" style="padding: 0px 10px 5px 10px;" class="text-xs-center">${obj.product_price}</td>
+</tr>`;
+    var price = obj.product_price;
+    price = parseFloat(price);
+    subTotal += price;
+  }
+  total = subTotal+10.0;
+  subTotal = subTotal.toFixed(2);
+  subTotal = subTotal.toString()+'$';
+  total = total.toFixed(2);
+  total = total.toString()+'$';
+  dataRow += `<tr>
+  <td class="highrow" bgcolor="#ffffff"  style="padding: 40px  10px 0px 10px;"></td>
+  <td bgcolor="#ffffff"  style="padding: 40px 10px 0px 10px;"><strong>Subtotal</strong></td>
+  <td bgcolor="#ffffff" style="padding: 40px 10px 0px 10px;">${subTotal}</td>
+</tr>
+<tr>
+ <td class="emptyrow" bgcolor="#ffffff"style="padding: 0px 10px 0px 10px;"></td>
+ 
+<td class="emptyrow text-xs-center" bgcolor="#ffffff" style="padding: 0px 10px 0px 10px;"><strong>Shipping</strong></td>
+<td class="emptyrow text-xs-right" bgcolor="#ffffff"  style="padding: 0px 10px 0px 10px;">$10</td>
+</tr>
+ <tr>
+  <td class="emptyrow" bgcolor="#ffffff" style="padding: 0px 10px 0px 10px;"><i class="fa fa-barcode iconbig"></i></td>
+                                        
+  <td class="emptyrow text-xs-center" bgcolor="#ffffff"  style="padding: 20px 10px 0px 10px;"><strong>Total</strong></td>
+   <td class="emptyrow text-xs-right" bgcolor="#ffffff" style="padding: 20px 10px 0px 10px;">${total}</td>
+   </tr>`;
+   return dataRow;
+  //$(dataRow).appendTo('#mail-item');
+}
 
-function purchaseMail() {
-  return
+function purchaseMail(products) {
+  var data = preparePurchaseMail(products);
+  return `<!DOCTYPE html>
+  <html>
+  
+  <head>
+      <title></title>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <style type="text/css">
+          @media screen {
+              @font-face {
+                  font-family: 'Lato';
+                  font-style: normal;
+                  font-weight: 400;
+                  src: local('Lato Regular'), local('Lato-Regular'), url(https://fonts.gstatic.com/s/lato/v11/qIIYRU-oROkIk8vfvxw6QvesZW2xOQ-xsNqO47m55DA.woff) format('woff');
+              }
+  
+              @font-face {
+                  font-family: 'Lato';
+                  font-style: normal;
+                  font-weight: 700;
+                  src: local('Lato Bold'), local('Lato-Bold'), url(https://fonts.gstatic.com/s/lato/v11/qdgUG4U09HnJwhYI-uK18wLUuEpTyoUstqEm5AMlJo4.woff) format('woff');
+              }
+  
+              @font-face {
+                  font-family: 'Lato';
+                  font-style: italic;
+                  font-weight: 400;
+                  src: local('Lato Italic'), local('Lato-Italic'), url(https://fonts.gstatic.com/s/lato/v11/RYyZNoeFgb0l7W3Vu1aSWOvvDin1pK8aKteLpeZ5c0A.woff) format('woff');
+              }
+  
+              @font-face {
+                  font-family: 'Lato';
+                  font-style: italic;
+                  font-weight: 700;
+                  src: local('Lato Bold Italic'), local('Lato-BoldItalic'), url(https://fonts.gstatic.com/s/lato/v11/HkF_qI1x_noxlxhrhMQYELO3LdcAZYWl9Si6vvxL-qU.woff) format('woff');
+              }
+          }
+  
+          /* CLIENT-SPECIFIC STYLES */
+          body,
+          table,
+          td,
+          a {
+              -webkit-text-size-adjust: 100%;
+              -ms-text-size-adjust: 100%;
+          }
+  
+          img {
+              -ms-interpolation-mode: bicubic;
+          }
+  
+          /* RESET STYLES */
+          img {
+              border: 0;
+              height: auto;
+              line-height: 100%;
+              outline: none;
+              text-decoration: none;
+          }
+  
+          table {
+              border-collapse: collapse !important;
+          }
+  
+          body {
+              height: 100% !important;
+              margin: 0 !important;
+              padding: 0 !important;
+              width: 100% !important;
+          }
+  
+          /* iOS BLUE LINKS */
+          a[x-apple-data-detectors] {
+              color: inherit !important;
+              text-decoration: none !important;
+              font-size: inherit !important;
+              font-family: inherit !important;
+              font-weight: inherit !important;
+              line-height: inherit !important;
+          }
+  
+          /* MOBILE STYLES */
+          @media screen and (max-width:600px) {
+              h1 {
+                  font-size: 32px !important;
+                  line-height: 32px !important;
+              }
+          }
+  
+          /* ANDROID CENTER FIX */
+          div[style*="margin: 16px 0;"] {
+              margin: 0 !important;
+          }
+      </style>
+  </head>
+  
+  <body style="background-color: #f4f4f4; margin: 0 !important; padding: 0 !important;">
+      <!-- HIDDEN PREHEADER TEXT -->
+      <div style="display: none; font-size: 1px; color: #fefefe; line-height: 1px; font-family: 'Lato', Helvetica, Arial, sans-serif; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;"> We're thrilled to have you here! Get ready to dive into your new account. </div>
+      <table border="0" cellpadding="0" cellspacing="0" width="100%">
+          <!-- LOGO -->
+          <tr>
+              <td bgcolor="#3f3d56" align="center">
+                  <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+                      <tr>
+                          <td align="center" valign="top" style="padding: 40px 10px 40px 10px;"> </td>
+                      </tr>
+                  </table>
+              </td>
+          </tr>
+          <tr>
+              <td bgcolor="#3f3d56" align="center" style="padding: 0px 10px 0px 10px;">
+                  <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+                      <tr>
+                          <td bgcolor="#ffffff" align="left" valign="top" style="padding: 40px 20px 20px 20px; border-radius: 4px 4px 0px 0px; color: #111111; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 30px; font-weight: 400; line-height: 48px;">
+                         <img src="https://i.ibb.co/0qTd1BG/logo.png" width="250px" style="display: block; border: 0px;" /> <h1 style="font-size: 30px; font-weight: 400; margin: 2;">Invoice For Purchase</h1> 
+                          </td>
+                      </tr>
+                  </table>
+              </td>
+          </tr>
+          <tr>
+              <td bgcolor="#f4f4f4" align="center" style="padding: 0px 10px 0px 10px;">
+                  <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+                      <tr>
+                          <td bgcolor="#ffffff" align="left" style="padding: 20px 30px 40px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
+                              <p style="margin: 0;">Thank you very much for your purchase! Enjoy your new phones! </p>
+                          </td>
+                      </tr>
+                      <tr>
+                          <td bgcolor="#f4f4f4" align="center" >
+                              <table class="table table-sm" border="0" cellpadding="0" cellspacing="0" width="100%" style="  max-width: 600px ;font-family:'Lato', Helvetica, Arial, sans-serif;">
+                                  <thead>
+                                      <tr>
+                                          <td bgcolor="#ffffff" align="left" style="padding: 0px 10px 20px 40px;"><strong>Name</strong></td>
+                                          <td bgcolor="#ffffff" align="left" style="padding: 0px 10px 20px 10px;"><strong>Quantity</strong></td>
+                                          <td bgcolor="#ffffff" align="left" style="padding: 0px 10px 20px 10px;"><strong>Price</strong></td> 
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                     <div class="all-products">${data}</div> 
+                                     
+                                  </tbody>
+                              </table>
+                          </td>
+                   </tr>
+                      <tr>
+                          <td bgcolor="#ffffff" align="left" style="padding: 0px 30px 20px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
+                              <p style="margin: 0;"> </br> If it wasn't you, just reply to this email—we're always happy to help out.</p>
+                          </td>
+                      </tr>
+                      <tr>
+                          <td bgcolor="#ffffff" align="center" valign="top" style="padding: 40px 20px 20px 20px; border-radius: 4px 4px 0px 0px; color: #111111; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 48px; font-weight: 400; letter-spacing: 4px; line-height: 48px;">
+                         <img src="https://i.ibb.co/vHQ2HPF/undraw-receipt-ecdd.png" width="350px" style="display: block; border: 0px;" />  
+                          </td>
+                      </tr>
+                      <tr>
+                          <td bgcolor="#ffffff" align="left" style="padding: 0px 30px 40px 30px; border-radius: 0px 0px 4px 4px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
+                              <p style="margin: 0;">Thank You,<br>Cell4Sale Team</p>
+                          </td>
+                      </tr>
+                  </table>
+              </td>
+          </tr> 
+      </table>
+  </body>
+  
+  </html>`;
 }
 
 
