@@ -419,7 +419,6 @@ function getAddressDetails() {
 
 function updateDetails() {
     //update profile fields after change
-
     var userName = {
         email: JSON.parse(sessionStorage.getItem('user')).email,
     }
@@ -528,7 +527,10 @@ function showAddressTabFields(userDetails) {
 
 function showPassConfirmation() {
     $("#password2div").show();
+    $('#email_profile_div').addClass('col-sm-3').removeClass('col-sm-4');
+    $('#password_profile_div').addClass('col-sm-3').removeClass('col-sm-5');
 }
+
 
 /*showPassword: 
 trigger: user click on 'eye_pass' element
