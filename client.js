@@ -934,7 +934,7 @@ function addToPurchases() {
         url: '/add-to-purchases',
         data: userAddressAndPayment,
         success: function (res) {
-            alert("cooooool!");
+            // alert("cooooool!");
         },
         error: function (err) {
 
