@@ -937,12 +937,29 @@ function addToPurchases() {
         data: userAddressAndPayment,
         success: function (res) {
             // alert("cooooool!");
+            sendPurchasMail();
         },
         error: function (err) {
 
             alert(err);
         }
     });
+}
+
+function sendPurchasMail() {
+    var userName = {  email: JSON.parse(sessionStorage.getItem('user')).email}
+    $.ajax({
+    type: 'POST',
+    url: '/send-purchas-mail',
+    data: userName,
+    success: function (res) {
+
+    },
+    error: function (err) {
+
+        alert(err);
+    }
+});
 }
 
 function getPurchases() {
