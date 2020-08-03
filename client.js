@@ -452,9 +452,7 @@ function updateDetails2(prev_profile_details) {
     if (userToUpdate.email == "") {
         userToUpdate.email = prev_profile_details.email;
     }
-    if (userToUpdate.password == "") {
-        userToUpdate.password = prev_profile_details.password;
-    }
+
     if (userToUpdate.name == "") {
         userToUpdate.name = prev_profile_details.name;
     }
@@ -478,27 +476,31 @@ function updateDetails2(prev_profile_details) {
         userToUpdate.zipcode = prev_profile_details.zipcode;
     }
 
-    if(userToUpdate.password=="" && userToUpdate.passwordConfirm!="")
-    { 
-        error_message.innerHTML = "Please insert your password for confirmation";
-        return;
+    if (userToUpdate.password == "") {
+        userToUpdate.password = prev_profile_details.password;
     }
+   
 
-    if(userToUpdate.password!="" && userToUpdate.passwordConfirm==""){
+    if(userToUpdate.password!=prev_profile_details.password)
+    {
+        if(userToUpdate.password!="" && userToUpdate.passwordConfirm==""){
         error_message.innerHTML = "Please insert your password again for confirmation";
         return;
-    }
-
-    if (userToUpdate.password != userToUpdate.passwordConfirm) {
+        }
+        if (userToUpdate.password != userToUpdate.passwordConfirm) {
         error_message.innerHTML = "Password and confirm password does not match";
         return;
-    }
-        
-    if (!validatePassword(userToUpdate.password)) {
-      error_message.innerHTML = "Password must contain at least 6 characters, uppercase, lowercase, number, special character.";
+        }
+        if(userToUpdate.password=="" && userToUpdate.passwordConfirm!="")
+        { 
+        error_message.innerHTML = "Please insert your password for confirmation";
         return;
+        }
+        if (!validatePassword(userToUpdate.password)) {
+        error_message.innerHTML = "Password must contain at least 6 characters, uppercase, lowercase, number, special character.";
+        return;
+        }
     }
-    
   
     if(userToUpdate.email!=prev_profile_details.email)
     {
@@ -510,7 +512,6 @@ function updateDetails2(prev_profile_details) {
         url: '/profileupdate',
         data: userToUpdate,
         success: function (user_updated) {
-            console.log(user_updated);
             updateUserProfileFields(user_updated);
             $('#updateModal').modal('show');
         },
