@@ -622,27 +622,30 @@ function getPhones() {
                 } //end inserting type models
                 var dataRow = `<div class="container1">
                 <div class="row">
-                <div class="col-6">
-                <img class="img_product" src=`+ phoneImg + `/>
+                  <div class="col-6">
+                    <img class="img_product" src=`+ phoneImg + ` />
+                  </div>
+                  <div class="col-6">
+                    <div class="product">
+                      <h1>`+ obj.id + `</h1>
+                      <div id="price-${i}" class="price1"></div>
+                      <p class="desc">`+ obj.description + `</p>
+                      <div id="text-${i}"></div>
+                    </div>
+                  </div>
                 </div>
-                <div class="col-6"> 
-                <div class="product"> 
-                <p>Phone for sale</p><h1>`+ obj.id + `</h1>
-                <div id="price-${i}" class="price1"></div>
-                <p class="desc">`+ obj.description + `</p>
-                <div id="text-${i}"></div> 
-                </div> 
-                </div>
+              
                 <div class="row">
-                <div class="col-6">
-                <p class="pick">Choose Memory Size</p>
-                <div class="sizes">`+ innerTypes + `</div>
+                  <div class="col-8">
+                    <p class="pick">Choose Memory Size</p>
+                    <div class="sizes">`+ innerTypes + `</div>
+                  </div>
+                  <div class="col">
+                    <div class="buttons"><button id="addToCart-${i}" class="add" onclick="addToCart('${obj.id}','${i}')">Add to
+                        Cart</button></div>
+                  </div>
                 </div>
-                <div class="col-6">
-                <div class="buttons"><button id="addToCart-${i}" class="add" onclick="addToCart('${obj.id}','${i}')">Add to Cart</button></div>
-                </div>
-                </div>
-                </div> `;
+              </div> `;
                 $(dataRow).appendTo('#wrapper1');
             } //end inserting all phones
         },

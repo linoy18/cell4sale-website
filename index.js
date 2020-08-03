@@ -437,9 +437,7 @@ app.post('/setnewpassword', async function (req, res) {
 //Get the cell-phones data from json file
 app.get('/get-phones', async function (req, res) {
   try {
-    // let jsonPath = path.join(__dirname, 'cell_phone_data.json');
     let jsonPath = path.join(process.cwd(),'vendor', 'cell_phone_data.json');
-    // let jsonFile = fs.readFileSync(jsonPath);
     let jsonFile = fs.readFileSync(jsonPath);
     let cellData = JSON.parse(jsonFile);
     res.writeHead(200, { 'Content-Type': 'application/json' });
