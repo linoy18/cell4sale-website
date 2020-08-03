@@ -118,7 +118,7 @@ function Login() {
 
     $.ajax({
         type: 'POST',
-        url: '/login',
+        url: '/login/',
         data: credentials,
         // Login Successful
         success: function (userData) {
@@ -436,9 +436,11 @@ function updateDetails() {
 
 
 function updateDetails2(prev_profile_details) {
+    var error_message = document.getElementById("errorMessageProfile");
     var userToUpdate = {
         email: $('#email_profile').val(),
         password: $('#password_profile').val(),
+        passwordConfirm: $('#password2_profile').val(),
         name: $('#firstName_profile').val(),
         familyname: $('#lastName_profile').val(),
         street: $('#street_profile').val(),
@@ -460,6 +462,7 @@ function updateDetails2(prev_profile_details) {
         userToUpdate.familyname = prev_profile_details.familyname;
     }
     if (userToUpdate.street == "") {
+        
         userToUpdate.street = prev_profile_details.street;
     }
     if (userToUpdate.city == "") {
@@ -475,12 +478,32 @@ function updateDetails2(prev_profile_details) {
         userToUpdate.zipcode = prev_profile_details.zipcode;
     }
 
+    if(userToUpdate.password=="" && userToUpdate.passwordConfirm!="")
+    { 
+        error_message.innerHTML = "Please insert your password for confirmation";
+        return;
+    }
+
+    if(userToUpdate.password!="" && userToUpdate.passwordConfirm==""){
+        error_message.innerHTML = "Please insert your password again for confirmation";
+        return;
+    }
+
+    if (userToUpdate.password != userToUpdate.passwordConfirm) {
+        error_message.innerHTML = "Password and confirm password does not match";
+        return;
+    }
+        
+    if (!validatePassword(userToUpdate.password)) {
+      error_message.innerHTML = "Password must contain at least 6 characters, uppercase, lowercase, number, special character.";
+        return;
+    }
+    
+  
     if(userToUpdate.email!=prev_profile_details.email)
     {
         /////////////////mail with link 
     }
-
-
 
     $.ajax({
         type: 'POST',

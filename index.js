@@ -49,15 +49,41 @@ app.get('/email_varifi', function (req, res) {
   console.log("Redirected to login page");
 });
 
+
+
 //////////////////////////////////////////////---***Profile Handling Function***---/////////////////////////////////////////////
+app.get('/profile', function (req, res) {
+  res.sendFile(process.cwd() + '/profile.html');
+  console.log("Redirected to profile page");
+});
 
 //Get the profile-details 
 app.post('/profileupdate', async function (req, res) {
   var userToUpdate = req.body;
   try {
+    console.log(userToUpdate.password);
+    var pass= encryptPassword(userToUpdate.password) ;
+    console.log(pass);
+    var query = "UPDATE users SET name = $1 , familyname = $2 , phonenumber = $3 , country = $4 , city = $5 , street = $6 , zipcode = $7 ,password = $8 WHERE email = $9";
+    await db.none(query, [userToUpdate.name, userToUpdate.familyname, userToUpdate.phonenumber, userToUpdate.country, userToUpdate.city, userToUpdate.street, userToUpdate.zipcode,pass, userToUpdate.email]);
+    userToUpdate.password=pass;
 
-    var query = "UPDATE users SET name = $1 , familyname = $2 , phonenumber = $3 , country = $4 , city = $5 , street = $6 , zipcode = $7 WHERE email = $8";
-    await db.none(query, [userToUpdate.name, userToUpdate.familyname, userToUpdate.phonenumber, userToUpdate.country, userToUpdate.city, userToUpdate.street, userToUpdate.zipcode, userToUpdate.email]);
+    var transporter = await nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'cell4salecontact@gmail.com',
+        pass: 'Aa123456!'
+      }
+    });
+
+    var mailOptions = {
+      from: 'cell4salecontact@gmail.com',
+      to: userToUpdate.email,
+      subject: 'Your Details Has Been Updated!',
+      html: updateDetailsMail()
+    };
+
+    let mailRes = await transporter.sendMail(mailOptions);
 
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify(userToUpdate));
@@ -82,24 +108,7 @@ app.post('/profiledetails', async function (req, res) {
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify(result));
 
-    var transporter = await nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: 'cell4salecontact@gmail.com',
-        pass: 'Aa123456!'
-      }
-    });
-
-    var mailOptions = {
-      from: 'cell4salecontact@gmail.com',
-      to: userToUpdate,
-      subject: 'Your Details Has Been Updated!',
-      html: updateDetailsMail()
-    };
-
-    let mailRes = await transporter.sendMail(mailOptions);
-    res.redirect('/profiledetails');
-
+  
   } catch (err) {
     console.log(err);
     res.status(500).send(err.message);
@@ -656,6 +665,7 @@ function getLocalPrice() {
 
 //Password encryption function 
 function encryptPassword(password) {
+  console.log("start encrypt");
   var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(password), 'secret key 123');
   var ciphertext = ciphertext.toString();
   return ciphertext;
