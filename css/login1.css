@@ -44,4 +44,14 @@ a {
 
 
 
+@media screen and (max-width: 770px) {
+
+
+#recaptchaContainer{
+     transform:scale(0.7);
+     transform-origin:0 0;
+}
+
+}
+
 

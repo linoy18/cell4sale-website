@@ -523,7 +523,7 @@ function updateDetails2(prev_profile_details) {
     if (emailInput == "") {
         userToUpdate.newEmail = prev_profile_details.email;
     }
-    else if (emailInput != prev_profile_details.email) {
+    else if (emailInput !== prev_profile_details.email) {
         if(!validateEmail(emailInput)) {
             error_message.innerHTML = "Please insert a valid email address";
             return;
