@@ -123,6 +123,7 @@ function Login() {
         // Login Successful
         success: function (userData) {
             sessionStorage.setItem('user', JSON.stringify(userData));
+            getCart();
             location.replace('/index');
         },
         error: function (err) {
@@ -130,10 +131,12 @@ function Login() {
                 location.replace('/resendVerfication');
             }
             else {
+                console.log(err);
                 error_message.innerHTML = "Oops... wrong email or password";
             }
         }
     });
+
 }
 
 function SignUp() {
@@ -540,12 +543,12 @@ function updateDetails2(prev_profile_details) {
         data: userToUpdate,
         success: function (user_updated) {
             updateUserProfileFields(user_updated);
-            if(user_updated.email!=userToUpdate.email)
+            if(userToUpdate.newEmail)
             {
-              $('#emailModal').modal('show');
+              $('#emailUpdateModal').modal('show');
             }
             else {
-            $('#emailUpdateModal').modal('show');
+            $('#updateModal').modal('show');
             }
         },
         error: function (err) { console.log(err); }
@@ -710,7 +713,6 @@ function addToCart(productId, index) {
             data: productData,
             success: function (res) {
                 //here I need to add +1 to cart counter after getting cart items from server
-                // alert("Product added to cart successfully!:)");
                 $('#addToCart').modal('show');
             },
             error: function (err) {
@@ -984,8 +986,8 @@ function addToPurchases() {
         url: '/add-to-purchases',
         data: userAddressAndPayment,
         success: function (res) {
-            // alert("cooooool!");
-            sendPurchasMail();
+            getCart();
+            location.replace('/profile.html');
         },
         error: function (err) {
             alert(err.message);

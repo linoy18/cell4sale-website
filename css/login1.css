@@ -42,6 +42,12 @@ a {
      background-repeat: no-repeat;
 }
 
+.btn-user {
+     font-size: .8rem;
+     border-radius: 10rem;
+     padding: .75rem 1rem;
+ }
+
 
 
 @media screen and (max-width: 770px) {

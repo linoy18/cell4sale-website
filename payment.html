@@ -213,7 +213,7 @@
                                 </div>
                                 <!--form panels-->
                                 <div class="row">
-                                    <div class="col-12 col-lg-8">
+                                    <div class="col-12">
                                         <form class="multisteps-form__form">
                                             <!--single form panel-->
                                             <div class="multisteps-form__panel shadow p-4 rounded bg-white js-active"
@@ -265,10 +265,10 @@
                                                     </div>
                                                     <div class="form-row mt-4">
                                                         <div class="col-12 col-sm-6">
-                                                        <input id="special-request"
+                                                            <input id="special-request"
                                                                 class="multisteps-form__input form-control" type="text"
                                                                 placeholder="Insert some special request..." />
-                                                            </div>
+                                                        </div>
                                                     </div>
                                                     <div class="button-row d-flex mt-4">
                                                         <button id="check-address-next"
@@ -375,8 +375,7 @@
                                                             title="Prev">Prev</button>
                                                         <button id="check-pay-next"
                                                             class="btn btn-primary ml-auto js-btn-next" type="button"
-                                                            onclick="addToPurchases()"
-                                                            title="Next">Purchase</button>
+                                                            onclick="addToPurchases()" title="Next">Purchase</button>
 
                                                     </div>
 
@@ -421,250 +420,254 @@
                             </div>
                         </div>
                     </div>
+                    <!-- End of Inner Content -->
                 </div>
-                <!-- End of Main Content -->
+                <!-- End of Page Content -->
             </div>
-            <!-- End of Content Wrapper -->
-
+            <!-- End of Main Content -->
         </div>
-        <!-- End of Page Wrapper -->
+        <!-- End of Content Wrapper -->
 
-        <!-- Scroll to Top Button-->
-        <a class="scroll-to-top rounded" href="#page-top">
-            <i class="fas fa-angle-up"></i>
-        </a>
+    </div>
+    <!-- End of Page Wrapper -->
 
-        <!-- Logout Modal-->
-        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                        <button class="btn btn-primary" onclick="logout()">Logout</button>
-                    </div>
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <button class="btn btn-primary" onclick="logout()">Logout</button>
                 </div>
             </div>
         </div>
+    </div>
+    </div>
 
 
 
-        <!-- Bootstrap core JavaScript-->
-        <script src="vendor/jquery/jquery.min.js"></script>
-        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-        <!-- Core plugin JavaScript-->
-        <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
-        <!-- Custom scripts for all pages-->
-        <script src="js/sb-admin-2.min.js"></script>
-        <script src="client.js"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.min.js"></script>
+    <script src="client.js"></script>
 
-        <script>
-            const DOMstrings = {
-                stepsBtnClass: 'multisteps-form__progress-btn',
-                stepsBtns: document.querySelectorAll(`.multisteps-form__progress-btn`),
-                stepsBar: document.querySelector('.multisteps-form__progress'),
-                stepsForm: document.querySelector('.multisteps-form__form'),
-                stepsFormTextareas: document.querySelector('.multisteps-form__textarea'),
-                stepFormPanelClass: 'multisteps-form__panel',
-                stepFormPanels: document.querySelectorAll('.multisteps-form__panel'),
-                stepPrevBtnClass: 'js-btn-prev',
-                stepNextBtnClass: 'js-btn-next'
-            };
+    <script>
+        const DOMstrings = {
+            stepsBtnClass: 'multisteps-form__progress-btn',
+            stepsBtns: document.querySelectorAll(`.multisteps-form__progress-btn`),
+            stepsBar: document.querySelector('.multisteps-form__progress'),
+            stepsForm: document.querySelector('.multisteps-form__form'),
+            stepsFormTextareas: document.querySelector('.multisteps-form__textarea'),
+            stepFormPanelClass: 'multisteps-form__panel',
+            stepFormPanels: document.querySelectorAll('.multisteps-form__panel'),
+            stepPrevBtnClass: 'js-btn-prev',
+            stepNextBtnClass: 'js-btn-next'
+        };
 
 
-            //remove class from a set of items
-            const removeClasses = (elemSet, className) => {
+        //remove class from a set of items
+        const removeClasses = (elemSet, className) => {
 
-                elemSet.forEach(elem => {
+            elemSet.forEach(elem => {
 
-                    elem.classList.remove(className);
+                elem.classList.remove(className);
 
-                });
-            };
+            });
+        };
 
-            //return exect parent node of the element
-            const findParent = (elem, parentClass) => {
+        //return exect parent node of the element
+        const findParent = (elem, parentClass) => {
 
-                let currentNode = elem;
+            let currentNode = elem;
 
-                while (!currentNode.classList.contains(parentClass)) {
-                    // if (window.CP.shouldStopExecution(0)) break;
-                    currentNode = currentNode.parentNode;
-                } //window.CP.exitedLoop(0);
+            while (!currentNode.classList.contains(parentClass)) {
+                // if (window.CP.shouldStopExecution(0)) break;
+                currentNode = currentNode.parentNode;
+            } //window.CP.exitedLoop(0);
 
-                return currentNode;
+            return currentNode;
 
-            };
+        };
+
+        //get active button step number
+        const getActiveStep = elem => {
+            return Array.from(DOMstrings.stepsBtns).indexOf(elem);
+        };
+
+        //set all steps before clicked (and clicked too) to active
+        const setActiveStep = activeStepNum => {
+
+            //remove active state from all the state
+            removeClasses(DOMstrings.stepsBtns, 'js-active');
+
+            //set picked items to active
+            DOMstrings.stepsBtns.forEach((elem, index) => {
+
+                if (index <= activeStepNum) {
+                    elem.classList.add('js-active');
+                }
+
+            });
+        };
+
+        //get active panel
+        const getActivePanel = () => {
+
+            let activePanel;
+
+            DOMstrings.stepFormPanels.forEach(elem => {
+
+                if (elem.classList.contains('js-active')) {
+
+                    activePanel = elem;
+
+                }
+
+            });
+
+            return activePanel;
+
+        };
+
+        //open active panel (and close unactive panels)
+        const setActivePanel = activePanelNum => {
+
+            //remove active class from all the panels
+            removeClasses(DOMstrings.stepFormPanels, 'js-active');
+
+            //show active panel
+            DOMstrings.stepFormPanels.forEach((elem, index) => {
+                if (index === activePanelNum) {
+
+                    elem.classList.add('js-active');
+
+                    setFormHeight(elem);
+
+                }
+            });
+
+        };
+
+        //set form height equal to current panel height
+        const formHeight = activePanel => {
+
+            const activePanelHeight = activePanel.offsetHeight;
+
+            DOMstrings.stepsForm.style.height = `${activePanelHeight}px`;
+
+        };
+
+        const setFormHeight = () => {
+            const activePanel = getActivePanel();
+
+            formHeight(activePanel);
+        };
+
+        DOMstrings.stepsFormTextareas.addEventListener('input', e => {
+            var activePanel = getActivePanel();
+            let activePanelNum = Array.from(DOMstrings.stepFormPanels).indexOf(activePanel);
+            console.log(activePanelNum);
+            if (activePanelNum == 0) {
+                checkAddressFields();
+            } else if (activePanelNum == 1) {
+                checkPaymentFields();
+            }
+        });
+        //STEPS BAR CLICK FUNCTION
+        DOMstrings.stepsBar.addEventListener('click', e => {
+
+            //check if click target is a step button
+            const eventTarget = e.target;
+
+            if (!eventTarget.classList.contains(`${DOMstrings.stepsBtnClass}`)) {
+                return;
+            }
 
             //get active button step number
-            const getActiveStep = elem => {
-                return Array.from(DOMstrings.stepsBtns).indexOf(elem);
-            };
+            const activeStep = getActiveStep(eventTarget);
 
             //set all steps before clicked (and clicked too) to active
-            const setActiveStep = activeStepNum => {
+            setActiveStep(activeStep);
 
-                //remove active state from all the state
-                removeClasses(DOMstrings.stepsBtns, 'js-active');
+            //open active panel
+            setActivePanel(activeStep);
+        });
 
-                //set picked items to active
-                DOMstrings.stepsBtns.forEach((elem, index) => {
 
-                    if (index <= activeStepNum) {
-                        elem.classList.add('js-active');
-                    }
+        //PREV/NEXT BTNS CLICK
+        DOMstrings.stepsForm.addEventListener('click', e => {
 
-                });
-            };
+            const eventTarget = e.target;
+            checkAddressFields();
+            checkPaymentFields();
+            //check if we clicked on `PREV` or NEXT` buttons
+            if (!(eventTarget.classList.contains(`${DOMstrings.stepPrevBtnClass}`) || eventTarget.classList.contains(`${DOMstrings.stepNextBtnClass}`))) {
+                return;
+            }
 
-            //get active panel
-            const getActivePanel = () => {
+            //find active panel
+            const activePanel = findParent(eventTarget, `${DOMstrings.stepFormPanelClass}`);
 
-                let activePanel;
+            let activePanelNum = Array.from(DOMstrings.stepFormPanels).indexOf(activePanel);
 
-                DOMstrings.stepFormPanels.forEach(elem => {
+            //set active step and active panel onclick
+            if (eventTarget.classList.contains(`${DOMstrings.stepPrevBtnClass}`)) {
+                activePanelNum--;
 
-                    if (elem.classList.contains('js-active')) {
+            } else {
 
-                        activePanel = elem;
+                activePanelNum++;
 
-                    }
+            }
 
-                });
+            setActiveStep(activePanelNum);
+            setActivePanel(activePanelNum);
 
-                return activePanel;
+        });
 
-            };
+        //SETTING PROPER FORM HEIGHT ONLOAD
+        window.addEventListener('load', setFormHeight, false);
 
-            //open active panel (and close unactive panels)
-            const setActivePanel = activePanelNum => {
+        //SETTING PROPER FORM HEIGHT ONRESIZE
+        window.addEventListener('resize', setFormHeight, false);
 
-                //remove active class from all the panels
-                removeClasses(DOMstrings.stepFormPanels, 'js-active');
+        //changing animation via animation select !!!YOU DON'T NEED THIS CODE (if you want to change animation type, just change form panels data-attr)
 
-                //show active panel
-                DOMstrings.stepFormPanels.forEach((elem, index) => {
-                    if (index === activePanelNum) {
-
-                        elem.classList.add('js-active');
-
-                        setFormHeight(elem);
-
-                    }
-                });
-
-            };
-
-            //set form height equal to current panel height
-            const formHeight = activePanel => {
-
-                const activePanelHeight = activePanel.offsetHeight;
-
-                DOMstrings.stepsForm.style.height = `${activePanelHeight}px`;
-
-            };
-
-            const setFormHeight = () => {
-                const activePanel = getActivePanel();
-
-                formHeight(activePanel);
-            };
-
-            DOMstrings.stepsFormTextareas.addEventListener('input', e => {
-                var activePanel = getActivePanel();
-                let activePanelNum = Array.from(DOMstrings.stepFormPanels).indexOf(activePanel);
-                console.log(activePanelNum);
-                if (activePanelNum == 0) {
-                    checkAddressFields();
-                } else if (activePanelNum == 1) {
-                    checkPaymentFields();
-                }
+        const setAnimationType = newType => {
+            DOMstrings.stepFormPanels.forEach(elem => {
+                elem.dataset.animation = newType;
             });
-            //STEPS BAR CLICK FUNCTION
-            DOMstrings.stepsBar.addEventListener('click', e => {
+        };
 
-                //check if click target is a step button
-                const eventTarget = e.target;
+        //selector onchange - changing animation
+        const animationSelect = document.querySelector('.pick-animation__select');
 
-                if (!eventTarget.classList.contains(`${DOMstrings.stepsBtnClass}`)) {
-                    return;
-                }
+        /* animationSelect.addEventListener('change', () => {
+             const newAnimationType = animationSelect.value;
 
-                //get active button step number
-                const activeStep = getActiveStep(eventTarget);
+             setAnimationType(newAnimationType);
+         });*/
 
-                //set all steps before clicked (and clicked too) to active
-                setActiveStep(activeStep);
-
-                //open active panel
-                setActivePanel(activeStep);
-            });
-
-
-            //PREV/NEXT BTNS CLICK
-            DOMstrings.stepsForm.addEventListener('click', e => {
-
-                const eventTarget = e.target;
-                checkAddressFields();
-                checkPaymentFields();
-                //check if we clicked on `PREV` or NEXT` buttons
-                if (!(eventTarget.classList.contains(`${DOMstrings.stepPrevBtnClass}`) || eventTarget.classList.contains(`${DOMstrings.stepNextBtnClass}`))) {
-                    return;
-                }
-
-                //find active panel
-                const activePanel = findParent(eventTarget, `${DOMstrings.stepFormPanelClass}`);
-
-                let activePanelNum = Array.from(DOMstrings.stepFormPanels).indexOf(activePanel);
-
-                //set active step and active panel onclick
-                if (eventTarget.classList.contains(`${DOMstrings.stepPrevBtnClass}`)) {
-                    activePanelNum--;
-
-                } else {
-
-                    activePanelNum++;
-
-                }
-
-                setActiveStep(activePanelNum);
-                setActivePanel(activePanelNum);
-
-            });
-
-            //SETTING PROPER FORM HEIGHT ONLOAD
-            window.addEventListener('load', setFormHeight, false);
-
-            //SETTING PROPER FORM HEIGHT ONRESIZE
-            window.addEventListener('resize', setFormHeight, false);
-
-            //changing animation via animation select !!!YOU DON'T NEED THIS CODE (if you want to change animation type, just change form panels data-attr)
-
-            const setAnimationType = newType => {
-                DOMstrings.stepFormPanels.forEach(elem => {
-                    elem.dataset.animation = newType;
-                });
-            };
-
-            //selector onchange - changing animation
-            const animationSelect = document.querySelector('.pick-animation__select');
-
-            /* animationSelect.addEventListener('change', () => {
-                 const newAnimationType = animationSelect.value;
-
-                 setAnimationType(newAnimationType);
-             });*/
-
-        </script>
+    </script>
 
 </body>
 

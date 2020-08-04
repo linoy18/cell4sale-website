@@ -22,7 +22,8 @@ const API_URL = 'http://localhost:3000/'; // dev env
 // const API_URL = 'https://desolate-inlet-43132.herokuapp.com/'; // prod env
 
 //////////////////////////////////////////////---***Database Connection String***---/////////////////////////////////////////////
-var conn = process.env.DATABASE_URL || "postgres://emvsgzoirewkxt:4553cd6f71d9235f18aca6f487215f0ecf3de517cb7e038c710e79678a2b16b7@ec2-54-217-236-206.eu-west-1.compute.amazonaws.com:5432/dddicparrqfs3s?ssl=true"
+var conn = process.env.DATABASE_URL || "postgres://qypchyeekcsmxm:919fb6548d25956af6a1a8ae2aaeb9c6bdc25f0a6eb7f32e3e09201666dac2cd@ec2-52-48-65-240.eu-west-1.compute.amazonaws.com:5432/d6bdcco8hh45dq?ssl=true"
+// var conn = process.env.DATABASE_URL || "postgres://emvsgzoirewkxt:4553cd6f71d9235f18aca6f487215f0ecf3de517cb7e038c710e79678a2b16b7@ec2-54-217-236-206.eu-west-1.compute.amazonaws.com:5432/dddicparrqfs3s?ssl=true"
 
 //////////////////////////////////////////////---***Database Connection***---////////////////////////////////////////////////////
 var db = pgp(conn);
@@ -231,9 +232,12 @@ app.post('/loginf', async function (req, res) {
     confirmed: true
   }
   try {
-    await db.none('INSERT INTO users(${this:name}) VALUES(${this:csv})', obj);
     var query = "SELECT * FROM users WHERE email='" + obj.email + "'";
-    let result = await db.one(query);
+    let result = await db.oneOrNone(query);
+    if (!result) {
+    await db.none('INSERT INTO users(${this:name}) VALUES(${this:csv})', obj);
+    result = await db.one(query);
+    }
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify(result));
   } catch (err) {
@@ -691,6 +695,26 @@ app.post('/add-to-purchases', async function (req, res) {
           query = "DELETE FROM userproducts WHERE user_id='" + userID + "'";
           await db.none(query);
         } //end for
+
+        // send mail 
+
+        var transporter = await nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+              user: 'cell4salecontact@gmail.com',
+              pass: 'Aa123456!'
+            }
+          });
+  
+          var mailOptions = {
+            from: 'cell4salecontact@gmail.com',
+            to: userName,
+            subject: 'Thank you for buying!',
+            html: purchaseMail(results)
+          };
+  
+          let mailRes = await transporter.sendMail(mailOptions);
+
         res.writeHead(200);
         res.end();
       }
@@ -735,7 +759,6 @@ app.post('/send-purchas-mail', async function (req, res) {
           };
   
           let mailRes = await transporter.sendMail(mailOptions);
-          purchaseMail(results);
           res.writeHead(200);
           res.end();
         }
