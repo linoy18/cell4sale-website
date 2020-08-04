@@ -180,3 +180,18 @@ h2 {
   font-size: 18px;
   font-weight: 400;
 }
+
+@media screen and (max-width: 600px) {
+  /* .img_product {
+    display: none;
+  } */
+  .container1{
+    width: fit-content;
+  }
+  .col-8{
+    max-width: 45%;
+  }
+  .add{   
+     right: 20px;
+  }
+}
