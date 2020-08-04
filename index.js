@@ -703,6 +703,55 @@ app.post('/add-to-purchases', async function (req, res) {
   }
 });
 
+
+app.post('/send-purchas-mail', async function (req, res) {
+    var userName = req.body.email;
+    userName = userName.toLowerCase();
+    try{
+      var query = "SELECT * FROM users WHERE email='" + userName + "'";
+      let result = await db.oneOrNone(query);
+      if (result) {
+        var userID = result.id;
+        query = "SELECT * FROM userpurchases WHERE user_id='" + userID + "'";
+        let results = await db.any(query);
+        if (!results) {
+          res.writeHead(404);
+          res.end();
+        } else {
+  
+          var transporter = await nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+              user: 'cell4salecontact@gmail.com',
+              pass: 'Aa123456!'
+            }
+          });
+  
+          var mailOptions = {
+            from: 'cell4salecontact@gmail.com',
+            to: userName,
+            subject: 'Thank you for buying!',
+            html: purchaseMail(results)
+          };
+  
+          let mailRes = await transporter.sendMail(mailOptions);
+          purchaseMail(results);
+          res.writeHead(200);
+          res.end();
+        }
+      }
+    }catch(err) {
+      console.log(err.message);
+    }
+  });
+
+
+
+
+
+
+
+
 app.post('/get-purchases', async function (req, res) {
   var userName = req.body.email;
   userName = userName.toLowerCase();

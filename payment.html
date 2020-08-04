@@ -375,7 +375,7 @@
                                                             title="Prev">Prev</button>
                                                         <button id="check-pay-next"
                                                             class="btn btn-primary ml-auto js-btn-next" type="button"
-                                                            data-toggle="modal" data-target="#areyousureppurchase"
+                                                            onclick="addToPurchases()"
                                                             title="Next">Purchase</button>
 
                                                     </div>
@@ -453,27 +453,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Are you sure Modal-->
-        <div class="modal fade" id="areyousureppurchase" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Are You Sure?</h5>
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">Are You Sure you finish and would like to purchase?</div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Back</button>
-                        <button class="btn btn-primary" onclick="addToPurchases()">Yes, Purchase</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
 
 
 

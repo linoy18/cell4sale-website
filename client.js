@@ -771,7 +771,6 @@ output: get items stored by "getCart()" and displayed in page
  */
 function showCart() {
     updateMainTab();
-    
     var cartData = JSON.parse(sessionStorage.getItem('cart-data'));
     var cartTotPrice = 0;
     if (cartData.length == 0) {
@@ -989,8 +988,7 @@ function addToPurchases() {
             sendPurchasMail();
         },
         error: function (err) {
-
-            alert(err);
+            alert(err.message);
         }
     });
 }
@@ -1001,12 +999,11 @@ function sendPurchasMail() {
     type: 'POST',
     url: '/send-purchas-mail',
     data: userName,
-    success: function (res) {
-
+    success: function (data) {
+        alert("ok!");
     },
     error: function (err) {
-
-        alert(err);
+        alert(err.message);
     }
 });
 }
@@ -1037,32 +1034,56 @@ function showPurchases() {
                 phoneImg = phonesImgSmall[k].img;
             }
         } //end picking phone image
-        var dataRow = `<div class="item">
-        <div class="price"></div>
-        <div class="image"><img src=`+phoneImg+` alt="" />
+
+
+
+        var dataRow = `<div class="product">
+        <div class="product-image">
+          <img src=`+phoneImg+`>
         </div>
-        <div class="price-pur">
-            <div class="description">
-                <span>`+ obj.product_name + `</span>
-                <span>`+ obj.product_type + `</span>
-            </div>
-            <div>
-                <div style="display: inline-flex;">Date of purchase:
-                </div>
-                <div style="display: inline-flex;">`+ obj.date + `</div>
-            </div>
-            <div>
-                <div style="display: inline-flex;">Total Amount:
-                </div>
-                <div style="display: inline-flex;">`+ obj.product_price + `</div>
-            </div>
-            <div>
-                <div>Quantity:</div>
-                <div>`+ obj.count + `</div>
-            </div>
+        <div class="product-details">
+          <div class="product-title">`+obj.product_name+`</div>
+          <p class="product-description">`+obj.product_type+`</p>
         </div>
-    </div>`;
-        $(dataRow).appendTo('#wrapper2');
+        <div class="product-price">`+obj.product_price+`</div>
+  
+        <div class="product-quantity">
+          <input type="text" readonly value="${obj.count}">
+        </div>
+        <div class="product-removal">`+obj.date+`</div>
+        <div class="product-line-price">`+obj.product_price+`</div>
+      </div>`;
+      $(dataRow).appendTo('#purchas-item');
+
+
+
+
+    //     var dataRow = `<div class="item">
+    //     <div class="price"></div>
+    //     <div class="image"><img src=`+phoneImg+` alt="" />
+    //     </div>
+    //     <div class="price-pur">
+    //         <div class="description">
+    //             <span>`+ obj.product_name + `</span>
+    //             <span>`+ obj.product_type + `</span>
+    //         </div>
+    //         <div>
+    //             <div style="display: inline-flex;">Date of purchase:
+    //             </div>
+    //             <div style="display: inline-flex;">`+ obj.date + `</div>
+    //         </div>
+    //         <div>
+    //             <div style="display: inline-flex;">Total Amount:
+    //             </div>
+    //             <div style="display: inline-flex;">`+ obj.product_price + `</div>
+    //         </div>
+    //         <div>
+    //             <div>Quantity:</div>
+    //             <div>`+ obj.count + `</div>
+    //         </div>
+    //     </div>
+    // </div>`;
+    //     $(dataRow).appendTo('#wrapper2');
     }//end for
 }
 
