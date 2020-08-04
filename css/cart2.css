@@ -64,7 +64,7 @@
   .product .product-price:before,
   .product .product-line-price:before,
   .totals-value:before {
-	content: "$";
+	content: "";
   }
   
   /* Body/Header stuff */
@@ -236,7 +236,7 @@
 	}
   
 	.product .product-line-price:before {
-	  content: "Item Total: $";
+	  content: "Item Total: ";
 	}
   
 	.totals .totals-item label {

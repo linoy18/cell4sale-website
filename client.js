@@ -776,7 +776,9 @@ function showCart() {
     var cartTotPrice = 0;
     if (cartData.length == 0) {
         $('#discount-message').html("</br> Your cart is empty");
+        $('#cart-subtotal').html("");
         $('#total-price-text').html("");
+       
     } else {
         for (var i = 0; i < cartData.length; i++) {
             var obj = cartData[i];
@@ -787,46 +789,47 @@ function showCart() {
             totPrice = 1.17 * totPrice * obj.count;
             cartTotPrice += totPrice;
             totPrice = totPrice.toFixed(0);
-            totPrice = totPrice.toString();
+            totPrice = totPrice.toString()+'$';
             var phoneImg = ``;
 
-            for (var k = 0; k < phonesImg.length; k++) {  //selecting phone image
-                if (phonesImg[k].name == obj.product_name) {
-                    phoneImg = phonesImg[k].img;
+            for (var k = 0; k < phonesImgSmall.length; k++) {  //selecting phone image
+                if (phonesImgSmall[k].name == obj.product_name) {
+                    phoneImg = phonesImgSmall[k].img;
                 }
             } //end picking phone image
-            var dataRow = `<div class="item">
-           <div class="buttons"><span class="delete-btn" onclick="deleteProductFromCart('${obj.product_name}','${obj.product_type}')"></span>
-           </div>
-         <div class="image">
-           <img src=`+phoneImg+` alt="" />
-         </div>
-         <div class="description">
-           <span>`+ obj.product_name + `</span>
-           <span>`+ obj.product_type + `</span>
-           <span></span>
-         </div>
-         <div class="quantity">
-           <button class="plus-btn" type="button" name="button">
-             <!-- <img src="plus.svg" alt="" /> -->
-             <i class="fa fa-plus" aria-hidden="true"></i>
-           </button>
-           <input type="text" name="name" value="${obj.count}">
-           <button class="minus-btn" type="button" name="button">
-             <!-- <img src="minus.svg" alt="" /> -->
-             <i class="fa fa-minus" aria-hidden="true"></i>
-           </button>
-         </div>
-         <div class="total-price">Price: `+ priceCount + `</div>
-         <div class="total-price">Total Price (including 17% VAT):`+ totPrice + `$</div>
-         </div>`;
-            $(dataRow).appendTo('#cart-item');
+
+
+
+            var dataRow = `<div class="product">
+
+            <div class="product-image">
+              <img src=`+phoneImg+`>
+            </div>
+            <div class="product-details">
+              <div class="product-title">`+obj.product_name+`</div>
+              <p class="product-description">`+obj.product_type+`</p>
+            </div>
+            <div class="product-price">`+obj.product_price+`</div>
+            <div class="product-quantity">
+              <input type="text" readonly value="${obj.count}">
+            </div>
+            <div class="product-removal">
+              <button class="remove-product" onclick="deleteProductFromCart('${obj.product_name}','${obj.product_type}')">
+                Remove Item
+              </button>
+            </div>
+            <div class="product-line-price">`+totPrice+`</div>
+          </div>`;
+          $(dataRow).appendTo('#cart-item');
+
         }
+
         cartTotPrice = parseFloat(cartTotPrice);
         cartTotPrice = cartTotPrice.toFixed(0);
         cartTotPrice = cartTotPrice.toString() + '$';
         $('#total-price-text').html("Total: ");
-        $('#cart-total-price').html(cartTotPrice);
+        $('#cart-subtotal').html(cartTotPrice);
+
         var promocode = { promocode: JSON.parse(sessionStorage.getItem('user')).promocode }
         if (promocode.promocode == "1") {
             $('#discount-message').html("You received a 10% discount!");
@@ -837,10 +840,11 @@ function showCart() {
         } else {
             $('#discount-message').html("");
         }
-        dataRow = `<button class="btn btn-secondary checkoutBtn"
-        onclick="checkOut()"> Checkout </button>`;
-        $(dataRow).appendTo('#cart-checkout-btn');
+
+        dataRow= `<button class="checkout" onclick="checkOut()">Checkout</button>`;
+        $(dataRow).appendTo('#cart-checkout-button');
     }
+       
 }
 
 /*deleteProductFromCart:

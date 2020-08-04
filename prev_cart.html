@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+
+  <title>Cell4Sale - Cart</title>
+
+  <!-- Custom fonts for this template-->
+  <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+  <!-- Custom styles for this template-->
+  <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+  <link href="/css/cart.css" rel="stylesheet">
+  <link href="/css/all.min.css" rel="stylesheet">
+
+</head>
+<body id="page-top" onload="showCart()">
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+      <!-- Sidebar - Brand -->
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+        <div class="sidebar-brand-icon">
+          <img src="https://i.ibb.co/gTnvrC6/Logopurpel2.png" style="width: 2.3rem; margin: 30%;" alt="Responsive image"> 
+        </div>
+        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="margin-top: 15% !important;" src="https://i.ibb.co/5Y6pqF0/Logopurpel1.png" alt="">        
+      </a>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider my-0">
+
+      <!-- Nav Item - Dashboard -->
+      <li class="nav-item active">
+        <a class="nav-link" href="index.html" >
+          <i class="fa fa-home" aria-hidden="true"></i>
+          <span>Homepage</span></a>
+      </li>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider">
+
+   <!-- Heading -->
+   <div class="sidebar-heading">
+    Things To Buy
+  </div>
+
+  <!-- Nav Item - Mobile Phones Menu -->
+  <li class="nav-item">
+    <a class="nav-link" href="phones.html">
+      <i class="fa fa-mobile" aria-hidden="true"></i>
+      <span>Mobile Phones</span></a>
+
+  </li>
+
+  <!-- Nav Item - Computers Collapse Menu -->
+  <li class="nav-item">
+    <a class="nav-link" href="404.html">
+      <i class="fa fa-laptop" aria-hidden="true"></i>
+      <span>  Computers</span>
+    </a>
+    
+  </li>
+
+  <!-- Divider -->
+  <hr class="sidebar-divider">
+
+<!-- Divider -->
+<hr class="sidebar-divider">
+
+    <!-- Heading -->
+    <div class="sidebar-heading">
+      About Us
+    </div>
+
+
+  <!-- Nav Item - Contact -->
+  <li class="nav-item">
+    <a class="nav-link" href="contactus.html">
+      <i class="fa fa-envelope" aria-hidden="true"></i>
+      <span>Contact Us</span></a>
+  </li>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider d-none d-md-block">
+
+      <!-- Sidebar Toggler (Sidebar) -->
+      <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+      </div>
+
+    </ul>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+        <!-- Topbar -->
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+          <!-- Sidebar Toggle (Topbar) -->
+          <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+            <i class="fa fa-bars"></i>
+          </button>
+
+         
+
+          <!-- Topbar Navbar -->
+          <ul class="navbar-nav ml-auto">
+
+            <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+            <li class="nav-item dropdown no-arrow d-sm-none">
+             
+              <!-- Dropdown - Messages -->
+              <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
+                <form class="form-inline mr-auto w-100 navbar-search">
+                  <div class="input-group">
+                    <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                      <button class="btn btn-primary" type="button">
+                        <i class="fas fa-search fa-sm"></i>
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </li>
+
+           <!-- Nav Item - Alerts -->
+           <li class="nav-item dropdown no-arrow mx-1">
+            <a class="nav-link dropdown-toggle" href="cart.html" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+              <!-- Counter - Alerts -->
+              <div id="cart-number" class="badge badge-info badge-counter"></div>
+            </a>
+          </li>
+
+            <div class="topbar-divider d-none d-sm-block"></div>
+
+           <!-- Nav Item - User Information -->
+           <li class="nav-item dropdown no-arrow">
+            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span id="user-name-main" class="mr-2 d-none d-lg-inline text-gray-600 small"></span>
+              <i class="fa fa-user-circle" aria-hidden="true"></i>
+
+
+            </a>
+            <!-- Dropdown - User Information -->
+            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+              <a class="dropdown-item" href="profile.html">
+                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                Profile
+              </a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                Logout
+              </a>
+            </div>
+          </li>
+          </ul>
+        </nav>
+        <!-- End of Topbar -->
+        <!-- Begin Page Content -->
+        <div class="container1-fluid" >
+         <div class= "wrapper">
+            <div class="shopping-cart">
+              <!-- Title -->
+              <div class="title">Shopping Bag</div>
+              <!-- Product #1 -->
+              <div id="cart-item"></div>
+            </div>
+
+            <div class="discout-label" style="display: inline; margin-left: 40%;">
+              <label id="discount-message" style="color:rgb(90 87 115);">discount</label>
+            </div>
+            <div class="footer_price" style="margin-top: 3%; align-items: flex-end; margin-left: 80%;" > 
+            <div id="total-price-text" class="title" style="display: inline; "> Total:  </div>
+            <div class="total-price" id="cart-total-price"></div>
+             <div id="cart-checkout-btn"></div>
+            </div>
+          
+          <img class="Responsive"style="width:35%; height:35%; margin-left: 28%;" src="https://svgshare.com/i/N58.svg"/>
+
+            <div>
+            </div>
+          </div>
+        </div>
+
+        </div>
+        <!-- /.container-fluid -->
+      </div>
+      <!-- End of Main Content -->
+
+    
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+
+  <!-- Logout Modal-->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+        <div class="modal-footer">
+          <a class="btn btn-secondary" style="color:white; cursor: pointer;" type="button" data-dismiss="modal">Cancel</a>
+          <a class="btn btn-primary"  style="color:white; cursor: pointer;"  onclick = "logout()">Logout</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="js/sb-admin-2.min.js"></script>
+  <script src="client.js"></script>
+
+  <script type="text/javascript">
+    $('.minus-btn').on('click', function (e) {
+        e.preventDefault();
+        var $this = $(this);
+        var $input = $this.closest('div').find('input');
+        var value = parseInt($input.val());
+
+        if (value > 1) {
+            value = value - 1;
+        } else {
+            value = 0;
+        }
+
+        $input.val(value);
+
+    });
+
+    $('.plus-btn').on('click', function (e) {
+        e.preventDefault();
+        var $this = $(this);
+        var $input = $this.closest('div').find('input');
+        var value = parseInt($input.val());
+
+        if (value < 100) {
+            value = value + 1;
+        } else {
+            value = 100;
+        }
+
+        $input.val(value);
+    });
+
+
+</script>
+
+</body>
+
+</html>
