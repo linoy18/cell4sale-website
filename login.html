@@ -76,11 +76,12 @@
                       </button>
 
                       <hr>
-
-                      <fb:login-button class="fb-login-button " data-layout="rounded" data-auto-logout-link="false"
+                    
+                      <fb:login-button class="fb-login-button" data-layout="rounded" data-auto-logout-link="false"
                         data-use-continue-as="true" data-width="345px" data-size="large" data-button-type="login_with"
                         scope="public_profile,email" onlogin="checkLoginState();">
                         <Label>Login With Facebook</Label></fb:login-button>
+                 
 
                       <!-- <a href="/index.html" class="btn btn-facebook btn-user btn-block">
                       <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
@@ -130,7 +131,7 @@
       if (response.status === 'connected') {   // Logged into your webpage and Facebook.
         loginWithFacebook();
       } else {                                 // Not logged into your webpage or we are unable to tell.
-        document.getElementById('errorMessage').innerHTML = "Can't login with Facebook"
+        document.getElementById('errorMessage').innerHTML = ""
       }
     }
     function checkLoginState() {               // Called when a person is finished with the Login Button.
@@ -156,13 +157,21 @@
       });
     };
 
-  // (function(d, s, id){
-  //    var js, fjs = d.getElementsByTagName(s)[0];
-  //    if (d.getElementById(id)) {return;}
-  //    js = d.createElement(s); js.id = id;
-  //    js.src = "https://connect.facebook.net/en_US/sdk.js";
-  //    fjs.parentNode.insertBefore(js, fjs);
-  //  }(document, 'script', 'facebook-jssdk'));
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "https://connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+
+
+///////////////////////
+
+
+
+
+
 
 
   </script>

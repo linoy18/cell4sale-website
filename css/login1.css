@@ -52,6 +52,10 @@ a {
      transform-origin:0 0;
 }
 
+.fb-login-button{
+     data-size:small;
+}
+
 }
 
 

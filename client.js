@@ -73,7 +73,7 @@ function loginWithFacebook() {
                     location.replace('/index');
                 },
                 error: function (res) {
-                    error_message.innerHTML = "Oops... can't login with facebook";
+                    error_message.innerHTML = "Oops... can't login with facebook,<br/> Try login with your Cell4Sale account if you have one";
                 }
             });
         }
