@@ -750,9 +750,15 @@ function updateMainTab(){
 
 function showCartNumber(){
     var cartData = JSON.parse(sessionStorage.getItem('cart-data'));
-    if (cartData.length == 0) {}
+    var cart_num =0;
+    if (cartData.length == 0) {
+    }
     else{
-        $('#cart-number').html("+"+cartData.length);
+        for (var i = 0; i < cartData.length; i++) {
+            var obj = cartData[i];
+            cart_num = obj.count+cart_num ;
+        }
+        $('#cart-number').html("+"+cart_num );
     }
 }
 
