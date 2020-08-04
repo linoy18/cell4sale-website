@@ -469,6 +469,8 @@ function updateDetails2(prev_profile_details) {
         zipcode: $('#zipcode_profile').val()
     }
 
+
+    
     if (userToUpdate.name == "") {
         userToUpdate.name = prev_profile_details.name;
     }
@@ -511,7 +513,7 @@ function updateDetails2(prev_profile_details) {
             return;
         }
         if (!validatePassword(userToUpdate.password)) {
-            error_message.innerHTML = "Password must contain at least 6 characters, uppercase, lowercase, number, special character.";
+            error_message.innerHTML = "Password must contain at least 6 characters, uppercase, lowercase, number, special character";
             return;
         }
     }
@@ -519,13 +521,18 @@ function updateDetails2(prev_profile_details) {
     var emailInput = $('#email_profile').val();
 
     if (emailInput == "") {
-        emailInput = prev_profile_details.email;
+        userToUpdate.newEmail = prev_profile_details.email;
     }
-
-    else if (emailInput !== prev_profile_details.email) {
+    else if (emailInput != prev_profile_details.email) {
+        if(!validateEmail(emailInput)) {
+            error_message.innerHTML = "Please insert a valid email address";
+            return;
+        }
+        else{
         userToUpdate.newEmail = emailInput;
-        $('#emailModal').modal('show');
+        }
     }
+    
 
     $.ajax({
         type: 'POST',
@@ -533,7 +540,13 @@ function updateDetails2(prev_profile_details) {
         data: userToUpdate,
         success: function (user_updated) {
             updateUserProfileFields(user_updated);
-            $('#updateModal').modal('show');
+            if(user_updated.email!=userToUpdate.email)
+            {
+              $('#emailModal').modal('show');
+            }
+            else {
+            $('#emailUpdateModal').modal('show');
+            }
         },
         error: function (err) { console.log(err); }
     });

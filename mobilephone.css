@@ -181,10 +181,8 @@ h2 {
   font-weight: 400;
 }
 
-@media screen and (max-width: 600px) {
-  /* .img_product {
-    display: none;
-  } */
+@media screen and (max-width: 770px) {
+
   .container1{
     width: fit-content;
   }

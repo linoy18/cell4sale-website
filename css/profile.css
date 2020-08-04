@@ -99,3 +99,30 @@ max-width: 100vw !important;
     font-weight: 600;
     color: #4a4396;
 }
+
+
+@media screen and (max-width: 770px) {
+  
+    .form-row{
+        display: inline-flex;
+    }
+   
+
+  }
+
+  @media screen and (max-width: 600px) {
+
+  .col-12{
+    flex: 0 0 90%;
+    max-width: 65%;
+    display: block;
+}
+
+  
+.col-6{
+    flex: 0 0 90%;
+    max-width: 65%;
+    display: block;
+}
+
+  }

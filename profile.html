@@ -254,33 +254,36 @@
                                                 <div class="form-row mt-4">
                                                     <div id="email_profile_div" class="col-12 col-sm-4 mt-4 mt-sm-0">
                                                         <label for="email_profile">Email</label>
-                                                        <input id="email_profile"
+                                                        <input id="email_profile" type="email"
                                                             class="multisteps-form__input form-control" type="text"
                                                             placeholder="Insert Email" />
                                                     </div>
                                                     <div id="password_profile_div" class="col-6 col-sm-5 mt-4 mt-sm-0">
                                                         <label for="password_profile">Password</label>
-                                                        <input id="password_profile" type="password"  onfocus="showPassConfirmation()"
-                                                         class="multisteps-form__input form-control" type="text"
+                                                        <input id="password_profile" type="password"
+                                                            onfocus="showPassConfirmation()"
+                                                            class="multisteps-form__input form-control" type="text"
                                                             placeholder="Insert Password" />
                                                     </div>
-                                                    <div id="password2div"  class="col-6 col-sm-3 mt-4 mt-sm-0" style="display:none;">
+                                                    <div id="password2div" class="col-6 col-sm-3 mt-4 mt-sm-0"
+                                                        style="display:none;">
                                                         <label for="password2_profile">Confirm Password</label>
                                                         <input id="password2_profile" type="password"
                                                             class="multisteps-form__input form-control" type="text"
                                                             placeholder="Repeat Password" />
                                                     </div>
-                                                
+
                                                 </div>
-                                            </br>
+                                                </br>
                                                 <div>
-                                                    <p class="small" style="color:#a90e0e;" id="errorMessageProfile"></p>
+                                                    <p class="large" style="color:#a90e0e;" id="errorMessageProfile">
+                                                    </p>
                                                 </div>
-                                            </br> 
+                                                </br>
                                                 <p style="font-size: 1rem; color:rgb(158, 158, 158);">Contact
                                                     Information</p>
                                                 <hr>
-                                                
+
                                                 <div class="form-row mt-4">
                                                     <div class="col-12 col-sm-4 ">
                                                         <label for="firstName_profile">First Name</label>
@@ -330,7 +333,7 @@
                                                     </div>
                                                 </div>
 
-                                              
+
                                             </div>
                                             <div class="tab-pane fade" id="profile" role="tabpanel"
                                                 aria-labelledby="profile-tab">
@@ -403,6 +406,27 @@
                             </button>
                         </div>
                         <div class="modal-body">Your Profile Details Has Been Updated Successfully!
+                        </div>
+                        <div class="modal-footer">
+                            <!-- <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button> -->
+                            <a class="btn btn-primary" href="/profile.html">OK</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Email Update Details Modal-->
+            <div class="modal fade" id="emailUpdateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Update Details</h5>
+                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">Your email has been updated successfully, in order to activate it, we send you an email with a link to verify it's  you, please confirm it.
                         </div>
                         <div class="modal-footer">
                             <!-- <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button> -->

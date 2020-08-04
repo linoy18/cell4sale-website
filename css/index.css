@@ -1,0 +1,27 @@
+
+    .super-sale{
+        font-size: 3rem;
+        font-weight: bold; 
+         }
+
+  
+  @media screen and (max-width: 600px) {
+     .responsive-link{
+        margin-left: 15%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        
+     }
+
+     .home-ing{
+         display: none;
+     }
+
+    .super-sale{
+    font-size: 2rem;
+     }
+    
+    }
+  

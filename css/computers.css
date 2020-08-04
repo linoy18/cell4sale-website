@@ -1,0 +1,12 @@
+
+
+.image-not-found{
+  width: 30rem;
+}
+
+
+@media screen and (max-width: 600px) {
+   .error{
+    font-size: 6rem;
+   }
+  }
