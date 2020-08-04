@@ -750,6 +750,9 @@ function updateMainTab(){
 
 function showCartNumber(){
     var cartData = JSON.parse(sessionStorage.getItem('cart-data'));
+    if(cartData==null){
+        return;
+    }
     var cart_num =0;
     if (cartData.length == 0) {
     }
