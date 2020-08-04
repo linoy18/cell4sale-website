@@ -556,6 +556,7 @@ function updateDetails2(prev_profile_details) {
 input: userDetails-user updated information from db
 output: displayed updated input fields in 'profile.html' page */
 function updateUserProfileFields(userDetails) {
+    showCartNumber();
     var user_name = userDetails.name + ' ' + userDetails.familyname;
     $('#user-name-main').append(user_name);
     $('#user-name-label').append(user_name);
@@ -575,6 +576,7 @@ function updateUserProfileFields(userDetails) {
 input: userDetails-user information from db
 output: displayed input fields in address tab on 'payment.html' page */
 function showAddressTabFields(userDetails) {
+    showCartNumber();
 
     var user_name = userDetails.name + ' ' + userDetails.familyname;
     $('#user-name-main').append(user_name);
@@ -616,7 +618,7 @@ function showPassword() {
 trigger: user click on 'Mobile Phones' tab in side menu
 output: displayed all phones from json file getting from server side*/
 function getPhones() {
-    updateMainUserName();
+    updateMainTab();
     $.ajax({
         type: 'GET',
         url: '/get-phones',
@@ -741,12 +743,26 @@ function getCart() {
     });
 }
 
+function updateMainTab(){
+    showCartNumber();
+    updateMainUserName();
+}
+
+function showCartNumber(){
+    var cartData = JSON.parse(sessionStorage.getItem('cart-data'));
+    if (cartData.length == 0) {}
+    else{
+        $('#cart-number').html("+"+cartData.length);
+    }
+}
+
 /*showCart:
 trigger: loading 'cart.html' page
 output: get items stored by "getCart()" and displayed in page
  */
 function showCart() {
-    updateMainUserName();
+    updateMainTab();
+    
     var cartData = JSON.parse(sessionStorage.getItem('cart-data'));
     var cartTotPrice = 0;
     if (cartData.length == 0) {
