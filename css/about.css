@@ -130,14 +130,32 @@
 	.pe{
 		width: 45%;
 	}
+	.details{
+		display: block;
+	}
+	#logo{
+		width:  40%;
+	}
 }
 @media screen and (max-width: 768px) {
 	.pe{
 		width: 50%;
 	}
+	.details{
+		display: block;
+	}
+	#logo{
+		width:  50%;
+	}
 }
 @media screen and (max-width: 600px) {
 	.pe{
 		width: 100%;
+	}
+	.details{
+		display: block;
+	}
+	#logo{
+		width: 60%;
 	}
 }
