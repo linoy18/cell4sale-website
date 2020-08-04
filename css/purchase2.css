@@ -1,5 +1,5 @@
 
-/* Global "table" column settings */
+
 .product-image {
 	float: left;
 	width: 20%;
@@ -81,10 +81,7 @@
   label {
 	color: #aaa;
   }
-  
-  .shopping-cart {
-	margin-right: 3%;
-  }
+
   
   /* Column headers */
   .column-labels label {
@@ -170,6 +167,11 @@
   .checkout:hover {
 	background-color: #43727e;
   }
+  .shopping-cart {
+    /* margin-top: -45px; */
+    margin-right: 20%;
+}
+
   
   /* Make adjustments for tablet */
   @media screen and (max-width: 650px) {
