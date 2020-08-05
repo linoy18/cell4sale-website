@@ -36,7 +36,7 @@ function forgetPassCaptcha() {
     }
     else{
         document.getElementById("resetPassBtn").disabled = false;
-        forget();
+
     } 
 }
 
