@@ -34,7 +34,10 @@ function forgetPassCaptcha() {
     if (response.length == 0) {
         error_message.innerHTML = "You must confirm that you are not a robot!";
     }
-    else forget();
+    else{
+        document.getElementById("resetPassBtn").disabled = false;
+        forget();
+    } 
 }
 
 

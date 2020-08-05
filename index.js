@@ -18,8 +18,8 @@ const MY_SECRET = 'linoyshirannofaruri';
 var loginUser = { id: 0, email: '', confirmed: false, rememberMe: false };
 //////////////////////////////////////////////---***our URL String***---/////////////////////////////////////////////
 
-const API_URL = 'http://localhost:3000/'; // dev env
-// const API_URL = 'https://desolate-inlet-43132.herokuapp.com/'; // prod env
+//const API_URL = 'http://localhost:3000/'; // dev env
+const API_URL = 'https://desolate-inlet-43132.herokuapp.com/'; // prod env
 
 //////////////////////////////////////////////---***Database Connection String***---/////////////////////////////////////////////
 var conn = process.env.DATABASE_URL || "postgres://qypchyeekcsmxm:919fb6548d25956af6a1a8ae2aaeb9c6bdc25f0a6eb7f32e3e09201666dac2cd@ec2-52-48-65-240.eu-west-1.compute.amazonaws.com:5432/d6bdcco8hh45dq?ssl=true"
