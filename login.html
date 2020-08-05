@@ -70,16 +70,22 @@
                         data-sitekey="6LdYkbUZAAAAAOMot2c1wF6OExBEAJr91zRhEfYR" data-callback='onSubmit'
                         data-action='submit'>Submit</div>
                       </div>
-                      <button class="btn btn-primary btn-user btn-block" type="button" onclick="loginCaptcha()">
+                      <!-- FOR HEROKU - WITH CAPTCHA
+                      <button class="btn btn-primary btn-user btn-block" type="button" onclick="loginCaptcha()"> -->
+                        <button class="btn btn-primary btn-user btn-block" type="button" onclick="Login()">
                         Login
                       </button>
 
                       <!-- <hr> -->
-                      
-                    <!--  <fb:login-button class="fb-login-button" data-layout="rounded" data-auto-logout-link="false"
+                     <!--    <fb:login-button class="fb-login-button" data-layout="rounded" data-auto-logout-link="false"
+                      data-use-continue-as="true" data-width="345px" data-size="large" data-button-type="login_with"
+                      scope="public_profile,email" onlogin="checkLoginState();">
+                      <Label>Login With Facebook</Label></fb:login-button> -->
+
+                     <fb:login-button class="fb-login-button" data-layout="rounded" data-auto-logout-link="false"
                         data-use-continue-as="true" data-width="345px" data-size="large" data-button-type="login_with"
                         scope="public_profile,email" onlogin="checkLoginState();">
-                        <Label>Login With Facebook</Label></fb:login-button> -->
+                        <Label>Login With Facebook</Label></fb:login-button>
                  
                       <!-- <button href="/index.html" class="btn btn-facebook btn-user btn-block">
                       <i class="fab fa-facebook-f fa-fw" onclick="userLogin()"></i> Login with Facebook </button> -->
@@ -122,7 +128,7 @@
 
 
     ////////////////////////////////////////Facebook functions///////////////////////////////////////////////////
-    /* function statusChangeCallback(response) {  // Called with the results from FB.getLoginStatus().
+     function statusChangeCallback(response) {  // Called with the results from FB.getLoginStatus().
       console.log('statusChangeCallback');
       console.log(response);                   // The current login status of the person.
       if (response.status === 'connected') {   // Logged into your webpage and Facebook.
@@ -161,7 +167,7 @@
      js = d.createElement(s); js.id = id;
      js.src = "https://connect.facebook.net/en_US/sdk.js";
      fjs.parentNode.insertBefore(js, fjs);
-   }(document, 'script', 'facebook-jssdk')); */
+   }(document, 'script', 'facebook-jssdk')); 
 
 
   </script>
