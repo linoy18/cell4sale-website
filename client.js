@@ -34,11 +34,11 @@ function forgetPassCaptcha() {
     if (response.length == 0) {
         error_message.innerHTML = "You must confirm that you are not a robot!";
     }
-    else{
-        document.getElementById("resetPassBtn").disabled = false;
-
-    } 
+    else forget();
 }
+    function onSubmitForget(token) {
+        document.getElementById("resetPassBtn").disabled = false;
+    }
 
 
 function registerCaptcha() {
