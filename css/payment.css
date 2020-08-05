@@ -157,7 +157,7 @@
     height: 0;
     opacity: 0;
     visibility: hidden;
-    wid
+  
   }
   .multisteps-form__panel.js-active {
     height: auto;

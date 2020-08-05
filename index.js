@@ -898,7 +898,7 @@ function preparePurchaseMail(products) {
 function purchaseMail(products) {
   var data = preparePurchaseMail(products);
   return `<!DOCTYPE html>
-  <html>
+  <html dir="ltr">
   
   <head>
       <title></title>
@@ -994,7 +994,7 @@ function purchaseMail(products) {
       </style>
   </head>
   
-  <body style="background-color: #f4f4f4; margin: 0 !important; padding: 0 !important;">
+  <body  dir="ltr" style="background-color: #f4f4f4; margin: 0 !important; padding: 0 !important;">
       <!-- HIDDEN PREHEADER TEXT -->
       <div style="display: none; font-size: 1px; color: #fefefe; line-height: 1px; font-family: 'Lato', Helvetica, Arial, sans-serif; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;"> We're thrilled to have you here! Get ready to dive into your new account. </div>
       <table border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -1046,7 +1046,7 @@ function purchaseMail(products) {
                    </tr>
                       <tr>
                           <td bgcolor="#ffffff" align="left" style="padding: 0px 30px 20px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
-                              <p style="margin: 0;"> </br> If it wasn't you, just reply to this email—we're always happy to help out.</p>
+                              <p style="margin: 0;"> <br> <br> If it wasn't you, just reply to this email—we're always happy to help out.</p>
                           </td>
                       </tr>
                       <tr>
@@ -1072,7 +1072,7 @@ function purchaseMail(products) {
 
 function passchangedMail() {
   return `<!DOCTYPE html>
-  <html>
+  <html dir="ltr">
   
   <head>
       <title></title>
@@ -1168,7 +1168,7 @@ function passchangedMail() {
       </style>
   </head>
   
-  <body style="background-color: #f4f4f4; margin: 0 !important; padding: 0 !important;">
+  <body dir="ltr" style="background-color: #f4f4f4; margin: 0 !important; padding: 0 !important;">
       <!-- HIDDEN PREHEADER TEXT -->
       <div style="display: none; font-size: 1px; color: #fefefe; line-height: 1px; font-family: 'Lato', Helvetica, Arial, sans-serif; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;"> We're thrilled to have you here! Get ready to dive into your new account. </div>
       <table border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -1228,7 +1228,7 @@ function passchangedMail() {
 
 function emailHasChangedMail(newMail){
 return `<!DOCTYPE html>
-<html>
+<html dir="ltr">
 
 <head>
     <title></title>
@@ -1324,7 +1324,7 @@ return `<!DOCTYPE html>
     </style>
 </head>
 
-<body style="background-color: #f4f4f4; margin: 0 !important; padding: 0 !important;">
+<body dir="ltr" style="background-color: #f4f4f4; margin: 0 !important; padding: 0 !important;">
     <!-- HIDDEN PREHEADER TEXT -->
     <div style="display: none; font-size: 1px; color: #fefefe; line-height: 1px; font-family: 'Lato', Helvetica, Arial, sans-serif; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;"> We're thrilled to have you here! Get ready to dive into your new account. </div>
     <table border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -1388,7 +1388,7 @@ return `<!DOCTYPE html>
 
 function preparePassMail(url) {
   return `<!DOCTYPE html>
-  <html>
+  <html dir="ltr">
   
   <head>
       <title></title>
@@ -1484,7 +1484,7 @@ function preparePassMail(url) {
       </style>
   </head>
   
-  <body style="background-color: #f4f4f4; margin: 0 !important; padding: 0 !important;">
+  <body dir="ltr" style="background-color: #f4f4f4; margin: 0 !important; padding: 0 !important;">
       <!-- HIDDEN PREHEADER TEXT -->
       <div style="display: none; font-size: 1px; color: #fefefe; line-height: 1px; font-family: 'Lato', Helvetica, Arial, sans-serif; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;"> We're thrilled to have you here! Get ready to dive into your new account. </div>
       <table border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -1568,7 +1568,7 @@ function preparePassMail(url) {
 
 function changeEmailMail(url){
 return `<!DOCTYPE html>
-<html>
+<html dir="ltr">
 
 <head>
     <title></title>
@@ -1664,7 +1664,7 @@ return `<!DOCTYPE html>
     </style>
 </head>
 
-<body style="background-color: #f4f4f4; margin: 0 !important; padding: 0 !important;">
+<body dir="ltr" style="background-color: #f4f4f4; margin: 0 !important; padding: 0 !important;">
     <!-- HIDDEN PREHEADER TEXT -->
     <div style="display: none; font-size: 1px; color: #fefefe; line-height: 1px; font-family: 'Lato', Helvetica, Arial, sans-serif; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;"> We're thrilled to have you here! Get ready to dive into your new account. </div>
     <table border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -1848,7 +1848,7 @@ function prepareMail(url) {
   </style>
 </head>
 
-<body style="background-color: #f4f4f4; margin: 0 !important; padding: 0 !important;">
+<body dir="ltr" style="background-color: #f4f4f4; margin: 0 !important; padding: 0 !important;">
   <!-- HIDDEN PREHEADER TEXT -->
   <div style="display: none; font-size: 1px; color: #fefefe; line-height: 1px; font-family: 'Lato', Helvetica, Arial, sans-serif; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;"> We're thrilled to have you here! Get ready to dive into your new account. </div>
   <table border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -1925,7 +1925,7 @@ function prepareMail(url) {
 
 function updateDetailsMail() {
   return `<!DOCTYPE html>
-  <html>
+  <html dir="ltr">
   
   <head>
       <title></title>
@@ -2021,7 +2021,7 @@ function updateDetailsMail() {
       </style>
   </head>
   
-  <body style="background-color: #f4f4f4; margin: 0 !important; padding: 0 !important;">
+  <body dir="ltr" style="background-color: #f4f4f4; margin: 0 !important; padding: 0 !important;">
       <!-- HIDDEN PREHEADER TEXT -->
       <div style="display: none; font-size: 1px; color: #fefefe; line-height: 1px; font-family: 'Lato', Helvetica, Arial, sans-serif; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;"> We're thrilled to have you here! Get ready to dive into your new account. </div>
       <table border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -2085,7 +2085,7 @@ function updateDetailsMail() {
 function prepareCongratsMail() {
 
   return `<!DOCTYPE html>
-  <html>
+  <html dir="ltr">
   
   <head>
       <title></title>
@@ -2187,7 +2187,7 @@ function prepareCongratsMail() {
       </style>
   </head>
   
-  <body style="background-color: #f4f4f4; margin: 0 !important; padding: 0 !important;">
+  <body dir="ltr" style="background-color: #f4f4f4; margin: 0 !important; padding: 0 !important;">
       <!-- HIDDEN PREHEADER TEXT -->
       <div style="display: none; font-size: 1px; color: #fefefe; line-height: 1px; font-family: 'Lato', Helvetica, Arial, sans-serif; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;"> We're thrilled to have you here! Get ready to dive into your new account. </div>
       <table border="0" cellpadding="0" cellspacing="0" width="100%">

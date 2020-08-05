@@ -580,10 +580,8 @@ input: userDetails-user information from db
 output: displayed input fields in address tab on 'payment.html' page */
 function showAddressTabFields(userDetails) {
     showCartNumber();
-
     var user_name = userDetails.name + ' ' + userDetails.familyname;
     $('#user-name-main').append(user_name);
-
     $('#check-first-name').val(userDetails.name);
     $('#check-last-name').val(userDetails.familyname);
     $('#check-street').val(userDetails.street);
@@ -1026,8 +1024,23 @@ function getPurchases() {
     });
 }
 
+
+function formatDate(date1){
+    date = new Date(date1);
+    var year= date.getFullYear();
+    var month= date.getMonth()+1;
+    var day= date.getDate();
+    var date_result= day+"."+month+"."+year; 
+    return date_result;
+}
+
 function showPurchases() {
     var purchasesData = JSON.parse(sessionStorage.getItem('purchases-data'));
+
+    $('#purchas-item').each(function () {
+        $(".pToEmpty").empty();
+    });
+
     for (var i = 0; i < purchasesData.length; i++) {
         var obj = purchasesData[i];
         var phoneImg = ``;
@@ -1037,9 +1050,9 @@ function showPurchases() {
             }
         } //end picking phone image
 
+        var date_result= formatDate(obj.date);
 
-
-        var dataRow = `<div class="product">
+        var dataRow = `<div class="product pToEmpty">
         <div class="product-image">
           <img src=`+phoneImg+`>
         </div>
@@ -1052,8 +1065,8 @@ function showPurchases() {
         <div class="product-quantity">
           <input type="text" readonly value="${obj.count}">
         </div>
-        <div class="product-removal">`+obj.date+`</div>
-        <div class="product-line-price">`+obj.product_price+`</div>
+        <div class="product-removal">`+date_result+`</div>
+        <div class="product-line-price ">`+obj.product_price+`</div>
       </div>`;
       $(dataRow).appendTo('#purchas-item');
 
